@@ -69,4 +69,4 @@ contrast and restrained accents:
 
 ## Live Site
 
-`https://<your-github-username>.github.io/ModernityRay/`
+https://denysovski.github.io/ModernityRay/
