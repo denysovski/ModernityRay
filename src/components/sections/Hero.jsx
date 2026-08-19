@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Icon } from '../ui'
 import { HERO_CARDS } from '../../data'
+import { local } from '../../data/images'
 
 const rise = {
   hidden: { opacity: 0, y: 30 },
@@ -22,7 +23,7 @@ const pop = (i) => ({
   },
 })
 
-const HERO_BG = '/img/aerial.jpg'
+const HERO_BG = local('aerial.jpg')
 
 export default function Hero() {
   const ref = useRef(null)
