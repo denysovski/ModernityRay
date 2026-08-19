@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Icon } from '../ui'
 
 const SOCIALS = [
-  { label: 'Instagram', icon: Icon.instagram, href: '#', variant: 'lime' },
-  { label: 'X', icon: Icon.x, href: '#', variant: 'dark' },
-  { label: 'LinkedIn', icon: Icon.linkedin, href: '#', variant: 'white' },
+  { label: 'Instagram', icon: Icon.instagram, href: 'https://www.instagram.com/', variant: 'lime' },
+  { label: 'X', icon: Icon.x, href: 'https://x.com/', variant: 'dark' },
+  { label: 'LinkedIn', icon: Icon.linkedin, href: 'https://www.linkedin.com/', variant: 'white' },
 ]
 
 const bubble = {
@@ -36,7 +36,7 @@ export default function SocialDock() {
   }, [])
 
   return (
-    <div className="dock">
+    <div className={`dock ${open ? 'is-open' : ''}`}>
       {/* trigger + menu move down together (not on mobile, where the dock sits at the bottom) */}
       <motion.div
         className="dock-inner"
@@ -55,6 +55,8 @@ export default function SocialDock() {
                 <motion.a
                   key={s.label}
                   href={s.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
                   className={`dock-bubble dock-${s.variant}`}
                   aria-label={s.label}
                   variants={bubble}
