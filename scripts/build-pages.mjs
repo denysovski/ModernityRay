@@ -4,6 +4,17 @@ import path from 'node:path'
 const OUT = path.resolve('public/pages')
 await mkdir(OUT, { recursive: true })
 
+const BASE = (() => {
+  const raw = process.env.BASE_PATH || '/'
+  const prefixed = raw.startsWith('/') ? raw : `/${raw}`
+  return prefixed.endsWith('/') ? prefixed : `${prefixed}/`
+})()
+
+const applyBase = (html) =>
+  html
+    .replaceAll('href="/', `href="${BASE}`)
+    .replaceAll('src="/', `src="${BASE}`)
+
 /* Image library. Every page below opens on a different photograph, and no
    page repeats an image within itself:
      courts   open-air hard courts     aerial    court from above, estate
@@ -790,7 +801,7 @@ for (const p of PAGES) {
 
 /* ---------- stylesheet ---------- */
 const css = `
-@font-face{font-family:'Aspekta';src:url('/fonts/AspektaVF.woff2') format('woff2-variations');font-weight:100 1000;font-display:swap}
+@font-face{font-family:'Aspekta';src:url('../fonts/AspektaVF.woff2') format('woff2-variations');font-weight:100 1000;font-display:swap}
 :root{
   --ink:#0f0f0f;--ink-soft:#202020;--paper:#fff;--page:#f8f8f8;--bone:#ededed;--mist:#dedede;
   --line:rgba(15,15,15,.1);--line-2:rgba(15,15,15,.16);--muted:#0f0f0f;
@@ -1213,7 +1224,7 @@ const js = `(function(){
 await writeFile(path.join(OUT, 'page.css'), css.trim())
 await writeFile(path.join(OUT, 'page.js'), js)
 for (const p of PAGES) {
-  await writeFile(path.join(OUT, `${p.slug}.html`), page(p))
+  await writeFile(path.join(OUT, `${p.slug}.html`), applyBase(page(p)))
   console.log('wrote', `${p.slug}.html`)
 }
 console.log('done — ' + PAGES.length + ' unique pages + page.css')

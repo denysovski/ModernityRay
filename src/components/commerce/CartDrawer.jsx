@@ -24,6 +24,7 @@ const line = (i) => ({
 
 /** Slide-in basket. Review and adjust here, then hand off to Checkout. */
 export default function CartDrawer({ open, onClose, onCheckout }) {
+  const base = import.meta.env.BASE_URL
   const { items, totals, setQty, remove, money } = useCart()
 
   // esc closes, like any other dialog
@@ -73,7 +74,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
               >
                 <span className="cart-empty-ic"><Icon.cart /></span>
                 <p>Your cart is empty.</p>
-                <a href="/pages/become-a-member.html#plans" className="btn btn-green">
+                <a href={`${base}pages/become-a-member.html#plans`} className="btn btn-green">
                   Browse memberships
                 </a>
               </motion.div>

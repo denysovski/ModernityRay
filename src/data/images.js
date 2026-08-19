@@ -21,7 +21,7 @@
    slots — keep them out of wide full-bleed banners. */
 
 /** Club photography, served straight from public/img. */
-export const local = (name) => `/img/${name}`
+export const local = (name) => `${import.meta.env.BASE_URL}img/${name}`
 
 /** Unsplash portrait, used only for member testimonial avatars. */
 export const remote = (id, w = 1200) =>

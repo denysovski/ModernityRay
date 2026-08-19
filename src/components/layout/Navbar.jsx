@@ -120,6 +120,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false) // mobile
   const [active, setActive] = useState(null) // desktop mega
+  const base = import.meta.env.BASE_URL
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16)
@@ -146,7 +147,7 @@ export default function Navbar() {
       onMouseLeave={() => setActive(null)}
     >
       <div className="nav-inner">
-        <a href="/" className="nav-logo">
+        <a href={base} className="nav-logo">
           CourtSy<span>.</span>
         </a>
 
@@ -172,7 +173,7 @@ export default function Navbar() {
         </nav>
 
         <div className="nav-right">
-          <a href="/pages/become-a-member.html" className="btn btn-member nav-cta hide-sm">
+          <a href={`${base}pages/become-a-member.html`} className="btn btn-member nav-cta hide-sm">
             Become a member
             <span className="btn-bubble"><Icon.arrow /></span>
           </a>
