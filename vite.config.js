@@ -6,6 +6,14 @@ const base = process.env.BASE_PATH || '/'
 export default defineConfig({
   base,
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        index1: 'index1.html',
+      },
+    },
+  },
   server: {
     port: 5173,
     open: true,

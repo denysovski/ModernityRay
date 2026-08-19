@@ -26,6 +26,7 @@ const pop = (i) => ({
 const HERO_BG = local('aerial.jpg')
 
 export default function Hero() {
+  const staticCapture = document.documentElement.classList.contains('static-capture')
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -78,7 +79,7 @@ export default function Hero() {
           <strong>Professional court care, just for you.</strong>
         </div>
 
-        <motion.a href="#tailored" className="fc fc-coach" style={{ y: y1 }} variants={pop(0)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
+        <motion.a href="#tailored" className="fc fc-coach" style={staticCapture ? undefined : { y: y1 }} variants={pop(0)} initial="hidden" animate="show" whileHover={staticCapture ? undefined : { scale: 1.05 }}>
           <img src={HERO_CARDS.coach.avatar} alt={HERO_CARDS.coach.name} />
           <div>
             <strong>{HERO_CARDS.coach.name}</strong>
@@ -86,7 +87,7 @@ export default function Hero() {
           </div>
         </motion.a>
 
-        <motion.a href="#elevate" className="fc fc-members" style={{ y: y2 }} variants={pop(1)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
+        <motion.a href="#elevate" className="fc fc-members" style={staticCapture ? undefined : { y: y2 }} variants={pop(1)} initial="hidden" animate="show" whileHover={staticCapture ? undefined : { scale: 1.05 }}>
           <div className="fc-avatars">
             {HERO_CARDS.members.map((m) => (
               <img key={m} src={m} alt="" />
@@ -98,7 +99,7 @@ export default function Hero() {
           </div>
         </motion.a>
 
-        <motion.a href="#join" className="fc fc-time" style={{ y: y3 }} variants={pop(2)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
+        <motion.a href="#join" className="fc fc-time" style={staticCapture ? undefined : { y: y3 }} variants={pop(2)} initial="hidden" animate="show" whileHover={staticCapture ? undefined : { scale: 1.05 }}>
           <span className="fc-ic"><Icon.clock /></span>
           <div>
             <strong>Open 24 / 7</strong>
@@ -106,7 +107,7 @@ export default function Hero() {
           </div>
         </motion.a>
 
-        <motion.a href="#endless" className="fc fc-focus" style={{ y: y4 }} variants={pop(3)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
+        <motion.a href="#endless" className="fc fc-focus" style={staticCapture ? undefined : { y: y4 }} variants={pop(3)} initial="hidden" animate="show" whileHover={staticCapture ? undefined : { scale: 1.05 }}>
           <span className="fc-ic fc-ic-ok"><Icon.check /></span>
           <div>
             <strong>Full access</strong>

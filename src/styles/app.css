@@ -27,3 +27,29 @@
 @import './sections/events.css';
 @import './sections/marquee.css';
 @import './sections/footer.css';
+
+/* Static capture mode for index1.html: no animation, no hover, no 3D drift. */
+html.static-capture {
+   scroll-behavior: auto;
+}
+html.static-capture *,
+html.static-capture *::before,
+html.static-capture *::after {
+   animation: none !important;
+   transition: none !important;
+}
+html.static-capture .depth-inner,
+html.static-capture .gallery-track,
+html.static-capture .endless-bg,
+html.static-capture .marquee-track,
+html.static-capture .scroll-rail,
+html.static-capture .fc {
+   transform: none !important;
+}
+html.static-capture .nav {
+   transform: translateX(-50%) !important;
+}
+html.static-capture a,
+html.static-capture button {
+   pointer-events: none !important;
+}

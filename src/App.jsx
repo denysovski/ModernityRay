@@ -18,12 +18,18 @@ import { Depth } from './components/ui'
 import './styles/app.css'
 
 export default function App() {
+  const staticCapture = document.documentElement.classList.contains('static-capture')
   const { scrollYProgress } = useScroll()
   const railX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 })
 
+  const Wrap = ({ children, strength = 1 }) =>
+    staticCapture ? children : <Depth strength={strength}>{children}</Depth>
+
   return (
     <>
-      <motion.div className="scroll-rail" style={{ scaleX: railX }} />
+      {staticCapture
+        ? <div className="scroll-rail" style={{ transform: 'scaleX(1)' }} />
+        : <motion.div className="scroll-rail" style={{ scaleX: railX }} />}
       <Navbar />
       <Commerce />
       <SocialDock />
@@ -31,16 +37,16 @@ export default function App() {
           on a slight 3D tilt (see Depth in components/ui/motion) */}
       <main className="stage">
         <Hero />
-        <Depth><Tailored /></Depth>
-        <Depth strength={0.8}><Endless /></Depth>
-        <Depth strength={0.6}><Gallery /></Depth>
-        <Depth><Elevate /></Depth>
-        <Depth strength={0.9}><Testimonials /></Depth>
-        <Depth><Membership /></Depth>
-        <Depth><Events /></Depth>
-        <Depth strength={0.9}><Principles /></Depth>
-        <Depth strength={0.7}><Newsletter /></Depth>
-        <Depth strength={0.5}><Marquee /></Depth>
+        <Wrap><Tailored /></Wrap>
+        <Wrap strength={0.8}><Endless /></Wrap>
+        <Wrap strength={0.6}><Gallery /></Wrap>
+        <Wrap><Elevate /></Wrap>
+        <Wrap strength={0.9}><Testimonials /></Wrap>
+        <Wrap><Membership /></Wrap>
+        <Wrap><Events /></Wrap>
+        <Wrap strength={0.9}><Principles /></Wrap>
+        <Wrap strength={0.7}><Newsletter /></Wrap>
+        <Wrap strength={0.5}><Marquee /></Wrap>
       </main>
       <Footer />
     </>

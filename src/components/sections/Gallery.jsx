@@ -25,6 +25,7 @@ const SHOTS = [
 ]
 
 export default function Gallery() {
+  const staticCapture = document.documentElement.classList.contains('static-capture')
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -37,13 +38,13 @@ export default function Gallery() {
 
   return (
     <section className="gallery" ref={ref}>
-      <motion.div className="gallery-track" style={{ x }}>
+      <motion.div className="gallery-track" style={staticCapture ? undefined : { x }}>
         {SHOTS.map((s) => (
           <motion.a
             href={s.href}
             className="gshot"
             key={s.label}
-            whileHover={{ y: -8 }}
+            whileHover={staticCapture ? undefined : { y: -8 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
             <img src={s.img} alt={s.label} loading="lazy" />
