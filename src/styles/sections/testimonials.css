@@ -1,0 +1,116 @@
+/* ---------------- TESTIMONIALS ---------------- */
+.testimonials {
+  overflow: hidden;
+}
+.tm-head {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: clamp(90px, 12vw, 160px);
+}
+.tm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 16px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  flex-direction: row-reverse;
+}
+.tm-badge-ic {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--green);
+  color: #fff;
+}
+.tm-badge-ic svg {
+  width: 15px;
+  height: 15px;
+}
+.tm-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: clamp(80px, 12vw, 130px);
+}
+.tm-row-wrap {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.tm-row {
+  display: flex;
+  gap: 22px;
+  width: max-content;
+}
+.tm-row-left {
+  animation: tm-left 26s linear infinite;
+}
+.tm-row-right {
+  animation: tm-right 26s linear infinite;
+}
+@keyframes tm-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes tm-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.tm-card {
+  width: clamp(300px, 30vw, 360px);
+  flex-shrink: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 30px 60px -54px rgba(10, 10, 10, 0.4);
+}
+.tm-quote {
+  color: var(--green);
+}
+.tm-card blockquote {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.tm-person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+.tm-person img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--lime);
+}
+.tm-meta {
+  display: flex;
+  flex-direction: column;
+}
+.tm-meta strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+.tm-meta span {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.7;
+}

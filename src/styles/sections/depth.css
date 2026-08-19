@@ -1,0 +1,24 @@
+/* ---------------- SCROLL DEPTH (3D section tilt) ----------------
+   Each section is wrapped in .depth; framer-motion drives rotateX / scale /
+   translateZ on .depth-inner from that section's own scroll progress. The
+   perspective is applied per-element (transformPerspective) so every section
+   keeps its own vanishing point. */
+.stage {
+  /* the tilt lifts sections slightly toward the viewer — never let that
+     turn into a horizontal scrollbar */
+  overflow-x: clip;
+}
+.depth {
+  position: relative;
+}
+.depth-inner {
+  transform-style: preserve-3d;
+  /* keep type crisp while the section is rotated */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+@media (prefers-reduced-motion: reduce) {
+  .depth-inner {
+    transform: none !important;
+  }
+}

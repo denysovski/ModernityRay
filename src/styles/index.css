@@ -1,0 +1,423 @@
+/* =========================================================
+   ATELIER — Design System
+   Minimalism / Modernity. Apple-grade restraint.
+   ========================================================= */
+
+/* Aspekta — open-source variable sans (self-hosted) */
+@font-face {
+  font-family: 'Aspekta';
+  src: url('/fonts/AspektaVF.woff2') format('woff2-variations');
+  font-weight: 100 1000;
+  font-display: swap;
+  font-style: normal;
+}
+
+:root {
+  /* Palette — grayscale-first, premium, clean (Wolverine / FitMe) */
+  --ink: #0f0f0f; /* coal — the only text colour */
+  --ink-soft: #202020; /* lighter black */
+  --paper: #ffffff;
+  --page: #f8f8f8;
+  --bone: #ededed;
+  --bone-2: #e6e6e6;
+  --mist: #dededf;
+  --line: rgba(15, 15, 15, 0.1);
+  --line-2: rgba(15, 15, 15, 0.16);
+  --muted: #0f0f0f; /* text is always coal */
+  --muted-2: #0f0f0f;
+  --ghost: #0f0f0f;
+  --lime: #5dd62c; /* bright green from the palette — fills & badges */
+  --lime-soft: #e4f8d8;
+  --green: #337418; /* dark green for readable text on white */
+  --green-bright: #5dd62c;
+  --accent: #5dd62c;
+  --accent-2: #4ec024;
+  --accent-soft: #e4f8d8;
+  --accent-deep: #337418;
+
+  /* Type — Inter for big display, Aspekta for body/small text */
+  --sans: 'Aspekta', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --display: 'Inter', 'Aspekta', sans-serif;
+
+  /* Radii */
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --r-xl: 34px;
+  --r-pill: 999px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --maxw: 1440px;
+  --pad: clamp(18px, 4vw, 52px);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* Reserve the scrollbar's track permanently. The cart and checkout leave the
+     page scrollable so the scrollbar stays visible and usable behind them, and
+     this guarantees nothing can ever reclaim its width and shift the layout —
+     which would jolt the centred navbar and every % width on the page. */
+  scrollbar-gutter: stable;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--page);
+  color: var(--ink);
+  line-height: 1.5;
+  overflow-x: hidden;
+  font-feature-settings: 'ss01' 1, 'cv01' 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------- Layout primitives ---------- */
+.shell {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-inline: var(--pad);
+}
+
+.section {
+  padding-block: clamp(96px, 12vw, 170px);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line-2);
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+}
+
+/* uppercase letter-spaced micro-label (Wolverine cue) */
+.micro {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.micro .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.micro-plain {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* two-tone statement heading: gray lead + ink emphasis */
+.ghost {
+  color: var(--ghost);
+}
+
+/* little decorative star (green) */
+.deco-star {
+  width: 17px;
+  height: 17px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.deco-star-light {
+  color: var(--lime);
+}
+.star-float {
+  position: absolute;
+  color: var(--lime);
+  filter: drop-shadow(0 4px 10px rgba(198, 242, 78, 0.5));
+  pointer-events: none;
+  z-index: 3;
+}
+.eyebrow .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.eyebrow .num {
+  color: var(--muted-2);
+}
+
+.display {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+.h-xl {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
+  font-size: clamp(52px, 9vw, 120px);
+}
+.h-lg {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  font-size: clamp(42px, 6.4vw, 88px);
+}
+.h-md {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.02;
+  font-size: clamp(32px, 4.4vw, 56px);
+}
+
+.lede {
+  color: var(--muted);
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.6;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 22px;
+  border-radius: var(--r-pill);
+  transition: transform 0.35s var(--ease), background 0.3s, color 0.3s,
+    box-shadow 0.3s;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-dark {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-dark:hover {
+  background: var(--ink-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px -18px rgba(10, 10, 11, 0.6);
+}
+.btn-light {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line-2);
+}
+.btn-light:hover {
+  transform: translateY(-2px);
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 18px 40px -22px rgba(10, 10, 11, 0.4);
+}
+.btn-green {
+  background: var(--lime);
+  color: var(--ink);
+  font-weight: 700;
+}
+.btn-green:hover {
+  background: #d4f86a;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 44px -16px rgba(198, 242, 78, 0.7);
+}
+/* "Become a member" — color-only hover, trailing arrow in a green bubble */
+.btn-member {
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
+  padding: 6px 8px 6px 22px;
+  gap: 14px;
+  transition: background 0.3s;
+}
+.btn-member:hover {
+  background: #2a2a2a;
+  transform: none;
+  box-shadow: none;
+}
+.btn-member:active {
+  transform: none;
+}
+.btn-bubble {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.btn-member:hover .btn-bubble {
+  background: var(--green-bright);
+}
+
+/* solid green pill, white text (About us) */
+.btn-greenfill {
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+  transition: background 0.3s, color 0.3s;
+}
+.btn-greenfill:hover {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+/* soft gray pulsing ring */
+.btn-pulse {
+  animation: btnpulse 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes btnpulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(120, 120, 120, 0.26);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(120, 120, 120, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(120, 120, 120, 0);
+  }
+}
+
+/* dark pill with a leading circular icon (Watch Tutorial style) */
+.btn-play {
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
+  padding: 7px 22px 7px 8px;
+}
+.btn-play:hover {
+  background: var(--ink-soft);
+  transform: translateY(-2px);
+}
+.btn-ic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.btn-green .btn-ic {
+  background: var(--ink);
+  color: var(--lime);
+}
+.btn-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+.btn .arrow {
+  transition: transform 0.4s var(--ease);
+}
+.btn:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* round icon button */
+.iconbtn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-2);
+  background: var(--paper);
+  transition: transform 0.3s var(--ease), background 0.3s, color 0.3s;
+}
+.iconbtn:hover {
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-2px);
+}
+.iconbtn:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ---------- Tag / chip ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  backdrop-filter: blur(6px);
+}
+
+/* utility */
+.row {
+  display: flex;
+}
+.between {
+  justify-content: space-between;
+}
+.center {
+  align-items: center;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .hide-sm {
+    display: none !important;
+  }
+}

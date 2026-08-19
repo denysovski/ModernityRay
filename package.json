@@ -1,0 +1,26 @@
+{
+  "name": "atelier-club",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build:embed && npm run build:pages && vite build",
+    "build:app": "vite build",
+    "build:embed": "vite build --config vite.embed.config.js",
+    "build:pages": "node scripts/build-pages.mjs",
+    "preview": "vite preview",
+    "images:ingest": "node scripts/ingest-images.mjs",
+    "images:optimize": "node scripts/optimize-images.mjs"
+  },
+  "dependencies": {
+    "framer-motion": "^11.3.19",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sharp": "^0.35.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.2"
+  }
+}

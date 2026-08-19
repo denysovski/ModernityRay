@@ -1,0 +1,40 @@
+/* ---------------- MARQUEE ---------------- */
+.marquee {
+  position: relative;
+  background: var(--ink-soft);
+  color: #fff;
+  padding: clamp(40px, 6vw, 76px) 0 clamp(70px, 9vw, 110px);
+  overflow: hidden;
+  margin-top: clamp(70px, 9vw, 120px);
+}
+/* green light leaking from behind the footer layer */
+.marquee::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -40px;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 160px;
+  background: radial-gradient(ellipse at center, rgba(93, 214, 44, 0.55), transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+}
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(28px, 4vw, 56px);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(48px, 9vw, 140px);
+  letter-spacing: -0.05em;
+  padding-right: clamp(28px, 4vw, 56px);
+}
+.marquee-dot {
+  color: var(--accent);
+}

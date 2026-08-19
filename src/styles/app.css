@@ -1,0 +1,29 @@
+/* =========================================================
+   ATELIER — Clean / maximal system
+   Inter (display) + Plus Jakarta Sans (text) · coal black
+
+   Component styles, one file per section under styles/sections.
+   ORDER MATTERS — these are plain cascading rules, not scoped modules, so
+   this list preserves the order the rules were originally written in.
+   Adding a section means adding a file there and a line here.
+   Design tokens and element resets live in styles/index.css.
+   ========================================================= */
+
+@import './sections/progress-rail.css';
+@import './sections/depth.css';
+@import './sections/navbar.css';
+@import './sections/commerce.css';
+@import './sections/hero.css';
+@import './sections/social-dock.css';
+@import './sections/tailored.css';
+@import './sections/endless.css';
+@import './sections/plans.css';
+@import './sections/gallery.css';
+@import './sections/elevate.css';
+@import './sections/testimonials.css';
+@import './sections/membership.css';
+@import './sections/newsletter.css';
+@import './sections/principles.css';
+@import './sections/events.css';
+@import './sections/marquee.css';
+@import './sections/footer.css';

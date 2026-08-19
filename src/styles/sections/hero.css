@@ -1,0 +1,334 @@
+/* ---------------- HERO ---------------- */
+.hero {
+  position: relative;
+  padding-top: clamp(150px, 16vw, 196px);
+  padding-bottom: clamp(170px, 18vw, 240px);
+}
+.hero-head {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.hero-eyebrow {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--green);
+}
+.hero-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(48px, 9vw, 132px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  max-width: 14ch;
+  min-height: 1.84em;
+}
+.tw-caret {
+  display: inline-block;
+  margin-left: 0.04em;
+  color: var(--green);
+  font-weight: 500;
+  animation: twblink 0.9s steps(1) infinite;
+}
+.tw-caret-done {
+  animation: twblink 1.1s steps(1) infinite;
+}
+@keyframes twblink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+.hero-sub {
+  max-width: 540px;
+  font-family: var(--sans);
+  font-size: clamp(16px, 1.5vw, 19px);
+  font-weight: 500;
+  line-height: 1.55;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+/* big rounded landscape image ~1500 x 70%-of-1080 */
+.hero-wide {
+  position: relative;
+  width: min(1500px, calc(100% - 2 * var(--pad)));
+  margin: clamp(36px, 5vw, 64px) auto 0;
+  height: clamp(420px, 68vh, 760px);
+  border-radius: clamp(24px, 2.6vw, 40px);
+}
+.hero-wide > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  position: relative;
+  z-index: 1;
+}
+/* smooth dark overlay fading up from the bottom-left of the image */
+.hero-overlay {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  height: 70%;
+  padding: clamp(24px, 4vw, 52px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 12px;
+  color: #fff;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 110% at 0% 100%, rgba(8, 8, 9, 0.82) 0%, rgba(8, 8, 9, 0.4) 34%, rgba(8, 8, 9, 0.08) 58%, transparent 78%),
+    linear-gradient(0deg, rgba(8, 8, 9, 0.45) 0%, transparent 60%);
+}
+.hero-overlay > * {
+  max-width: 60%;
+}
+.hero-overlay-tag {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+.hero-overlay strong {
+  font-family: var(--display);
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  max-width: 14ch;
+}
+/* soft neutral shadow behind the hero image */
+.hero-wide::before {
+  content: '';
+  position: absolute;
+  inset: 8% 4% -5% 4%;
+  border-radius: inherit;
+  background: rgba(15, 15, 15, 0.45);
+  filter: blur(70px);
+  opacity: 0.6;
+  z-index: 0;
+}
+
+/* floating cards — much bigger, randomized, clickable */
+.fc {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 26px;
+  padding: 22px 28px;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  z-index: 4;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.35s var(--ease), border-color 0.3s;
+}
+.fc:hover {
+  border-color: var(--lime);
+}
+.fc strong {
+  display: block;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.fc span {
+  font-size: 15.5px;
+  font-weight: 500;
+  opacity: 1;
+}
+.fc-ic {
+  width: 58px;
+  height: 58px;
+  border-radius: 17px;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: #fff;
+  flex-shrink: 0;
+}
+.fc-ic svg {
+  width: 26px;
+  height: 26px;
+}
+/* randomized sizes per card (transform is owned by framer) */
+.fc-coach {
+  padding: 24px 30px;
+  border-radius: 28px;
+}
+.fc-coach strong {
+  font-size: 22px;
+}
+.fc-coach img {
+  width: 60px;
+  height: 60px;
+}
+.fc-members strong {
+  font-size: 26px;
+}
+.fc-time strong {
+  font-size: 21px;
+}
+.fc-focus {
+  padding: 22px 30px;
+}
+.fc-ic-ok {
+  background: var(--accent);
+  color: var(--ink);
+}
+.fc-coach {
+  left: -70px;
+  top: 66px;
+  max-width: 250px;
+  white-space: normal;
+  align-items: flex-start;
+}
+.fc-coach img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.fc-members {
+  right: 24px;
+  top: 26px;
+}
+.fc-avatars {
+  display: flex;
+}
+.fc-avatars img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  margin-left: -9px;
+}
+.fc-avatars img:first-child {
+  margin-left: 0;
+}
+.fc-members span {
+  font-weight: 700;
+  opacity: 1;
+}
+/* moved below the image */
+.fc-time {
+  left: clamp(10px, 3vw, 60px);
+  bottom: -150px;
+}
+.fc-focus {
+  right: 24px;
+  bottom: 26px;
+}
+
+/* The coach card deliberately overhangs the image's left edge. That only
+   clears the viewport while .hero-wide is capped at 1500px — once the image
+   goes edge-to-edge the gap is just var(--pad), so the overhang runs off
+   screen and body's overflow-x: hidden clips the card. Walk it back in. */
+@media (max-width: 1600px) {
+  .fc-coach {
+    left: -40px;
+  }
+}
+@media (max-width: 1280px) {
+  .fc-coach {
+    left: 0;
+  }
+}
+@media (max-width: 960px) {
+  .fc-coach {
+    left: 18px;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-wide {
+    height: clamp(360px, 56vh, 460px);
+  }
+  .fc-coach {
+    /* fully inside the image now — 100px right of where it started */
+    left: 30px;
+    max-width: 200px;
+    padding: 10px 12px;
+  }
+  .fc strong {
+    font-size: 13px;
+  }
+  .fc span {
+    font-size: 11.5px;
+  }
+  .fc-coach,
+  .fc-members {
+    top: 12px;
+  }
+  .fc-time,
+  .fc-focus {
+    bottom: 12px;
+  }
+  .fc-members,
+  .fc-focus {
+    right: 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* Below this the coach and members cards are wider than the gap between
+     them, so drop the coach beneath rather than letting them collide. */
+  .fc-coach {
+    top: 76px;
+    left: 16px;
+    max-width: min(190px, calc(100% - 32px));
+  }
+}
+
+/* scroll-down cue on the right */
+.scroll-cue {
+  position: absolute;
+  right: clamp(14px, 3vw, 40px);
+  top: 46%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 6;
+  color: var(--ink);
+}
+.scroll-cue-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.scroll-cue-line {
+  width: 2px;
+  height: 80px;
+  border-radius: 2px;
+  background: linear-gradient(var(--ink), transparent);
+}
+@media (max-width: 900px) {
+  .scroll-cue {
+    display: none;
+  }
+}

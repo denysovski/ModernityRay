@@ -1,0 +1,113 @@
+/* ---------------- NEWSLETTER ---------------- */
+.nl-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(28px, 4vw, 48px);
+  background: var(--ink);
+  color: #fff;
+  padding: clamp(40px, 6vw, 84px);
+  text-align: center;
+  isolation: isolate;
+}
+.nl-glow {
+  position: absolute;
+  inset: auto -10% -60% -10%;
+  height: 70%;
+  background: radial-gradient(ellipse at center, rgba(93, 214, 44, 0.55), transparent 65%);
+  filter: blur(60px);
+  z-index: -1;
+}
+.nl-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.nl-title {
+  color: #fff;
+}
+.nl-sub {
+  max-width: 520px;
+  font-size: clamp(15px, 1.4vw, 17px);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.55;
+}
+.nl-form {
+  display: flex;
+  gap: 10px;
+  width: min(560px, 100%);
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.nl-field {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 20px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+}
+.nl-mail {
+  color: rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+}
+.nl-field input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 500;
+  padding: 14px 0;
+}
+.nl-field input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+.nl-subscribe {
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+  gap: 14px;
+  padding: 6px 8px 6px 24px;
+  transition: background 0.3s;
+}
+.nl-subscribe:hover {
+  background: #3f8f1f;
+}
+.nl-sub-bubble {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.nl-sub-bubble svg {
+  width: 18px;
+  height: 18px;
+}
+.nl-thanks {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lime);
+}
+@media (max-width: 480px) {
+  .nl-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

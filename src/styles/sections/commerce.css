@@ -1,0 +1,565 @@
+/* ---------------- COMMERCE: cart button, drawer, checkout ----------------
+   Simulated store. Shares the site's tokens so it never reads as bolted on. */
+
+/* ---- nav cart button — outlined, never filled ---- */
+.cart-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.cart-btn:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+/* the ring and the button stay exactly as they are — only the glyph grows */
+.cart-btn svg {
+  transition: transform 0.3s var(--ease);
+}
+.cart-btn:hover svg {
+  transform: scale(1.18);
+}
+.cart-btn:active svg {
+  transform: scale(1.04);
+}
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: #fff;
+  border: 2px solid var(--paper);
+  font-size: 11px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+
+/* ---- drawer ---- */
+.cart-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+}
+.cart-scrim {
+  position: absolute;
+  inset: 0;
+  /* No backdrop-filter here. Blurring the whole viewport forces every
+     preserve-3d section behind it to re-rasterise on the first frame, which
+     is the stutter you see as the panel starts moving. A flat scrim composites
+     for free. */
+  background: rgba(10, 10, 10, 0.5);
+}
+.cart-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(430px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border-left: 1px solid var(--line);
+  box-shadow: -60px 0 120px -60px rgba(10, 10, 10, 0.55);
+  /* promoted for the whole slide, not re-promoted per frame */
+  will-change: transform;
+}
+.cart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 26px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.cart-head h2 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.cart-close,
+.cart-del {
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.25s, transform 0.25s var(--ease);
+}
+.cart-close:hover,
+.cart-del:hover {
+  background: var(--bone);
+  transform: rotate(90deg);
+}
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 26px;
+}
+.cart-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cart-item-t strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+}
+.cart-item-t span {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.62;
+}
+.cart-item-r {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cart-qty {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 3px;
+}
+.cart-qty button {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.cart-qty button:hover {
+  background: var(--bone);
+}
+.cart-qty span {
+  min-width: 22px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+.cart-item-p {
+  margin-left: auto;
+  font-size: 15px;
+  font-weight: 700;
+}
+.cart-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  text-align: center;
+}
+.cart-empty-ic {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--bone);
+  color: var(--muted);
+}
+.cart-empty p {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.7;
+}
+.cart-foot {
+  padding: 22px 26px 26px;
+  border-top: 1px solid var(--line);
+  background: var(--page);
+}
+.cart-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.cart-line-soft {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.6;
+  margin-bottom: 18px;
+}
+.btn.cart-checkout {
+  width: 100%;
+  justify-content: center;
+  padding: 8px 8px 8px 24px;
+}
+
+/* ---- checkout ---- */
+.ck {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: grid;
+  place-items: center;
+  padding: clamp(0px, 3vw, 40px);
+  background: rgba(10, 10, 10, 0.62);
+  overflow-y: auto;
+  /* the page keeps its scrollbar while this is open — don't chain into it */
+  overscroll-behavior: contain;
+}
+.ck-sheet {
+  width: min(1040px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--paper);
+  border-radius: clamp(0px, 2vw, 28px);
+}
+.ck-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.ck-logo {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+}
+.ck-logo span {
+  color: var(--green);
+}
+.ck-close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--ink);
+  padding: 6px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: background 0.25s;
+}
+.ck-close:hover {
+  background: var(--bone);
+}
+.ck-body {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: clamp(24px, 4vw, 48px);
+  padding: clamp(24px, 4vw, 44px);
+}
+.ck-steps {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+.ck-steps li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  opacity: 0.42;
+  padding-right: 8px;
+}
+.ck-steps li.on,
+.ck-steps li.done {
+  opacity: 1;
+}
+.ck-step-n {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--bone);
+  font-size: 12px;
+  font-weight: 800;
+}
+.ck-steps li.on .ck-step-n {
+  background: var(--ink);
+  color: #fff;
+}
+.ck-steps li.done .ck-step-n {
+  background: var(--accent-soft);
+  color: var(--green);
+}
+.ck-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ck-form h2 {
+  font-family: var(--display);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+.ck-note {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.66;
+  margin-top: -6px;
+}
+.ck-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.ck-form input,
+.ck-form select {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--page);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.25s, background 0.25s;
+}
+.ck-form input:focus,
+.ck-form select:focus {
+  border-color: var(--green);
+  background: var(--paper);
+}
+.ck-row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.ck-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.btn.ck-next {
+  padding: 8px 8px 8px 24px;
+  margin-left: auto;
+}
+.btn.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+.btn.btn-ghost:hover {
+  background: var(--bone);
+}
+
+/* summary rail */
+.ck-sum {
+  align-self: start;
+  padding: 26px;
+  border-radius: var(--r-lg);
+  background: var(--page);
+  border: 1px solid var(--line);
+}
+.ck-sum h3 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.6;
+  margin-bottom: 18px;
+}
+.ck-sum-items {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.ck-sum-item {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.ck-sum-q {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+  opacity: 0.55;
+}
+.ck-sum-n {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.ck-sum-n strong {
+  font-size: 14.5px;
+  font-weight: 700;
+}
+.ck-sum-n span {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.6;
+}
+.ck-sum-p {
+  font-size: 14.5px;
+  font-weight: 700;
+}
+.ck-sum-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.ck-sum-lines div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.78;
+}
+.ck-sum-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 18px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.ck-sum-total strong {
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+/* confirmation */
+.ck-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: clamp(40px, 7vw, 80px) clamp(24px, 5vw, 60px);
+}
+.ck-done-ic {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--green);
+}
+.ck-done-ic svg {
+  width: 34px;
+  height: 34px;
+}
+.ck-done h2 {
+  font-family: var(--display);
+  font-size: clamp(28px, 4.5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+.ck-done p {
+  max-width: 46ch;
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.75;
+  line-height: 1.6;
+}
+.ck-done-total {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 16px 26px;
+  border-radius: var(--r-pill);
+  background: var(--page);
+  border: 1px solid var(--line);
+  font-size: 14px;
+  font-weight: 600;
+}
+.ck-done-total strong {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.ck-sim {
+  font-size: 12.5px !important;
+  opacity: 0.5 !important;
+}
+
+@media (max-width: 860px) {
+  .ck-body {
+    grid-template-columns: 1fr;
+  }
+  .ck-sum {
+    order: -1;
+  }
+}
+@media (max-width: 480px) {
+  .cart-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .ck-row2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Framer drives the panel and step transitions; these cover the CSS-only
+   hover and focus movement. */
+@media (prefers-reduced-motion: reduce) {
+  .cart-btn svg,
+  .cart-close,
+  .cart-del {
+    transition-duration: 0.01ms;
+  }
+  .cart-btn:hover svg,
+  .cart-btn:active svg,
+  .cart-close:hover,
+  .cart-del:hover {
+    transform: none;
+  }
+}

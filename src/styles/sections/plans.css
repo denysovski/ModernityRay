@@ -1,0 +1,184 @@
+/* ---------------- PLANS CAROUSEL ---------------- */
+.plans {
+  --card-w: clamp(260px, 25vw, 360px);
+  --step: clamp(220px, 20vw, 300px);
+  margin-top: clamp(36px, 5vw, 64px);
+}
+.plans-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+.plans-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(28px, 3.6vw, 46px);
+  letter-spacing: -0.03em;
+  margin-top: 14px;
+}
+.plans-nav {
+  display: flex;
+  gap: 10px;
+}
+/* coverflow stage — 5 cards visible, centre focused, infinite */
+.plans-stage {
+  position: relative;
+  height: clamp(540px, 56vw, 720px);
+  overflow: hidden;
+  /* break out wider than the shell so all 5 cards show */
+  width: min(1720px, 98vw);
+  margin-left: 50%;
+  margin-top: clamp(60px, 8vw, 110px);
+  transform: translateX(-50%);
+}
+.pcard {
+  position: absolute;
+  left: 50%;
+  top: 52px;
+  width: var(--card-w);
+  display: block;
+  border-radius: var(--r-lg);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 22px;
+  transform-origin: center top;
+  will-change: transform, opacity;
+  transition: transform 0.6s var(--ease), opacity 0.6s var(--ease),
+    border-color 0.3s, box-shadow 0.4s;
+}
+/* white veil fades the back cards without making them see-through */
+.pcard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--page);
+  opacity: var(--veil, 0);
+  pointer-events: none;
+  z-index: 6;
+  transition: opacity 0.6s var(--ease);
+}
+.pcard.is-active {
+  box-shadow: 0 -26px 80px -54px rgba(10, 10, 10, 0.22);
+  cursor: pointer;
+}
+.pcard.is-active:hover {
+  border-color: var(--lime);
+}
+.pcard:not(.is-active) {
+  cursor: pointer;
+}
+.pcard-img {
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  aspect-ratio: 16 / 14;
+}
+.pcard-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pcard-tag {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.pcard-go {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: var(--ink);
+  transition: background 0.3s, color 0.3s, transform 0.3s var(--ease);
+}
+.pcard:hover .pcard-go {
+  background: var(--ink);
+  color: #fff;
+  transform: rotate(45deg);
+}
+.pcard-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 20px 10px 12px;
+}
+.pcard-body strong {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+.pcard-meta {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--green);
+}
+.pcard-desc {
+  margin-top: 8px;
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.pcard-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.pcard:hover .pcard-link .arrow {
+  transform: translateX(4px);
+}
+.plans-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 26px;
+}
+.plans-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mist);
+  transition: width 0.35s var(--ease), background 0.3s;
+}
+.plans-dot.on {
+  width: 26px;
+  border-radius: var(--r-pill);
+  background: var(--green);
+}
+@media (max-width: 900px) {
+  .plans {
+    --card-w: clamp(240px, 50vw, 320px);
+    --step: clamp(180px, 38vw, 240px);
+  }
+  .plans-stage {
+    height: clamp(440px, 70vw, 540px);
+  }
+}
+@media (max-width: 600px) {
+  .plans {
+    --card-w: 72vw;
+    --step: 52vw;
+  }
+  .plans-stage {
+    height: 118vw;
+  }
+  .pcard {
+    padding: 16px;
+  }
+}

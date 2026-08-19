@@ -1,0 +1,102 @@
+/* ---------------- LEFT SOCIAL DOCK ---------------- */
+.dock {
+  position: fixed;
+  left: clamp(12px, 2vw, 24px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 150;
+  width: 54px;
+}
+.dock-inner {
+  position: relative;
+  width: 54px;
+  display: flex;
+  justify-content: center;
+}
+/* absolute → mounting it never shifts the trigger (no jump) */
+.dock-panel {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  margin-left: -38px;
+  width: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 24px 50px -24px rgba(10, 10, 10, 0.4);
+  transform-origin: bottom center;
+}
+.dock-bubble {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 24px -12px rgba(10, 10, 10, 0.5);
+  cursor: pointer;
+}
+.dock-lime {
+  background: var(--lime);
+  color: var(--ink);
+  border-color: transparent;
+}
+.dock-dark {
+  background: var(--ink);
+  color: #fff;
+  border-color: transparent;
+}
+.dock-white {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line-2);
+}
+.dock-trigger {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  border: 3px solid #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 18px 38px -16px rgba(10, 10, 10, 0.6);
+  transition: background 0.3s;
+}
+.dock-trigger.is-open {
+  background: var(--green);
+}
+.dock-trigger-dot {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 0 0 rgba(93, 214, 44, 0.6);
+  animation: dockpulse 1.8s ease-out infinite;
+}
+@keyframes dockpulse {
+  0% { box-shadow: 0 0 0 0 rgba(93, 214, 44, 0.6); }
+  70% { box-shadow: 0 0 0 10px rgba(93, 214, 44, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(93, 214, 44, 0); }
+}
+@media (max-width: 760px) {
+  .dock {
+    left: 14px;
+    top: auto;
+    bottom: 18px;
+    transform: none;
+  }
+  .dock-bubble {
+    width: 46px;
+    height: 46px;
+  }
+}
