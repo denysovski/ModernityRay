@@ -1,4 +1,4 @@
-@font-face{font-family:'Aspekta';src:url('/fonts/AspektaVF.woff2') format('woff2-variations');font-weight:100 1000;font-display:swap}
+@font-face{font-family:'Aspekta';src:url('../fonts/AspektaVF.woff2') format('woff2-variations');font-weight:100 1000;font-display:swap}
 :root{
   --ink:#0f0f0f;--ink-soft:#202020;--paper:#fff;--page:#f8f8f8;--bone:#ededed;--mist:#dedede;
   --line:rgba(15,15,15,.1);--line-2:rgba(15,15,15,.16);--muted:#0f0f0f;
