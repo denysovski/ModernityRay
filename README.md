@@ -70,3 +70,4 @@ contrast and restrained accents:
 ## Live Site
 
 https://denysovski.github.io/ModernityRay/
+<img alt="screencapture-denysovski-github-io-ModernityRay-index1-html-2026-08-19-18_46_26" src="https://github.com/user-attachments/assets/e5833af1-f788-47eb-80e4-1779a4fc3eeb" />
