@@ -1,90 +1,110 @@
-# CourtSy — technická dokumentace
+# CourtSy: technická dokumentace
 
-**Semestrální práce KTWA2 · Daniel Svoboda · říjen 2026** · `github.com/denysovski/ModernityRay` · `denysovski.github.io/ModernityRay/`
+**Semestrální práce KTWA2 · Daniel Svoboda · říjen 2026**
+Repozitář `github.com/denysovski/ModernityRay` · Aplikace `denysovski.github.io/ModernityRay/`
+
+CourtSy je frontendová aplikace fiktivního soukromého sportovního klubu.
+Umožňuje porovnat úrovně členství, rezervovat termín na kurtu, přihlásit se na
+klubovou akci a projít objednávkou. Backend neexistuje: obsah je uložený
+v datových modulech, stav aplikace v `localStorage`.
 
 ## 1. Framework a struktura projektu
 
-**React 18** s **Vite 5**. React kvůli komponentovému modelu a kvůli hooku
-`useSyncExternalStore`, který řeší přesně to, co v projektu potřebuji — napojení
-Reactu na stav uložený mimo něj. Vite kvůli rychlosti a bezkonfiguračnímu dělení
-kódu podle rout.
+Aplikace stojí na **Reactu 18** s nástrojem **Vite 5**. React jsem zvolil kvůli
+komponentovému modelu a kvůli hooku `useSyncExternalStore`, který řeší přesně
+to, co projekt potřebuje: napojení Reactu na stav uložený mimo něj. Vite kvůli
+rychlosti a bezkonfiguračnímu dělení kódu podle rout.
 
-Projekt je členěný podle role, ne podle typu souboru: `src/views/` (devět
-obrazovek), `src/layouts/RootLayout.jsx` (společný rám), `src/components/`
-(`layout/`, `sections/`, `commerce/`, `ui/`), `src/lib/` (logika bez Reactu —
-`store.js`, `validation.js`, `format.js`), `src/data/` (veškerý obsah) a
-`src/routes.js` (jediné místo s definicí URL). Oddělení `lib/` je záměrné: nic
-v něm neimportuje React, takže se to testuje bez vykreslování.
+Projekt je členěný podle role souborů, ne podle jejich typu: `src/views/`
+obsahuje devět obrazovek, `src/layouts/` společný rám, `src/components/` dílčí
+prvky, `src/lib/` logiku bez Reactu, `src/data/` obsah webu a `src/routes.js`
+definici URL cest. Oddělení složky `lib/` je záměrné, protože nic v ní
+neimportuje React a dá se testovat bez vykreslování komponent.
 
-**TypeScript** jsem nepoužil — zadání ho doporučuje, ale nevyžaduje, a převod
-existujícího JS projektu by nepřinesl body navíc. Datové struktury a veřejné
-funkce jsou otypované přes **JSDoc** (`@typedef Tier`, `ClubEvent`, `Court`),
-což dává stejné našeptávání v editoru.
+TypeScript jsem nepoužil, protože ho zadání doporučuje, ale nevyžaduje.
+Datové struktury a veřejné funkce jsou místo toho otypované pomocí **JSDoc**,
+což dává v editoru stejné našeptávání.
 
 ## 2. Routování a architektura komponent
 
-**React Router 6** v režimu *data routeru* (`createBrowserRouter`), zvolený
-místo `<BrowserRouter>` kvůli třem věcem, které jinak nejsou k dispozici:
-`ScrollRestoration`, chybová hranice na úrovni routy (`errorElement`) a
-vlastnost `lazy` pro dělení kódu.
+Routování zajišťuje **React Router 6** v režimu datového routeru
+(`createBrowserRouter`). Zvolil jsem ho místo jednoduchého `<BrowserRouter>`
+kvůli třem vlastnostem, které jinak nejsou k dispozici: obnova pozice scrollu,
+chybová hranice na úrovni routy a vlastnost `lazy` pro dělení kódu.
 
-Aplikace má **devět obrazovek** — úvod, přehled a detail členství, přehled a
-detail areálu, kalendář a detail akce, pokladna, účet — plus stránku 404.
-Dvojice přehled/detail se opakuje třikrát; stejný vzor nad různými daty drží
+Aplikace má devět obrazovek (úvod, přehled a detail členství, přehled a detail
+areálu, kalendář a detail akce, pokladna, účet) plus stránku 404. Dvojice
+přehled a detail se opakuje třikrát, což je stejný vzor nad různými daty a drží
 kód předvídatelný.
 
-Strom má tři vrstvy. `RootLayout` je namountovaný jednou nad `<Outlet />`, takže
-se navbar, košík ani patička při navigaci neodmountují — to je smysl SPA a důvod,
-proč košík přežije přechod mezi routami. **Views** si berou svůj výřez dat a
-vlastní lokální stav (filtry, hledání). **Sdílené komponenty** jsou `PageHeader`,
-`Field` (formulářové pole včetně přístupnosti), `SmartLink` (rozliší routu od
-kotvy a od externího odkazu) a `Img` (responzivní obrázek). Filtrování a řazení
-se počítají přes `useMemo` ze zdrojového pole, nejsou to kopie dat ve state.
+Strom komponent má tři vrstvy:
+
+* **`RootLayout`** je namountovaný jednou nad `<Outlet />`. Navbar, košík ani
+  patička se při navigaci neodmountují, což je smysl single page aplikace
+  a důvod, proč obsah košíku přežije přechod mezi routami.
+* **Views** si berou svůj výřez dat a vlastní lokální stav, například nastavení
+  filtrů nebo vybranou fotografii v galerii.
+* **Sdílené komponenty** jsou `PageHeader`, `Field` (formulářové pole včetně
+  přístupnosti), `SmartLink` (rozliší routu od kotvy a od externího odkazu)
+  a `Img` (responzivní obrázek).
+
+Filtrování a řazení se počítají pomocí `useMemo` ze zdrojového pole, nejsou to
+kopie dat uložené ve stavu. Pro každý údaj tak existuje jediný zdroj pravdy.
 
 ## 3. Správa stavu a práce s daty
 
-Stav je rozdělený podle toho, jestli má přežít reload.
+Stav je rozdělený podle toho, jestli má přežít znovunačtení stránky.
 
-**Trvalý stav** (košík, profil, objednávky, nastavení) žije v `src/lib/store.js`
-mimo React a ukládá se do `localStorage`; React se na něj napojuje přes
-`useSyncExternalStore` uvnitř `StoreContext`. Důvody: stav je čitelný ještě před
-namountováním Reactu, takže počet položek v košíku je správný hned při prvním
-vykreslení; `useSyncExternalStore` je hook přímo určený pro externí store a na
-rozdíl od `useEffect` + `useState` nemůže při souběžném renderování rozpadnout
-konzistenci; a práce s úložištěm je celá na jednom místě.
+**Trvalý stav** (košík, profil, objednávky, nastavení) žije v modulu
+`src/lib/store.js` mimo React a ukládá se do `localStorage`. React se na něj
+napojuje pomocí `useSyncExternalStore` uvnitř `StoreContext`. Díky tomu je stav
+čitelný ještě před namountováním Reactu, takže počet položek v košíku je
+správný hned při prvním vykreslení. `useSyncExternalStore` je navíc hook přímo
+určený pro externí store a na rozdíl od dvojice `useEffect` a `useState`
+nemůže při souběžném renderování rozpadnout konzistenci. Práce s úložištěm je
+celá na jednom místě a žádná komponenta nesahá na `localStorage` přímo.
 
-**Redux jsem nepoužil záměrně** — celý stav je jeden košík, jeden profil a tři
+Redux jsem nepoužil záměrně. Celý stav tvoří jeden košík, jeden profil a tři
 přepínače, bez asynchronních operací. Context nad externím storem dává stejnou
-záruku jediného zdroje pravdy bez dalších patnácti kilobajtů a zadání vlastní
-řešení výslovně připouští. Rozhraním je hook `useStore()`, takže výměna
-implementace by se nedotkla ani jedné komponenty.
+záruku jediného zdroje pravdy bez dalších patnácti kilobajtů kódu a zadání
+vlastní řešení výslovně připouští. Rozhraním je hook `useStore()`, takže
+případná výměna implementace by se nedotkla ani jedné komponenty.
 
-**Dočasný stav** (otevřený košík, krok formuláře, filtry) je v `useState` tam,
-kde se používá. Úložiště je ošetřené proti realitě: každé čtení je v `try/catch`
-(privátní režim, plná kvóta), uložená data se při načtení validují (ručně
-upravená položka košíku se zahodí místo rozbití součtů) a klíče jsou verzované —
-při změně schématu se stará data smažou, místo aby na nich aplikace spadla.
+**Dočasný stav**, tedy otevřený košík, krok formuláře nebo nastavení filtrů, je
+v `useState` tam, kde se používá.
+
+Úložiště je ošetřené proti reálným situacím: každé čtení je obalené
+v `try/catch` kvůli privátnímu režimu a plné kvótě, uložená data se při
+načtení validují (ručně upravená položka košíku se zahodí, místo aby rozbila
+součty) a klíče jsou verzované, takže změna schématu stará data smaže místo
+toho, aby na nich aplikace spadla.
 
 ## 4. Validace vstupů a zabezpečení
 
-`src/lib/validation.js` obsahuje čisté funkce „hodnota dovnitř, chybová hláška
-nebo `null` ven" pro e-mail, jméno, heslo, telefon, adresu, PSČ (podle zvolené
-země), číslo karty, platnost a CVC. Číslo karty se kontroluje **Luhnovým
-algoritmem** — stejnou kontrolou, jakou dělá každý reálný platební formulář —
-a z čísla se zároveň pozná vydavatel, což určuje délku CVC (Amex čtyři, ostatní
-tři). Pokladna validuje po krocích; chyby se neukládají do state, ale odvozují
-při každém renderu, takže pole se opraví ve chvíli, kdy je hodnota platná.
-Neplatné pole dostane `aria-invalid`, hlášku s `role="alert"` a focus skočí na
-první chybu.
+Soubor `src/lib/validation.js` obsahuje čisté funkce ve tvaru „hodnota
+dovnitř, chybová hláška nebo `null` ven". Pokrývají e-mail, jméno, heslo,
+telefon, adresu, PSČ podle zvolené země, číslo karty, platnost a bezpečnostní
+kód. Číslo karty se kontroluje **Luhnovým algoritmem**, tedy stejnou kontrolou,
+jakou provádí každý reálný platební formulář. Z čísla se zároveň pozná
+vydavatel karty, což určuje očekávanou délku bezpečnostního kódu.
+
+Pokladna validuje po jednotlivých krocích. Chyby se neukládají do stavu, ale
+odvozují při každém renderu, takže pole se opraví ve chvíli, kdy je hodnota
+platná. Neplatné pole dostane atribut `aria-invalid`, hlášku s `role="alert"`
+a focus skočí na první chybu.
 
 Frontend nemůže nahradit kontrolu na serveru a netváří se tak. Dělá tři věci,
-které skutečně patří klientovi: (1) **nic tajného neukládá** — heslo se
-zkontroluje a zahodí, z karty zůstanou jen poslední čtyři číslice a vydavatel;
-(2) **sanitizuje před uložením** — `sanitizeText()` omezí délku a odstraní
-řídicí znaky, aby nešlo nafouknout úložiště ani propašovat terminátory do
-uloženého JSONu; (3) **odmítne nemožný vstup** — neplatný kontrolní součet nebo
-expirace v minulosti se do stavu vůbec nedostanou. Nikde v aplikaci není
-`dangerouslySetInnerHTML`; React escapuje text sám.
+které skutečně patří klientovi:
+
+* **Neukládá nic tajného.** Heslo se zkontroluje a zahodí, z čísla karty
+  zůstanou pouze poslední čtyři číslice a název vydavatele.
+* **Sanitizuje před uložením.** Funkce `sanitizeText()` omezí délku a odstraní
+  řídicí znaky, takže nelze nafouknout úložiště ani poškodit uložený JSON.
+* **Odmítne nemožný vstup.** Neplatný kontrolní součet karty nebo expirace
+  v minulosti se do stavu aplikace vůbec nedostanou.
+
+Nikde v aplikaci není použit `dangerouslySetInnerHTML`, protože React escapuje
+veškerý vykreslovaný text sám.
 
 ## 5. Testování
 
@@ -92,22 +112,25 @@ expirace v minulosti se do stavu vůbec nedostanou. Nikde v aplikaci není
 |---|---|---|---|
 | Unit | Vitest | 87 | validace, store a součty, formátování dat |
 | Komponenty | Vitest + React Testing Library | 14 | přístupnost formulářového pole, průchod pokladnou |
-| E2E | Playwright (Chromium) | 12 | routování, nákupní cesta, nastavení, 404 |
+| E2E | Playwright (Chromium) | 12 | routování, nákupní cesta, nastavení, stránka 404 |
 
-Unit testy míří na `lib/`, kde je logika, která se může tiše pokazit: hraniční
-data v kalendáři, Luhnův algoritmus, PSČ podle zemí, chování storu nad
-poškozeným `localStorage`. Testy nikdy nečtou systémový čas — funkce, které
-potřebují „teď", ho dostávají jako parametr, takže budou platit i příští rok.
-Komponentové testy ovládají pokladnu jako uživatel (`userEvent`). E2E testy běží
-proti **produkčnímu buildu**, ne proti vývojovému serveru — jen tak se odhalí
-chyba, která vznikne až rozdělením kódu na chunky. Nejdelší test projde celou
-cestu: členství, rezervace kurtu, čtyři kroky pokladny včetně zamítnutých
-vstupů, platba a nalezení objednávky v účtu po reloadu.
+Jednotkové testy míří na složku `lib/`, kde je logika, která se může tiše
+pokazit: hraniční data v kalendáři, Luhnův algoritmus, PSČ podle zemí nebo
+chování storu nad poškozeným `localStorage`. Funkce, které potřebují aktuální
+datum, ho dostávají jako parametr, takže testy nečtou systémový čas a budou
+platit i příští rok.
+
+End to end testy běží proti produkčnímu buildu, protože jen tak se odhalí
+chyba, která vznikne až rozdělením kódu na samostatné balíčky. Nejdelší test
+projde celou cestu: výběr členství, rezervace kurtu, čtyři kroky pokladny
+včetně zamítnutých vstupů, platba a nalezení objednávky v účtu po znovunačtení
+stránky.
 
 ## 6. Profilování a optimalizace
 
-Lighthouse nad produkčním buildem, mobilní emulace. Reporty jsou v
-`docs/lighthouse/`, měření se opakuje příkazem `npm run audit`.
+Měřeno nástrojem Lighthouse nad produkčním buildem v režimu mobilní emulace.
+Uložené reporty jsou ve složce `docs/lighthouse/`, měření lze zopakovat
+příkazem `npm run audit`.
 
 | Routa | Výkon | Přístupnost | LCP | CLS |
 |---|---|---|---|---|
@@ -115,24 +138,27 @@ Lighthouse nad produkčním buildem, mobilní emulace. Reporty jsou v
 | `/memberships` | 68 → **92** | 94 → **100** | 3,2 s → **3,0 s** | 0,58 → **0** |
 | `/courts/centre-court` | 57 → **91** | 96 → **100** | 5,0 s → **3,2 s** | 0,59 → **0** |
 
-Best Practices i SEO jsou po úpravách na **100** na všech měřených routách.
+Kategorie Best Practices a SEO jsou po úpravách na hodnotě **100** na všech
+měřených routách. Co měření odhalilo:
 
-- **CLS 0,58.** Dělení kódu přes `React.lazy` + `<Suspense>` vykreslilo nejdřív
-  rám se zástupným prvkem a teprve pak obsah, čímž posunulo patičku přes půl
-  stránky. Řešením byl přechod na `lazy` na úrovni routy — router počká na modul
-  a vykreslí stránku najednou. Stejné chunky, stejné bajty, nulový posun.
-- **LCP 9,8 s.** Fotografie byly JPEG o 1600 px a 200–550 kB.
-  `scripts/responsive-images.mjs` z nich přes Sharp generuje WebP ve čtyřech
-  šířkách a komponenta `Img` staví `<picture>` se `srcset`. Hlavní obrázek úvodní
-  stránky klesl z 293 kB na 72 kB a dostal `fetchpriority="high"`.
-- **Render-blocking požadavek.** Font Inter se tahal z `fonts.googleapis.com`;
-  teď je součástí buildu (`@fontsource-variable/inter`).
-- **Přístupnost.** Kontrast drobných textů nesplňoval WCAG AA, pořadí nadpisů
-  přeskakovalo z `h2` na `h4`, tečky karuselu měly 8 px místo minimálních 24 px
-  a sbalené mobilní menu nechávalo ~20 odkazů v pořadí tabulátoru. Opraveno.
-  `MotionConfig` navíc respektuje systémové „reduce motion" a uživatel si ho
-  může vynutit v nastavení účtu.
+* **Posun layoutu (CLS) 0,58.** Dělení kódu pomocí `React.lazy` a `<Suspense>`
+  vykreslilo nejdřív rám se zástupným prvkem a teprve potom obsah, čímž
+  posunulo patičku přes půl stránky. Přechod na `lazy` na úrovni routy to
+  vyřešil: router počká na načtení modulu a vykreslí stránku najednou. Stejný
+  počet balíčků, stejný objem dat, nulový posun.
+* **Vykreslení hlavního obsahu (LCP) 9,8 s.** Fotografie byly soubory JPEG
+  o šířce 1600 px a velikosti 200 až 550 kB. Skript
+  `scripts/responsive-images.mjs` z nich pomocí knihovny Sharp generuje WebP ve
+  čtyřech šířkách a komponenta `Img` z nich staví prvek `<picture>`. Hlavní
+  obrázek úvodní stránky klesl z 293 kB na 72 kB.
+* **Blokující požadavek při vykreslování.** Písmo Inter se stahovalo z cizí
+  domény. Nyní je součástí buildu, takže na kritické cestě není.
+* **Přístupnost.** Kontrast drobných textů nesplňoval úroveň WCAG AA, pořadí
+  nadpisů přeskakovalo z `h2` na `h4`, tečky karuselu měly 8 px místo
+  minimálních 24 px a sbalené mobilní menu nechávalo zhruba dvacet odkazů
+  v pořadí tabulátoru. Vše je opravené a `MotionConfig` navíc respektuje
+  systémové nastavení omezení pohybu.
 
-Dělení kódu zůstalo, i když u prvního načtení mnoho bajtů neušetří: sdílené
-chunky (`react`, `framer-motion`) se mezi nasazeními nemění, takže vracejícímu
-se návštěvníkovi zůstanou v cache, a jednotlivé obrazovky mají po 1–10 kB.
+Dělení kódu jsem zachoval, i když u prvního načtení mnoho dat neušetří:
+sdílené balíčky `react` a `framer-motion` se mezi nasazeními nemění, takže
+vracejícímu se návštěvníkovi zůstanou v mezipaměti prohlížeče.

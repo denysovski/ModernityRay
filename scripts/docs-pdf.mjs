@@ -24,30 +24,30 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <title>CourtSy — technická dokumentace</title>
 <style>
-  @page { size: A4; margin: 16mm 15mm; }
+  @page { size: A4; margin: 13mm 14mm; }
     * { box-sizing: border-box; }
   body {
     margin: 0;
-    font: 9.4pt/1.42 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font: 8.9pt/1.35 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: #16181d;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
   h1 {
-    font-size: 20pt; line-height: 1.15; letter-spacing: -0.02em;
+    font-size: 17pt; line-height: 1.12; letter-spacing: -0.02em;
     margin: 0 0 2mm;
   }
   h2 {
     font-size: 11.5pt; letter-spacing: -0.01em;
-    margin: 5mm 0 1.8mm; padding-top: 1.8mm;
+    margin: 4mm 0 1.5mm; padding-top: 1.5mm;
     border-top: 1px solid #d9dde3;
     break-after: avoid;
   }
   h2:first-of-type { border-top: 0; padding-top: 0; }
   h3 { font-size: 10.5pt; margin: 4mm 0 1.5mm; break-after: avoid; }
-  p, ul, ol, table { margin: 0 0 2.2mm; }
+  p, ul, ol, table { margin: 0 0 1.9mm; }
   ul, ol { padding-left: 5mm; }
-  li { margin-bottom: 1mm; }
+  li { margin-bottom: 0.8mm; }
   strong { font-weight: 650; }
   code {
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
@@ -89,7 +89,7 @@ await page.pdf({
   path: OUT,
   format: 'A4',
   printBackground: true,
-  margin: { top: '16mm', bottom: '16mm', left: '15mm', right: '15mm' },
+  margin: { top: '13mm', bottom: '13mm', left: '14mm', right: '14mm' },
   displayHeaderFooter: true,
   headerTemplate: '<span></span>',
   footerTemplate:
