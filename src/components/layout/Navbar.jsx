@@ -40,6 +40,7 @@ function MegaPanel({ entry, onClose }) {
   if (entry.type === 'courts') {
     return (
       <motion.div className="mega mega-courts" variants={panel} initial="hidden" animate="show" exit="exit">
+        <span className="mega-hint">The most popular</span>
         {entry.items.map((it, i) => (
           <MotionLink
             key={it.name}
@@ -109,10 +110,21 @@ function MegaPanel({ entry, onClose }) {
       </div>
       <div className="mega-join-side">
         <Rows items={entry.items} onClose={onClose} />
-        <SmartLink className="btn btn-member mega-join-btn" href={entry.cta.href} onClick={onClose}>
-          {entry.cta.label}
-          <span className="btn-bubble"><Icon.arrow /></span>
-        </SmartLink>
+        {/* The panel used to end in another button. The people already here
+            make the case better than one more call to action does. */}
+        {entry.proof && (
+          <div className="mega-proof">
+            <div className="mega-faces">
+              {entry.proof.faces.map((src) => (
+                <img key={src} src={src} alt="" width="38" height="38" loading="lazy" />
+              ))}
+            </div>
+            <span className="mega-proof-text">
+              <strong>{entry.proof.count}</strong>
+              {entry.proof.text}
+            </span>
+          </div>
+        )}
       </div>
     </motion.div>
   )
@@ -201,7 +213,7 @@ export default function Navbar() {
         </nav>
 
         <div className="nav-right">
-          <SmartLink href={paths.membership('resident')} className="btn btn-member nav-cta hide-sm">
+          <SmartLink href={paths.join} className="btn btn-member nav-cta hide-sm">
             Become a member
             <span className="btn-bubble"><Icon.arrow /></span>
           </SmartLink>
@@ -254,7 +266,7 @@ export default function Navbar() {
               </div>
             )
           })}
-          <SmartLink href={paths.membership('resident')} className="btn btn-member nav-m-cta" onClick={() => setOpen(false)}>
+          <SmartLink href={paths.join} className="btn btn-member nav-m-cta" onClick={() => setOpen(false)}>
             Become a member <span className="btn-bubble"><Icon.arrow /></span>
           </SmartLink>
         </div>

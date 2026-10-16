@@ -3,7 +3,7 @@
  * Same shape as a membership tier: `slug` is the route segment, so
  * /courts/:slug resolves out of this file with no lookup table in between.
  */
-import { local } from './images'
+import { local, remote } from './images'
 
 /**
  * @typedef {Object} Session
@@ -21,7 +21,7 @@ import { local } from './images'
  * @property {string} tagline
  * @property {string} desc
  * @property {string} img
- * @property {{img: string, title: string, fact: string}[]} gallery
+ * @property {{img: string, title: string, fact: string, by: {name: string, role: string, img: string}}[]} gallery
  *   Each slide carries one fact about the place, shown over the photograph.
  * @property {{label: string, value: string}[]} specs
  * @property {Session[]} sessions  bookable slots, added to the cart directly
@@ -43,18 +43,21 @@ export const COURTS = [
       {
         img: local('clay.jpg'),
         title: 'The clay itself',
+        by: { name: 'Tomás Ferrer', role: 'Head groundsman', img: remote('1507003211169-0a1dd7228f2d', 96) },
         fact:
           'Four hundred tonnes of crushed brick, watered twice a day and rolled before every session.',
       },
       {
         img: local('floodlights.jpg'),
         title: 'After dark',
+        by: { name: 'Priya Raman', role: 'Facilities engineer', img: remote('1573496359142-b8d87734a5a2', 96) },
         fact:
           'Sixteen floodlights at 1,200 lux. Half the court bookings here are taken after eight in the evening.',
       },
       {
         img: local('baseline.jpg'),
         title: 'How it plays',
+        by: { name: 'Davis Korsgaard', role: 'Head coach', img: remote('1472099645785-5658abf4ff4e', 96) },
         fact:
           'The slowest surface at the club. Rallies here run roughly twice as long as on the hard courts.',
       },
@@ -84,18 +87,21 @@ export const COURTS = [
       {
         img: local('courts.jpg'),
         title: 'Six courts, two banks',
+        by: { name: 'Priya Raman', role: 'Facilities engineer', img: remote('1573496359142-b8d87734a5a2', 96) },
         fact:
           'Arranged in threes behind the east treeline, which takes the afternoon glare off the baseline.',
       },
       {
         img: local('aerial.jpg'),
         title: 'Never a wait',
+        by: { name: 'Marta Lindqvist', role: 'Club manager', img: remote('1580489944761-15a19d654956', 96) },
         fact:
           'Busiest between six and eight in the morning. Even then the average wait for a court is under ten minutes.',
       },
       {
         img: local('woodcourt.jpg'),
         title: 'Resurfaced in cycles',
+        by: { name: 'Tomás Ferrer', role: 'Head groundsman', img: remote('1507003211169-0a1dd7228f2d', 96) },
         fact:
           'Two courts are relaid each spring, so no surface is ever more than three years old.',
       },
@@ -125,18 +131,21 @@ export const COURTS = [
       {
         img: local('golf.jpg'),
         title: 'Eighteen holes',
+        by: { name: 'Alan Whitcombe', role: 'Golf professional', img: remote('1519085360753-af0119f7cbe7', 96) },
         fact:
           'Par 71 over 6,480 yards, wrapped around the lake. Walkable in three and a half hours.',
       },
       {
         img: local('palms.jpg'),
         title: 'The quiet round',
+        by: { name: 'Marta Lindqvist', role: 'Club manager', img: remote('1580489944761-15a19d654956', 96) },
         fact:
           'Midweek mornings average eleven players on the course. You can play a full round alone.',
       },
       {
         img: local('aerial.jpg'),
         title: 'Greens kept to spec',
+        by: { name: 'Tomás Ferrer', role: 'Head groundsman', img: remote('1507003211169-0a1dd7228f2d', 96) },
         fact:
           'Cut to 3.2 mm daily through the season and measured with a stimpmeter every Monday.',
       },
@@ -166,18 +175,21 @@ export const COURTS = [
       {
         img: local('strength.jpg'),
         title: 'Eight platforms',
+        by: { name: 'Jonah Reyes', role: 'Strength coach', img: remote('1504257432389-52343af06ae3', 96) },
         fact:
           'Calibrated bars and bumper plates, with a sled track on turf running the length of the room.',
       },
       {
         img: local('yoga.jpg'),
         title: 'Coached twice daily',
+        by: { name: 'Jonah Reyes', role: 'Strength coach', img: remote('1504257432389-52343af06ae3', 96) },
         fact:
           'Conditioning at six in the morning and six in the evening, capped at twelve people a session.',
       },
       {
         img: local('stretch.jpg'),
         title: 'Recovery suite',
+        by: { name: 'Dr. Hana Brezina', role: 'Physiotherapist', img: remote('1559839734-2b71ea197ec2', 96) },
         fact:
           'Contrast baths, sauna and two treatment rooms. Booked by about a third of members each week.',
       },
@@ -207,18 +219,21 @@ export const COURTS = [
       {
         img: local('lanes.jpg'),
         title: 'Eight lanes, 25 metres',
+        by: { name: 'Elena Vargas', role: 'Swim coach', img: remote('1534528741775-53994a69daeb', 96) },
         fact:
           'Lane discipline is posted hourly, so there is always a lane matched to your pace.',
       },
       {
         img: local('swim.jpg'),
         title: 'Squad mornings',
+        by: { name: 'Elena Vargas', role: 'Swim coach', img: remote('1534528741775-53994a69daeb', 96) },
         fact:
           'Technique sets three mornings a week with the swim coach on deck.',
       },
       {
         img: local('palms.jpg'),
         title: 'Open all year',
+        by: { name: 'Priya Raman', role: 'Facilities engineer', img: remote('1573496359142-b8d87734a5a2', 96) },
         fact:
           'Held at 28 °C under a retractable roof that comes off on any day above twenty degrees.',
       },

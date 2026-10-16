@@ -160,7 +160,7 @@ export default function MembershipDetail() {
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.45, ease, delay: Math.min(i * 0.06, 0.35) }}
                 >
-                  <span className="member-list-n">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="member-list-n">{i + 1}</span>
                   <span className="member-list-t">{b}</span>
                 </motion.li>
               ))}

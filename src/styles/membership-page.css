@@ -33,6 +33,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* a backdrop, not a subject: the blur keeps the photograph as atmosphere
+     and lets the name carry the page. Scaled up so the blur cannot feather
+     the edges of the frame. */
+  filter: blur(5px);
+  transform: scale(1.06);
 }
 .member-hero-scrim {
   position: absolute;
@@ -127,6 +132,13 @@
   gap: 12px;
   margin-left: auto;
 }
+.member-cta {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+.member-cta:hover {
+  border-color: var(--lime);
+}
+
 .member-buy .btn-light {
   background: transparent;
   color: #fff;
