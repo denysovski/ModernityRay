@@ -219,66 +219,6 @@
 }
 
 /* ---- checkout ---- */
-.ck {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: grid;
-  place-items: center;
-  padding: clamp(0px, 3vw, 40px);
-  background: rgba(10, 10, 10, 0.62);
-  overflow-y: auto;
-  /* the page keeps its scrollbar while this is open — don't chain into it */
-  overscroll-behavior: contain;
-}
-.ck-sheet {
-  width: min(1040px, 100%);
-  max-height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background: var(--paper);
-  border-radius: clamp(0px, 2vw, 28px);
-}
-.ck-head {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 26px;
-  background: var(--paper);
-  border-bottom: 1px solid var(--line);
-}
-.ck-logo {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.04em;
-}
-.ck-logo span {
-  color: var(--green);
-}
-.ck-close {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: var(--ink);
-  padding: 6px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  transition: background 0.25s;
-}
-.ck-close:hover {
-  background: var(--bone);
-}
-.ck-body {
-  display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: clamp(24px, 4vw, 48px);
-  padding: clamp(24px, 4vw, 44px);
-}
 .ck-steps {
   display: flex;
   gap: 8px;
@@ -378,14 +318,6 @@
   padding: 8px 8px 8px 24px;
   margin-left: auto;
 }
-.btn.btn-ghost {
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--line);
-}
-.btn.btn-ghost:hover {
-  background: var(--bone);
-}
 
 /* summary rail */
 .ck-sum {
@@ -395,7 +327,7 @@
   background: var(--page);
   border: 1px solid var(--line);
 }
-.ck-sum h3 {
+.ck-sum .ck-sum-h {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -493,6 +425,7 @@
   width: 34px;
   height: 34px;
 }
+.ck-done h1,
 .ck-done h2 {
   font-family: var(--display);
   font-size: clamp(28px, 4.5vw, 44px);
@@ -530,14 +463,6 @@
   opacity: 0.5 !important;
 }
 
-@media (max-width: 860px) {
-  .ck-body {
-    grid-template-columns: 1fr;
-  }
-  .ck-sum {
-    order: -1;
-  }
-}
 @media (max-width: 480px) {
   .cart-btn {
     width: 40px;

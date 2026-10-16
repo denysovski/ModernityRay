@@ -1,7 +1,9 @@
-name: Deploy to GitHub Pages
+name: Test and deploy
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -15,7 +17,43 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Tests gate the deploy: a red suite must never reach GitHub Pages.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit and component tests
+        run: npm test
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
   build:
+    needs: test
+    # only the default branch is published; pull requests stop at the tests
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,6 +70,8 @@ jobs:
 
       - name: Build site
         env:
+          # Pages serves the app from /ModernityRay/; Vite puts this in
+          # import.meta.env.BASE_URL and the router uses it as its basename.
           BASE_PATH: /ModernityRay/
         run: npm run build
 
@@ -50,6 +90,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages

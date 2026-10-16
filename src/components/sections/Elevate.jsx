@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Reveal, Icon, CountUp } from '../ui'
+import { Reveal, Icon, Img, CountUp } from '../ui'
 import { ELEVATE, STATS } from '../../data'
 
 export default function Elevate() {
@@ -27,7 +27,7 @@ export default function Elevate() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 }}
             >
               <a href={e.href} className="ecell-img">
-                <img src={e.img} alt={e.title} />
+                <Img src={e.img} alt={e.title} sizes="(max-width: 900px) 100vw, 33vw" />
                 <span className="ecell-tag">{e.label}</span>
                 <span className="ecell-go"><Icon.arrowUR /></span>
               </a>

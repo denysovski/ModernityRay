@@ -1,0 +1,247 @@
+{
+  "aerial": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 885
+  },
+  "airborne": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "ball": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 2000
+  },
+  "baseline": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "bluesky": {
+    "widths": [
+      480,
+      800
+    ],
+    "width": 1067,
+    "height": 1600
+  },
+  "clay": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "courtlife": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1065
+  },
+  "courts": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1181
+  },
+  "courtside": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "cycling": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "fixture": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "floodlights": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1094
+  },
+  "golf": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 2371
+  },
+  "lanes": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1068
+  },
+  "night": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "palms": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 2133
+  },
+  "player": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 2000
+  },
+  "rackets": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 2133
+  },
+  "runners": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "scrum": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 926
+  },
+  "strength": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1131
+  },
+  "stretch": {
+    "widths": [
+      480,
+      800
+    ],
+    "width": 1067,
+    "height": 1600
+  },
+  "swim": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1067
+  },
+  "woodcourt": {
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "width": 1280,
+    "height": 1600
+  },
+  "yoga": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 900
+  }
+}

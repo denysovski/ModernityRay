@@ -331,11 +331,19 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 0.45s var(--ease), opacity 0.3s var(--ease);
+  /* keeps the collapsed drawer's links out of the tab order and the
+     accessibility tree — opacity alone leaves them both focusable and
+     announced. Delayed so the collapse animation still plays out. */
+  visibility: hidden;
+  transition: grid-template-rows 0.45s var(--ease), opacity 0.3s var(--ease),
+    visibility 0s linear 0.45s;
 }
 .nav.m-open .nav-mobile {
   grid-template-rows: 1fr;
   opacity: 1;
+  visibility: visible;
+  transition: grid-template-rows 0.45s var(--ease), opacity 0.3s var(--ease),
+    visibility 0s;
 }
 .nav-mobile-inner {
   overflow: hidden;

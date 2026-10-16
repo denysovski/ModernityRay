@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
-import { Icon, Reveal, Stagger, upItem } from '../ui'
-import { MEMBERSHIP } from '../../data'
-import { add } from '../../lib/cart'
+import { Icon, Img, Reveal, SmartLink, Stagger, upItem } from '../ui'
+import { MEMBERSHIP, MEMBERSHIP_FIELDS } from '../../data'
+import { useStore } from '../../context/StoreContext'
+import { paths } from '../../routes'
 
 export default function Membership() {
   const m = MEMBERSHIP
+  const { add, openCart, money } = useStore()
   return (
     <section className="section membership" id="membership">
       <div className="shell">
@@ -16,7 +18,7 @@ export default function Membership() {
               <h3>{m.name}</h3>
             </div>
             <div className="mb-amount">
-              <span className="mb-amount-n display">{m.price}</span>
+              <span className="mb-amount-n display">{money(m.price)}</span>
               <span className="mb-amount-c">{m.cadence}</span>
             </div>
             <Stagger className="mb-benefits" as="ul" amount={0.09} delay={0.15}>
@@ -32,17 +34,20 @@ export default function Membership() {
               className="btn btn-member mb-cta"
               onClick={() => {
                 add({
-                  id: `plan-${m.name.toLowerCase()}`,
+                  id: `tier-${m.slug}`,
                   name: m.name,
                   meta: m.cadence,
-                  price: Number(m.price.replace(/[^0-9.]/g, '')),
+                  price: m.price,
                 })
-                window.dispatchEvent(new Event('courtsy:open-cart'))
+                openCart()
               }}
             >
               Become a member <span className="btn-bubble"><Icon.arrow /></span>
             </button>
             <span className="mb-note">{m.note}</span>
+            <SmartLink href={paths.membership(m.slug)} className="mb-detail-link">
+              See everything in {m.name} <Icon.arrow />
+            </SmartLink>
           </Reveal>
 
           {/* heading + description + field showcase */}
@@ -58,7 +63,7 @@ export default function Membership() {
             </Reveal>
 
             <div className="mb-fields">
-              {m.fields.map((f, i) => (
+              {MEMBERSHIP_FIELDS.map((f, i) => (
                 <motion.div
                   className="mb-field"
                   key={f.label}
@@ -67,7 +72,7 @@ export default function Membership() {
                   viewport={{ once: true, margin: '-30px' }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
                 >
-                  <img src={f.img} alt={f.label} loading="lazy" />
+                  <Img src={f.img} alt={f.label} sizes="(max-width: 700px) 33vw, 220px" />
                   <span className="mb-field-go"><Icon.arrowUR /></span>
                   <span className="mb-field-label">{f.label}</span>
                 </motion.div>
@@ -93,9 +98,9 @@ export default function Membership() {
             </p>
           </div>
           <div className="mb-custom-right">
-            <a href="#join" className="btn btn-green mb-custom-btn">
-              Create a custom membership
-            </a>
+            <SmartLink href={paths.memberships} className="btn btn-green mb-custom-btn">
+              Compare all five tiers
+            </SmartLink>
           </div>
         </motion.div>
       </div>

@@ -3,9 +3,10 @@
 
    Add a new content area as its own file here, then re-export it below. */
 export { local, remote } from './images'
-export { NAV, MENU } from './navigation'
+export { MENU, FOOTER } from './navigation'
 export { HERO_IMG, HERO_CARDS } from './hero'
 export { TABS, PLAN_ITEMS, CATEGORIES, PLANS, ENDLESS_IMG } from './training'
 export { ELEVATE, PRINCIPLES, STATS, CLUB_STATS } from './club'
-export { TESTIMONIALS, MEMBERSHIP } from './membership'
-export { EVENTS } from './events'
+export { TESTIMONIALS, MEMBERSHIP, MEMBERSHIP_FIELDS, TIERS, tierBySlug } from './membership'
+export { COURTS, courtBySlug } from './courts'
+export { EVENTS, CALENDAR, EVENT_CATEGORIES, eventBySlug } from './events'

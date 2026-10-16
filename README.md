@@ -1,73 +1,138 @@
-# ModernityRay
+# CourtSy — ModernityRay
 
-ModernityRay is a single-page private club showcase built to feel premium,
-editorial, and kinetic. The experience combines a React homepage with generated
-HTML subpages that all share the same real navbar, social dock, and commerce
-behavior through an embed bundle.
+Frontendová single-page aplikace fiktivního soukromého sportovního klubu.
+Semestrální práce pro předmět **KTWA2**.
 
-## What It Includes
+React 18 + Vite 5 + React Router 6. Backend žádný — všechna data jsou
+mockovaná v `src/data/`, veškerý stav aplikace žije v `localStorage`.
 
-- A fixed, animated navigation system with desktop mega menus and a mobile drawer that stays consistent across the homepage and generated pages.
-- A cinematic hero section with large type, motion-led reveals, and a clear entry point into the membership journey.
-- Long-scroll storytelling sections for tailored training, events, wellness, testimonials, and club principles.
-- A layered depth/parallax treatment where section blocks subtly react to scroll for a more dimensional feel.
-- A lightweight commerce surface with cart button, drawer, and checkout flow mounted globally.
-- Static generated subpages under `public/pages/` that still use the same React navigation and cart bridge.
-- An image ingest and optimization pipeline so editorial assets can be added in a predictable way.
+**Živá verze:** https://denysovski.github.io/ModernityRay/
 
-## Key Sections
+![Úvodní stránka aplikace CourtSy](docs/screenshot-home.jpg)
 
-- The hero section sets the visual tone with a high-contrast premium treatment and strong call-to-action framing.
-- The tailored and endless sections focus on bespoke training and ongoing progression content.
-- The gallery and elevate sections showcase environment, amenities, and experience through image-heavy layouts.
-- The membership and events sections package offerings and calendar-style moments into actionable blocks.
-- The principles and newsletter sections reinforce brand voice and retention touchpoints.
-- The marquee and footer close the page with movement and utility links while preserving the same design language.
+---
 
-## Technologies
+## Spuštění
 
-- React 18
-- Vite 5
-- Framer Motion
-- Sharp (image ingestion and optimization scripts)
-- Custom HTML generation scripts for static subpages and shared embed runtime
+Vyžaduje Node.js 20 nebo novější.
 
-## Visual Style
+```bash
+npm install          # instalace závislostí
+npm run dev          # vývojový server na http://localhost:5173
+```
 
-The design language leans into modern private-club minimalism with strong
-contrast and restrained accents:
+Produkční build a jeho lokální náhled:
 
-- White, bone, and mist surfaces for clean editorial reading space.
-- Deep charcoal/coal typography for structure and hierarchy.
-- Bright lime and green accents for key actions, badges, and highlights.
-- Rounded geometry, soft borders, and subtle shadow depth for premium UI texture.
-- Smooth eased motion, staggered reveals, and scroll-reactive transitions to keep the page feeling alive.
+```bash
+npm run build        # výstup do dist/ (včetně 404.html pro GitHub Pages)
+npm run preview      # náhled buildu na http://localhost:4173
+```
 
-## Project Structure
+## Testy
 
-- `src/App.jsx` controls section order, global chrome, and scroll-progress behavior.
-- `src/components/sections/` contains the homepage story sections (Hero, Tailored, Events, Membership, and others).
-- `src/components/layout/` contains shared navigation, footer, and social dock elements.
-- `src/components/commerce/` contains cart button, drawer, checkout, and cart state plumbing.
-- `src/data/` stores site copy, menu structure, events, imagery references, and membership content.
-- `src/styles/` contains global tokens plus per-section styling partials.
-- `public/pages/` stores generated standalone subpages.
-- `public/embed/embed.js` and `public/embed/embed.css` provide the shared navbar/cart runtime used by subpages.
-- `scripts/build-pages.mjs` generates subpage HTML from structured content.
-- `scripts/ingest-images.mjs` and `scripts/optimize-images.mjs` process project photography assets.
+```bash
+npm test             # 101 unit a komponentových testů (Vitest + Testing Library)
+npm run test:watch   # totéž v režimu sledování změn
+npm run test:coverage# pokrytí kódu
+npm run test:e2e     # 12 end-to-end testů (Playwright, Chromium)
+npm run test:all     # obojí za sebou
+```
 
-## Development
+`npm run test:e2e` si produkční build i náhledový server spustí sám, takže
+nepotřebuje druhý terminál. Před prvním během je potřeba stáhnout prohlížeč:
 
-- `npm run dev` starts the local Vite development server.
-- `npm run build` builds embed runtime, regenerates pages, then builds the app.
-- `npm run build:app` builds only the React application.
-- `npm run build:embed` builds the shared embed assets used by generated pages.
-- `npm run build:pages` regenerates `public/pages/*.html`.
-- `npm run preview` serves the production build locally.
-- `npm run images:ingest` ingests assets from `assets/source` into `public/img`.
-- `npm run images:optimize` recompresses existing images in `public/img`.
+```bash
+npx playwright install chromium
+```
 
-## Live Site
+## Další příkazy
 
-https://denysovski.github.io/ModernityRay/
-<img alt="screencapture-denysovski-github-io-ModernityRay-index1-html-2026-08-19-18_46_26" src="https://github.com/user-attachments/assets/e5833af1-f788-47eb-80e4-1779a4fc3eeb" />
+```bash
+npm run audit             # Lighthouse nad běžícím náhledem (--save uloží reporty do docs/)
+npm run check:routes      # rychlá kontrola všech rout v reálném prohlížeči
+npm run docs:pdf          # vygeneruje docs/dokumentace.pdf z docs/dokumentace.md
+npm run images:responsive # vygeneruje WebP varianty fotografií + manifest
+npm run images:optimize   # znovu zkomprimuje zdrojové JPEG v public/img
+npm run images:ingest     # zpracuje nové fotografie z assets/source
+```
+
+`npm run audit` a `npm run check:routes` potřebují běžící server
+(`npm run preview`, resp. `npm run dev`) a očekávají ho na výchozím portu;
+jiný lze předat argumentem.
+
+---
+
+## Struktura projektu
+
+```
+src/
+  main.jsx              vstupní bod — StoreProvider nad RouterProviderem
+  App.jsx               tabulka rout, dělení kódu, nastavení routeru
+  routes.js             jediné místo s definicí URL cest
+  layouts/
+    RootLayout.jsx      společný rám všech rout (navbar, košík, patička)
+  views/                devět obrazovek, každá vlastní komponenta
+  components/
+    layout/             navbar, patička, sociální dock, hlavička podstránky
+    sections/           vyprávěcí sekce domovské stránky
+    commerce/           košík, formulářové pole
+    ui/                 sdílené primitivy (Icon, Img, SmartLink, motion)
+  context/
+    StoreContext.jsx    React Context nad externím storem
+  lib/
+    store.js            stav aplikace + localStorage
+    validation.js       validace vstupů a sanitizace
+    format.js           formátování dat kalendáře
+  data/                 veškerý obsah webu (ceny, kurty, kalendář, navigace)
+  styles/               návrhové tokeny a styly po sekcích
+tests/
+  setup.js              společné prostředí testů (jsdom, úklid localStorage)
+  unit/                 Vitest + React Testing Library
+  e2e/                  Playwright
+scripts/                generování obrázků, audit, kontrola rout, export PDF
+docs/                   technická dokumentace a Lighthouse reporty
+vite.config.js          build, dělení chunků, generování 404.html
+vitest.config.js        unit a komponentové testy
+playwright.config.js    e2e testy nad produkčním buildem
+```
+
+## Obrazovky (views)
+
+| Cesta | Komponenta | Co dělá |
+|---|---|---|
+| `/` | `Home` | úvodní stránka, dlouhý scroll s vyprávěcími sekcemi |
+| `/memberships` | `Memberships` | přehled pěti úrovní členství, filtrování a řazení |
+| `/memberships/:slug` | `MembershipDetail` | detail jedné úrovně |
+| `/courts` | `Courts` | přehled areálů s fulltextovým hledáním |
+| `/courts/:slug` | `CourtDetail` | detail areálu, galerie, rezervovatelné termíny |
+| `/events` | `Events` | kalendář akcí — filtr, hledání, seskupení po měsících |
+| `/events/:slug` | `EventDetail` | detail akce |
+| `/checkout` | `Checkout` | čtyřkrokový objednávkový formulář s validací |
+| `/account` | `Account` | profil, historie objednávek, nastavení |
+| cokoli jiného | `NotFound` | stránka 404 |
+
+## Použité technologie
+
+- **React 18** — komponentová architektura, `useSyncExternalStore`
+- **Vite 5** — vývojový server a build, dělení kódu
+- **React Router 6** (data router) — routování, `ScrollRestoration`, chybové hranice
+- **Framer Motion 11** — animace, `MotionConfig` pro omezení pohybu
+- **Vitest + React Testing Library** — unit a komponentové testy
+- **Playwright** — end-to-end testy
+- **Sharp** — generování responzivních WebP variant
+- **Lighthouse** — měření výkonu a přístupnosti
+
+Podrobnosti o architektuře, správě stavu a testování jsou v
+[docs/dokumentace.md](docs/dokumentace.md) (a ve stejnojmenném PDF).
+
+## Poznámky k nasazení
+
+Aplikace běží na GitHub Pages pod podcestou `/ModernityRay/`. Dvě věci to
+zajišťují:
+
+1. `BASE_PATH=/ModernityRay/` při buildu v GitHub Actions; Vite tuto hodnotu
+   dá do `import.meta.env.BASE_URL` a router ji použije jako `basename`.
+2. Build vytvoří `dist/404.html` jako kopii `index.html`. GitHub Pages servíruje
+   statické soubory, takže požadavek na `/ModernityRay/events` by jinak skončil
+   chybou 404 — tímto se místo toho načte aplikace, která si cestu odrouteje
+   sama. Díky tomu mohou být adresy čisté a není potřeba hash routing.

@@ -2,3 +2,13 @@ node_modules/
 dist/
 .DS_Store
 *.log
+
+# test + audit output
+test-results/
+playwright-report/
+coverage/
+.vitest/
+
+# design sources — large binaries that do not belong in git history
+COURTSY.psd
+PageSite/

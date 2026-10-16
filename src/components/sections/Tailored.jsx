@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
-import { Icon, Reveal, Stagger, upItem, CountUp } from '../ui'
+import { Icon, Reveal, SmartLink, Stagger, upItem, CountUp } from '../ui'
 import { CLUB_STATS, PLAN_ITEMS } from '../../data'
+import { paths } from '../../routes'
 
 const ICONS = { body: Icon.body, flame: Icon.flame, dumbbell: Icon.dumbbell, spark: Icon.spark }
 
@@ -38,9 +39,9 @@ export default function Tailored() {
               Individualised programs tailored to your body, lifestyle and goals —
               so every session at the club is optimised for you.
             </p>
-            <a href="#join" className="btn btn-green">
+            <SmartLink href={paths.memberships} className="btn btn-green">
               Build my plan
-            </a>
+            </SmartLink>
           </Reveal>
 
           <Reveal className="plan" delay={0.1}>

@@ -1,13 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useCart } from './useCart'
+import { useStore } from '../../context/StoreContext'
 import { Icon } from '../ui'
 
 /** Black cart button that sits beside the nav's "Become a member" CTA. */
-export default function CartButton({ onOpen }) {
-  const { count } = useCart()
+export default function CartButton() {
+  const { count, openCart } = useStore()
 
   return (
-    <button className="cart-btn" onClick={onOpen} aria-label={`Cart, ${count} items`}>
+    <button className="cart-btn" onClick={openCart} aria-label={`Cart, ${count} items`}>
       <Icon.cart />
       <AnimatePresence>
         {count > 0 && (

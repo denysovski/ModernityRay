@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Icon } from '../ui'
+import { Icon, Img, MotionLink, SmartLink } from '../ui'
 import { MENU } from '../../data'
+import { paths } from '../../routes'
 import CartButton from '../commerce/CartButton'
 
 const panel = {
@@ -14,9 +16,9 @@ function Rows({ items, onClose }) {
   return (
     <div className="mega-rows">
       {items.map((it, i) => (
-        <motion.a
+        <MotionLink
           key={it.name}
-          href={it.href || '#join'}
+          href={it.href || paths.memberships}
           className="mega-row"
           onClick={onClose}
           initial={{ opacity: 0, x: -10 }}
@@ -28,7 +30,7 @@ function Rows({ items, onClose }) {
             <span>{it.desc}</span>
           </div>
           <Icon.arrow className="mega-row-go" />
-        </motion.a>
+        </MotionLink>
       ))}
     </div>
   )
@@ -39,7 +41,7 @@ function MegaPanel({ entry, onClose }) {
     return (
       <motion.div className="mega mega-courts" variants={panel} initial="hidden" animate="show" exit="exit">
         {entry.items.map((it, i) => (
-          <motion.a
+          <MotionLink
             key={it.name}
             href={it.href}
             className="mega-court"
@@ -49,14 +51,14 @@ function MegaPanel({ entry, onClose }) {
             transition={{ delay: 0.04 * i, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mega-court-img">
-              <img src={it.img} alt={it.name} />
+              <Img src={it.img} alt={it.name} sizes="260px" />
             </div>
             <div className="mega-court-text">
               <strong>{it.name}</strong>
               <span>{it.desc}</span>
             </div>
             <Icon.arrowUR className="mega-court-go" />
-          </motion.a>
+          </MotionLink>
         ))}
       </motion.div>
     )
@@ -66,8 +68,8 @@ function MegaPanel({ entry, onClose }) {
     return (
       <motion.div className="mega mega-feature" variants={panel} initial="hidden" animate="show" exit="exit">
         <Rows items={entry.items} onClose={onClose} />
-        <a className="mega-card" href={entry.feature.cta.href} onClick={onClose}>
-          <img src={entry.feature.img} alt={entry.feature.title} />
+        <SmartLink className="mega-card" href={entry.feature.cta.href} onClick={onClose}>
+          <Img src={entry.feature.img} alt={entry.feature.title} sizes="420px" />
           <div className="mega-card-scrim" />
           <span className="mega-card-tag">{entry.feature.tag}</span>
           <div className="mega-card-body">
@@ -77,7 +79,7 @@ function MegaPanel({ entry, onClose }) {
               <span className="btn-bubble"><Icon.arrow /></span>
             </span>
           </div>
-        </a>
+        </SmartLink>
       </motion.div>
     )
   }
@@ -87,7 +89,7 @@ function MegaPanel({ entry, onClose }) {
     <motion.div className="mega mega-join" variants={panel} initial="hidden" animate="show" exit="exit">
       <div className="mega-join-cards">
         {entry.cards.map((c, i) => (
-          <motion.a
+          <MotionLink
             key={c.name}
             href={c.href}
             className="mega-jcard"
@@ -97,20 +99,20 @@ function MegaPanel({ entry, onClose }) {
             transition={{ delay: 0.05 * i, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mega-jcard-img">
-              <img src={c.img} alt={c.name} />
+              <Img src={c.img} alt={c.name} sizes="240px" />
             </div>
             <strong>{c.name}</strong>
             <span>{c.desc}</span>
             <Icon.arrowUR className="mega-jcard-go" />
-          </motion.a>
+          </MotionLink>
         ))}
       </div>
       <div className="mega-join-side">
         <Rows items={entry.items} onClose={onClose} />
-        <a className="btn btn-member mega-join-btn" href={entry.cta.href} onClick={onClose}>
+        <SmartLink className="btn btn-member mega-join-btn" href={entry.cta.href} onClick={onClose}>
           {entry.cta.label}
           <span className="btn-bubble"><Icon.arrow /></span>
-        </a>
+        </SmartLink>
       </div>
     </motion.div>
   )
@@ -120,7 +122,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false) // mobile
   const [active, setActive] = useState(null) // desktop mega
-  const base = import.meta.env.BASE_URL
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16)
@@ -136,7 +138,14 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
-  const mainHref = (m) => m.href || m.items?.[0]?.href || m.cards?.[0]?.href || '#top'
+  /* Navigation no longer reloads the page, so nothing closes the menus for
+     us — the route change has to. */
+  useEffect(() => {
+    setOpen(false)
+    setActive(null)
+  }, [pathname])
+
+  const mainHref = (m) => m.href || m.items?.[0]?.href || m.cards?.[0]?.href || paths.home
 
   return (
     <motion.header
@@ -147,9 +156,9 @@ export default function Navbar() {
       onMouseLeave={() => setActive(null)}
     >
       <div className="nav-inner">
-        <a href={base} className="nav-logo">
+        <SmartLink href={paths.home} className="nav-logo">
           CourtSy<span>.</span>
-        </a>
+        </SmartLink>
 
         <nav className="nav-links hide-sm">
           {MENU.map((m) =>
@@ -165,19 +174,24 @@ export default function Navbar() {
                 </button>
               </div>
             ) : (
-              <a key={m.label} href={m.href} className="nav-link" onMouseEnter={() => setActive(null)}>
+              <SmartLink
+                key={m.label}
+                href={m.href}
+                className={`nav-link ${pathname === m.href ? 'is-current' : ''}`}
+                onMouseEnter={() => setActive(null)}
+              >
                 {m.label}
-              </a>
+              </SmartLink>
             ),
           )}
         </nav>
 
         <div className="nav-right">
-          <a href={`${base}pages/become-a-member.html`} className="btn btn-member nav-cta hide-sm">
+          <SmartLink href={paths.membership('resident')} className="btn btn-member nav-cta hide-sm">
             Become a member
             <span className="btn-bubble"><Icon.arrow /></span>
-          </a>
-          <CartButton onOpen={() => window.dispatchEvent(new Event('courtsy:open-cart'))} />
+          </SmartLink>
+          <CartButton />
           <button
             className={`nav-burger ${open ? 'on' : ''}`}
             onClick={() => setOpen((v) => !v)}
@@ -211,24 +225,24 @@ export default function Navbar() {
             const subs = [...(m.cards || []), ...(m.items || [])]
             return (
               <div className="nav-m-group" key={m.label}>
-                <a className="nav-m-head" href={mainHref(m)} onClick={() => setOpen(false)}>
+                <SmartLink className="nav-m-head" href={mainHref(m)} onClick={() => setOpen(false)}>
                   {m.label}
-                </a>
+                </SmartLink>
                 {subs.length > 0 && (
                   <div className="nav-m-links">
                     {subs.map((it) => (
-                      <a key={it.name} href={it.href} onClick={() => setOpen(false)}>
+                      <SmartLink key={it.name} href={it.href} onClick={() => setOpen(false)}>
                         {it.name}
-                      </a>
+                      </SmartLink>
                     ))}
                   </div>
                 )}
               </div>
             )
           })}
-          <a href="#join" className="btn btn-member nav-m-cta" onClick={() => setOpen(false)}>
+          <SmartLink href={paths.membership('resident')} className="btn btn-member nav-m-cta" onClick={() => setOpen(false)}>
             Become a member <span className="btn-bubble"><Icon.arrow /></span>
-          </a>
+          </SmartLink>
         </div>
       </div>
     </motion.header>

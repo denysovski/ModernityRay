@@ -1,5 +1,8 @@
 /* ---------------- GALLERY (smooth horizontal drift) ---------------- */
 .gallery {
+  /* framer-motion measures the track against this element, which it can only
+     do if the element establishes a containing block */
+  position: relative;
   padding-block: clamp(70px, 9vw, 130px);
   overflow: hidden;
 }

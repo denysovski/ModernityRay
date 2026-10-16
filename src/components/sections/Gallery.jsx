@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
-import { Reveal, Icon } from '../ui'
+import { Reveal, Icon, Img } from '../ui'
 import { local } from '../../data/images'
 
 // One shot per space in the club — every photograph in public/img that is not
@@ -25,7 +25,6 @@ const SHOTS = [
 ]
 
 export default function Gallery() {
-  const staticCapture = document.documentElement.classList.contains('static-capture')
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -38,16 +37,16 @@ export default function Gallery() {
 
   return (
     <section className="gallery" ref={ref}>
-      <motion.div className="gallery-track" style={staticCapture ? undefined : { x }}>
+      <motion.div className="gallery-track" style={{ x }}>
         {SHOTS.map((s) => (
           <motion.a
             href={s.href}
             className="gshot"
             key={s.label}
-            whileHover={staticCapture ? undefined : { y: -8 }}
+            whileHover={{ y: -8 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <img src={s.img} alt={s.label} loading="lazy" />
+            <Img src={s.img} alt={s.label} sizes="(max-width: 700px) 70vw, 420px" />
             <span className="gshot-scrim" />
             <span className="gshot-go"><Icon.arrowUR /></span>
             <div className="gshot-text">
