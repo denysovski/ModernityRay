@@ -1,7 +1,9 @@
 /* ---------------- PLANS CAROUSEL ---------------- */
 .plans {
   --card-w: clamp(260px, 25vw, 360px);
-  --step: clamp(220px, 20vw, 300px);
+  /* wide enough that a card and its neighbour only just meet once the
+     neighbour is scaled down: no overlap, nothing to pop. */
+  --step: clamp(238px, 23.5vw, 338px);
   margin-top: clamp(36px, 5vw, 64px);
 }
 .plans-head {
@@ -46,7 +48,7 @@
   transform-origin: center top;
   will-change: transform, opacity;
   transition: transform 0.62s var(--ease), opacity 0.62s var(--ease),
-    border-color 0.3s, box-shadow 0.4s, z-index 0s linear 0.31s;
+    border-color 0.3s, box-shadow 0.4s;
 }
 /* white veil fades the back cards without making them see-through */
 .pcard::after {

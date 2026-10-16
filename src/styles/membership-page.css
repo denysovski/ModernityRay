@@ -1,0 +1,503 @@
+/* =========================================================
+   MEMBERSHIP PAGE
+   Namespaced `member-` because `.plan` and several `.plan-*` names are
+   already taken by the Tailored section on the homepage.
+   A different shape from the facility pages on purpose. A court is a
+   place, so that page leads with photography and a specification.
+   A membership is a decision, so this one is a sequence of full-width
+   blocks, each carrying one idea: the promise, the price, three
+   numbers, what is included, what it changes, the small print.
+
+   Wide measures, large type, generous bands of empty space. The
+   restraint is the luxury.
+   ========================================================= */
+
+.member-page {
+  /* no top padding: the hero runs under the fixed navbar by design */
+  padding-top: 0;
+}
+
+/* ---------- hero ---------- */
+
+.member-hero {
+  position: relative;
+  min-height: clamp(520px, 72vh, 760px);
+  display: flex;
+  align-items: flex-end;
+  padding-block: clamp(120px, 14vw, 170px) clamp(44px, 6vw, 80px);
+  overflow: hidden;
+}
+.member-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.member-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 9, 10, 0.55) 0%,
+    rgba(8, 9, 10, 0.2) 36%,
+    rgba(8, 9, 10, 0.86) 100%
+  );
+}
+.member-hero-inner {
+  position: relative;
+  z-index: 1;
+}
+.member-crumbs {
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: clamp(40px, 8vw, 110px);
+}
+.member-crumbs .pg-crumb {
+  opacity: 0.75;
+}
+.member-crumbs .pg-crumb:last-child {
+  opacity: 1;
+}
+.member-crumbs a:hover {
+  color: var(--lime);
+  border-bottom-color: var(--lime);
+}
+.member-hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  color: #fff;
+}
+.member-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  background: var(--lime);
+  color: var(--ink);
+}
+.member-name {
+  font-family: var(--display);
+  font-size: clamp(54px, 10vw, 136px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+}
+.member-line {
+  font-size: clamp(18px, 2.2vw, 28px);
+  font-weight: 500;
+  line-height: 1.35;
+  max-width: 24ch;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ---------- price band ---------- */
+
+.member-buy {
+  background: var(--ink);
+  color: #fff;
+  padding-block: clamp(32px, 4vw, 48px);
+}
+.member-buy-inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 44px);
+}
+.member-price {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.member-price-n {
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+}
+.member-price-c {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+}
+.member-buy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-left: auto;
+}
+.member-buy .btn-light {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+.member-buy .btn-light:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+.member-note {
+  flex-basis: 100%;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ---------- the three figures ---------- */
+
+.member-figures {
+  padding-block: clamp(80px, 10vw, 150px);
+}
+.member-figure-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+}
+.member-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 26px;
+  border-top: 2px solid var(--ink);
+}
+.member-figure-n {
+  font-size: clamp(52px, 7vw, 92px);
+  line-height: 0.95;
+}
+.member-figure-l {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.member-figure-note {
+  margin-top: 6px;
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  opacity: 0.72;
+  max-width: 32ch;
+}
+
+/* ---------- who it is for, and the list ---------- */
+
+.member-body {
+  padding-block: clamp(70px, 9vw, 130px);
+  background: var(--paper);
+  border-block: 1px solid var(--line);
+}
+.member-body-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(40px, 7vw, 110px);
+  align-items: start;
+}
+.member-for {
+  position: sticky;
+  top: 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.member-for-text {
+  font-family: var(--display);
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.22;
+  max-width: 20ch;
+}
+.member-h {
+  margin-bottom: clamp(26px, 3.4vw, 46px);
+}
+.member-h-centre {
+  text-align: center;
+}
+.member-list {
+  list-style: none;
+}
+.member-list li {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(18px, 2.4vw, 34px);
+  padding: clamp(18px, 2.2vw, 28px) 0;
+  border-top: 1px solid var(--line);
+}
+.member-list li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.member-list-n {
+  flex-shrink: 0;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--green);
+}
+.member-list-t {
+  font-size: clamp(16px, 1.7vw, 21px);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+/* ---------- what it changes ---------- */
+
+.member-makes {
+  padding-block: clamp(80px, 10vw, 150px);
+}
+.member-make-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(16px, 2vw, 26px);
+}
+.member-make {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(28px, 3vw, 40px);
+  border-radius: var(--r-lg);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  transition: transform 0.45s var(--ease), border-color 0.3s;
+}
+.member-make:hover {
+  transform: translateY(-4px);
+  border-color: var(--green);
+}
+.member-make-ic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--green);
+}
+.member-make-ic svg {
+  width: 22px;
+  height: 22px;
+}
+.member-make h3 {
+  font-family: var(--display);
+  font-size: clamp(19px, 2vw, 23px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.member-make p {
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.6;
+  opacity: 0.72;
+}
+
+/* ---------- small print ---------- */
+
+.member-terms {
+  padding-block: clamp(70px, 9vw, 120px);
+  background: var(--bone);
+}
+.member-terms-inner {
+  max-width: 900px;
+}
+.member-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0 clamp(30px, 5vw, 70px);
+}
+.member-spec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-2);
+}
+.member-spec dt {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.7;
+}
+.member-spec dd {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* ---------- voices ---------- */
+
+.member-voices-wrap {
+  padding-block: clamp(80px, 10vw, 140px);
+}
+.member-voices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(16px, 2vw, 26px);
+  max-width: 1000px;
+  margin-inline: auto;
+}
+.member-voice {
+  padding: clamp(28px, 3vw, 40px);
+  border-radius: var(--r-lg);
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.member-voice-q {
+  width: 26px;
+  height: 26px;
+  color: var(--green);
+  opacity: 0.4;
+  margin-bottom: 16px;
+}
+.member-voice p {
+  font-family: var(--display);
+  font-size: clamp(18px, 1.9vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  margin-bottom: 22px;
+}
+.member-voice footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.member-voice footer img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.member-voice footer span {
+  display: flex;
+  flex-direction: column;
+}
+.member-voice footer strong {
+  font-size: 14.5px;
+  font-weight: 700;
+}
+.member-voice footer span span {
+  font-size: 12.5px;
+  font-weight: 500;
+  opacity: 0.65;
+}
+
+/* ---------- other plans ---------- */
+
+.member-others-wrap {
+  padding-block: clamp(70px, 9vw, 130px) clamp(130px, 13vw, 200px);
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+}
+.member-others-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.member-others-head .member-h {
+  margin-bottom: 0;
+}
+.member-others {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(14px, 1.6vw, 20px);
+  margin-top: clamp(26px, 3.4vw, 44px);
+}
+.member-other {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(24px, 2.6vw, 32px);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--page);
+  transition: transform 0.4s var(--ease), border-color 0.3s, background 0.3s;
+}
+.member-other:hover {
+  transform: translateY(-4px);
+  border-color: var(--green);
+  background: var(--paper);
+}
+.member-other-name {
+  font-family: var(--display);
+  font-size: clamp(21px, 2.2vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.member-other-line {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  opacity: 0.7;
+  flex: 1;
+}
+.member-other-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+.member-other-price {
+  font-size: 15px;
+  font-weight: 700;
+}
+.member-other-price span {
+  font-size: 12.5px;
+  font-weight: 500;
+  opacity: 0.6;
+}
+.member-other-go {
+  width: 16px;
+  height: 16px;
+  opacity: 0.45;
+  transition: transform 0.35s var(--ease);
+}
+.member-other:hover .member-other-go {
+  transform: rotate(45deg);
+  opacity: 1;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 980px) {
+  .member-figure-row {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .member-body-grid {
+    grid-template-columns: 1fr;
+  }
+  .member-for {
+    position: static;
+  }
+}
+
+@media (max-width: 620px) {
+  .member-buy-actions {
+    margin-left: 0;
+    width: 100%;
+  }
+  .member-buy-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .member-make,
+  .member-other,
+  .member-other-go {
+    transition-duration: 0.01ms;
+  }
+  .member-make:hover,
+  .member-other:hover {
+    transform: none;
+  }
+  .member-other:hover .member-other-go {
+    transform: none;
+  }
+}

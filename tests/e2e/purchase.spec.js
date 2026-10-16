@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './fixtures'
 
 /* The full buying journey in a real browser: pick a membership, add a court
    session, review the basket, fail validation, fix it, pay, and find the

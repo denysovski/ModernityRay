@@ -33,12 +33,24 @@ export const TESTIMONIALS = [
  * @property {{label: string, value: string}[]} specs  the detail view's fact table
  * @property {boolean} [shipped]  false for digital-only tiers (no member card posted)
  * @property {boolean} [featured] the tier the homepage promotes
+ * @property {string} line     the promise, in one sentence
+ * @property {string} forWhom  who the tier is actually for
+ * @property {{value: string, label: string, note: string}[]} figures
+ *   Three headline numbers, the spine of the membership page.
  */
 
 /** @type {Tier[]} */
 export const TIERS = [
   {
     slug: 'day-pass',
+    line: 'A day, not a decision.',
+    forWhom:
+      'Someone who wants to see the place before committing to it.',
+    figures: [
+      { value: '24', label: 'hours of access', note: 'From first entry, not from midnight.' },
+      { value: '0', label: 'joining fee', note: 'Nothing to cancel afterwards.' },
+      { value: '1', label: 'drop-in clinic', note: 'Join any group session running that day.' },
+    ],
     name: 'Day Pass',
     price: 45,
     cadence: 'per visit',
@@ -65,6 +77,14 @@ export const TIERS = [
   },
   {
     slug: 'junior-family',
+    line: 'One household, one membership.',
+    forWhom:
+      'Families who would rather be at the club together than take turns.',
+    figures: [
+      { value: '5', label: 'people covered', note: 'Two adults and up to three juniors.' },
+      { value: '2×', label: 'coaching a week', note: 'Age-grouped squads, technique through to match play.' },
+      { value: '4', label: 'holiday camps', note: 'Full days, every school break, included.' },
+    ],
     name: 'Junior & Family',
     tag: 'All ages',
     price: 240,
@@ -93,6 +113,14 @@ export const TIERS = [
   },
   {
     slug: 'resident',
+    line: 'The whole club, one honest price.',
+    forWhom:
+      'Members who play most weeks and want no decisions left to make.',
+    figures: [
+      { value: '24/7', label: 'access', note: 'Every court and green, every day of the year.' },
+      { value: '14', label: 'days ahead', note: 'Priority booking before it opens to anyone else.' },
+      { value: '2', label: 'clinics a week', note: 'Coached group sessions at no extra cost.' },
+    ],
     name: 'Resident',
     tag: 'Most popular',
     price: 190,
@@ -123,6 +151,14 @@ export const TIERS = [
   },
   {
     slug: 'signature',
+    line: 'Your court, your coach, your hours.',
+    forWhom:
+      'Players with a standing routine and no patience for a waiting list.',
+    figures: [
+      { value: '4', label: 'private hours', note: 'One to one each month with the pro you choose.' },
+      { value: '30', label: 'days ahead', note: 'The longest booking window at the club.' },
+      { value: '∞', label: 'guests', note: 'Bring whoever you like, as often as you like.' },
+    ],
     name: 'Signature',
     tag: 'Full access',
     price: 420,
@@ -153,6 +189,14 @@ export const TIERS = [
   },
   {
     slug: 'corporate',
+    line: 'Ten seats, one invoice.',
+    forWhom:
+      'Teams who use the club for people and for clients in equal measure.',
+    figures: [
+      { value: '10', label: 'named seats', note: 'Reassign any of them at the start of a month.' },
+      { value: '4', label: 'client days a year', note: 'A catered quarter-day of the grounds and clubhouse.' },
+      { value: '2', label: 'meeting rooms', note: 'Full AV, bookable like a court.' },
+    ],
     name: 'Corporate',
     tag: 'Teams',
     price: 1450,

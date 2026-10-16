@@ -16,6 +16,8 @@ export const MENU = [
   {
     label: 'Courts',
     type: 'courts',
+    // the label is a link in its own right; the panel still opens on hover
+    href: paths.courts,
     items: COURTS.filter((c) => MENU_COURTS.includes(c.slug)).map((c) => ({
       name: c.name,
       desc: c.surface,
@@ -26,6 +28,7 @@ export const MENU = [
   {
     label: 'Memberships',
     type: 'feature',
+    href: paths.memberships,
     items: TIERS.map((t) => ({
       name: t.name,
       desc: `${t.cadence === 'per visit' ? 'Day rate' : 'Monthly'} · ${t.summary.split('—')[0].trim()}`,

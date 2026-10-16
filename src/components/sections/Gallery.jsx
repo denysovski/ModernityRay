@@ -46,7 +46,12 @@ export default function Gallery() {
             whileHover={{ y: -8 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Img src={s.img} alt={s.label} sizes="(max-width: 700px) 70vw, 420px" />
+            <Img
+              src={s.img}
+              alt={s.label}
+              /* matches .gshot: clamp(420px, 42vw, 590px) */
+              sizes="(max-width: 700px) 70vw, (max-width: 1400px) 42vw, 590px"
+            />
             <span className="gshot-scrim" />
             <span className="gshot-go"><Icon.arrowUR /></span>
             <div className="gshot-text">

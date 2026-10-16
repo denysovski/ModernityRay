@@ -30,3 +30,7 @@
 
 /* Routed views come last: they refine section rules for the subpages. */
 @import './views.css';
+
+/* The membership page has a layout of its own, not a variation on the
+   routed-view shell. */
+@import './membership-page.css';
