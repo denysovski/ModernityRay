@@ -1,6 +1,7 @@
 /* Single source of truth for imagery paths.
    Files live in public/img and are produced by scripts/ingest-images.mjs from
-   the originals in assets/source.
+   the originals, which are kept locally rather than committed (52 MB of raw
+   photography). Everything the site serves is in public/img.
 
    Inventory — keep uses spread across all of these:
      courts.jpg      open-air hard courts        aerial.jpg     court from above, estate
