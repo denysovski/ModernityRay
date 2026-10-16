@@ -20,14 +20,15 @@
 }
 
 .pg-head {
-  padding-bottom: clamp(28px, 4vw, 48px);
+  padding-bottom: clamp(40px, 5.5vw, 72px);
 }
 
 .pg-section {
   padding-top: clamp(32px, 4vw, 56px);
-}
-.section.pg-section {
-  padding-bottom: clamp(72px, 9vw, 130px);
+  /* The footer sits 54px higher than it appears to (margin-top: -54px gives
+     it its rounded overlap), so the bottom padding has to absorb that before
+     it starts giving the content any air. Matches the homepage rhythm. */
+  padding-bottom: clamp(130px, 13vw, 200px);
 }
 
 .pg-crumbs {
@@ -211,7 +212,7 @@
 }
 
 .tier-count {
-  padding: 18px 0 26px;
+  padding: 22px 0 34px;
   font-size: 13px;
   font-weight: 600;
   opacity: 0.7;
@@ -415,18 +416,18 @@
 .detail-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.8fr);
-  gap: clamp(32px, 5vw, 72px);
-  padding-top: clamp(40px, 5vw, 70px);
+  gap: clamp(40px, 6vw, 88px);
+  padding-top: clamp(56px, 7vw, 104px);
   align-items: start;
 }
 .detail-main {
   min-width: 0;
 }
 .detail-h {
-  margin-bottom: 22px;
+  margin-bottom: 28px;
 }
 .detail-h:not(:first-child) {
-  margin-top: clamp(44px, 6vw, 72px);
+  margin-top: clamp(64px, 8vw, 112px);
 }
 
 .detail-benefits {
@@ -539,7 +540,7 @@
   top: 120px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 .detail-side-h {
   font-size: 11.5px;
@@ -547,7 +548,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   opacity: 0.7;
-  margin-top: 18px;
+  margin-top: 32px;
 }
 .detail-side-h:first-child {
   margin-top: 0;
@@ -585,7 +586,7 @@
 .detail-others {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 .detail-other,
 .detail-venue {
@@ -784,7 +785,7 @@
 .court-gallery {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 .court-shot {
   border-radius: var(--r-xl);
@@ -824,13 +825,13 @@
 
 .court-desc {
   max-width: 62ch;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 
 .court-sessions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 .court-session {
   display: flex;
@@ -866,7 +867,7 @@
 .court-events {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 .court-event {
   display: flex;

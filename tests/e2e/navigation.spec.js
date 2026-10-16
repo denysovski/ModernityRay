@@ -97,3 +97,97 @@ test.describe('membership filtering', () => {
     expect(names[0]).toBe('Corporate')
   })
 })
+
+test.describe('in-page anchors', () => {
+  /* These were silently broken: clicking a hero card put the hash in the URL
+     and left the page where it was. When they did move, the section landed
+     flush with the top of the viewport, hidden behind the fixed navbar. */
+
+  /** Waits for smooth scrolling to finish before measuring. */
+  const settle = async (page) => {
+    await page.waitForFunction(
+      () =>
+        new Promise((resolve) => {
+          let last = window.scrollY
+          let still = 0
+          const tick = () => {
+            if (window.scrollY === last) {
+              still += 1
+              if (still > 5) return resolve(true)
+            } else {
+              still = 0
+              last = window.scrollY
+            }
+            requestAnimationFrame(tick)
+          }
+          requestAnimationFrame(tick)
+        }),
+      null,
+      { timeout: 10_000 },
+    )
+  }
+
+  for (const [card, target, label] of [
+    ['.fc-coach', '#tailored', 'the coach card'],
+    ['.fc-members', '#elevate', 'the members card'],
+    ['.fc-focus', '#endless', 'the focus card'],
+  ]) {
+    test(`${label} scrolls its section clear of the navbar`, async ({ page }) => {
+      await page.goto('/')
+      await page.locator(card).click()
+      await settle(page)
+
+      const { sectionTop, navBottom } = await page.evaluate((sel) => ({
+        sectionTop: Math.round(document.querySelector(sel).getBoundingClientRect().top),
+        navBottom: Math.round(document.querySelector('.nav').getBoundingClientRect().bottom),
+      }), target)
+
+      // below the navbar, and not so far down that the section is off screen
+      expect(sectionTop).toBeGreaterThan(navBottom)
+      expect(sectionTop).toBeLessThan(220)
+    })
+  }
+
+  test('a cold load of /#principles lands on the section', async ({ page }) => {
+    await page.goto('/#principles')
+    await settle(page)
+
+    const top = await page.evaluate(() =>
+      Math.round(document.querySelector('#principles').getBoundingClientRect().top),
+    )
+    expect(top).toBeGreaterThan(90)
+    expect(top).toBeLessThan(220)
+  })
+})
+
+test.describe('plan carousel', () => {
+  test('cards slide between positions instead of jumping', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('#endless').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(600)
+
+    /* Every card has to stay the same element. Rendering the centre one as a
+       link and the rest as buttons made React rebuild the node on each step,
+       which killed the CSS transition. */
+    const tags = await page.locator('.pcard').evaluateAll((els) => els.map((e) => e.tagName))
+    expect(new Set(tags).size).toBe(1)
+
+    await page.evaluate(() => {
+      window.__positions = []
+      const grab = () => {
+        const el = document.querySelector('.pcard.is-active')
+        if (el) window.__positions.push(Math.round(el.getBoundingClientRect().left))
+        if (window.__positions.length < 40) requestAnimationFrame(grab)
+      }
+      requestAnimationFrame(grab)
+    })
+
+    await page.getByRole('button', { name: 'Next' }).click()
+    await page.waitForTimeout(1000)
+
+    const frames = await page.evaluate(() => window.__positions)
+    const movements = frames.filter((v, i) => i > 0 && v !== frames[i - 1]).length
+    // a hard jump produces one change; an animation produces many
+    expect(movements).toBeGreaterThan(4)
+  })
+})

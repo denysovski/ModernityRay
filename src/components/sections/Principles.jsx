@@ -33,7 +33,10 @@ export default function Principles() {
         >
           {PRINCIPLES.map((p) => (
             <motion.div className="pr-card" variants={item} key={p.n}>
-              <span className="pr-n">{p.n}</span>
+              {/* The cards used to be numbered 01 to 04, which implied an order
+                  these principles do not have. The star is the mark used across
+                  the rest of the page, so it reads as part of the same system. */}
+              <span className="pr-n" aria-hidden="true"><Icon.star /></span>
               <span className="pr-line" />
               <h3>{p.title}</h3>
               <p>{p.desc}</p>

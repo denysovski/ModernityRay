@@ -23,13 +23,13 @@
   },
   {
     "route": "/courts/centre-court",
-    "performance": 0.91,
+    "performance": 0.9,
     "accessibility": 1,
     "bestPractices": 1,
     "seo": 1,
-    "fcp": "2.1 s",
+    "fcp": "2.4 s",
     "lcp": "3.2 s",
-    "tbt": "20 ms",
-    "cls": "0.001"
+    "tbt": "0 ms",
+    "cls": "0"
   }
 ]
