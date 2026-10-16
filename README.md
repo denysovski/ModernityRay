@@ -54,8 +54,13 @@ npm run check:routes      # rychlá kontrola všech rout v reálném prohlíže�
 npm run docs:pdf          # vygeneruje docs/dokumentace.pdf z docs/dokumentace.md
 npm run images:responsive # vygeneruje WebP varianty fotografií + manifest
 npm run images:optimize   # znovu zkomprimuje zdrojové JPEG v public/img
-npm run images:ingest     # zpracuje nové fotografie z assets/source
+npm run images:ingest     # zpracuje nové fotografie z assets/source (viz níže)
 ```
+
+Originály fotografií (`assets/source/`, ~52 MB) nejsou verzované — v repu
+jsou jen zpracované soubory v `public/img`, které web skutečně servíruje.
+`images:ingest` a `images:optimize` jsou tedy nástroje pro úpravu obrazové
+sady, ne krok potřebný ke spuštění aplikace.
 
 `npm run audit` a `npm run check:routes` potřebují běžící server
 (`npm run preview`, resp. `npm run dev`) a očekávají ho na výchozím portu;

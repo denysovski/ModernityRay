@@ -12,3 +12,7 @@ coverage/
 # design sources — large binaries that do not belong in git history
 COURTSY.psd
 PageSite/
+
+# raw photography — 52 MB of originals, kept locally as the input for
+# "npm run images:ingest"; only the processed files in public/img are served
+assets/source/
