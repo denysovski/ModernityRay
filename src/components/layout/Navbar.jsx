@@ -168,10 +168,24 @@ export default function Navbar() {
                 className={`nav-item ${active === m.label ? 'on' : ''}`}
                 onMouseEnter={() => setActive(m.label)}
               >
-                <button className="nav-link">
-                  {m.label}
-                  <Icon.chevron className="nav-chev" />
-                </button>
+                {/* A menu whose label is also a destination opens that page on
+                    click while still revealing its panel on hover. Without an
+                    href it stays a button, because a link to nowhere is worse
+                    than a button that only opens a menu. */}
+                {m.href ? (
+                  <SmartLink
+                    href={m.href}
+                    className={`nav-link ${pathname === m.href ? 'is-current' : ''}`}
+                  >
+                    {m.label}
+                    <Icon.chevron className="nav-chev" />
+                  </SmartLink>
+                ) : (
+                  <button className="nav-link">
+                    {m.label}
+                    <Icon.chevron className="nav-chev" />
+                  </button>
+                )}
               </div>
             ) : (
               <SmartLink

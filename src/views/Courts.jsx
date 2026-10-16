@@ -75,7 +75,7 @@ export default function Courts() {
               >
                 <SmartLink href={paths.court(court.slug)} className="court-card-link">
                   <div className="court-card-img">
-                    <Img src={court.img} alt={court.name} sizes="(max-width: 700px) 100vw, 380px" />
+                    <Img src={court.img} alt={court.name} sizes="(max-width: 700px) 100vw, 440px" />
                     <span className="court-card-scrim" />
                     <span className="court-card-tag">{court.surface}</span>
                   </div>

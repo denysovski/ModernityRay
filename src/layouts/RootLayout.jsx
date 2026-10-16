@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom'
-import { MotionConfig, motion, useScroll, useSpring } from 'framer-motion'
+import { AnimatePresence, MotionConfig, motion, useScroll, useSpring } from 'framer-motion'
 import Navbar from '../components/layout/Navbar'
 import SocialDock from '../components/layout/SocialDock'
 import Footer from '../components/layout/Footer'
 import Commerce from '../components/commerce/Commerce'
+import Intro, { introPending } from '../components/layout/Intro'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
 import { anchorTarget, scrollToAnchor } from '../lib/scroll'
@@ -21,6 +22,12 @@ export default function RootLayout() {
   const { prefs } = useStore()
   const { pathname, hash } = useLocation()
   const isHome = pathname === paths.home
+
+  /* The arrival sequence runs once per session, and only on the homepage:
+     someone who deep-links to a membership page came for that page.
+     Read lazily so the decision is made before the first paint. */
+  const [intro, setIntro] = useState(() => isHome && introPending())
+  const endIntro = useCallback(() => setIntro(false), [])
   const { scrollYProgress } = useScroll()
   const railX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 })
 
@@ -58,11 +65,26 @@ export default function RootLayout() {
           on top of the copy, so it stays on the homepage — the same links
           are in the footer everywhere. */}
       {isHome && <SocialDock />}
-      <Outlet />
+      {/* mode="wait" holds the incoming view until the outgoing one has
+          gone, which is what gives the change its beat. Keyed on pathname,
+          not the full location, so an #anchor does not re-run it. */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={pathname}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Outlet />
+        </motion.div>
+      </AnimatePresence>
       <Footer />
       {/* Restores scroll position per history entry: back goes where you were,
           a new route starts at the top. */}
       <ScrollRestoration />
+
+      {intro && <Intro onDone={endIntro} />}
     </MotionConfig>
   )
 }

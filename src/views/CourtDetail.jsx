@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, Img, SmartLink } from '../components/ui'
+import { Icon, Showcase, SmartLink } from '../components/ui'
 import { COURTS, courtBySlug, CALENDAR } from '../data'
 import { useStore } from '../context/StoreContext'
 import { formatDateRange, byDate } from '../lib/format'
@@ -16,17 +15,13 @@ import NotFound from './NotFound'
  * court data having to know about events at all.
  */
 
-const ease = [0.22, 1, 0.36, 1]
-
 export default function CourtDetail() {
   const { slug } = useParams()
   const court = courtBySlug(slug)
   const { add, openCart, money } = useStore()
-  const [shot, setShot] = useState(0)
 
   useEffect(() => {
     document.title = court ? `${court.name} — CourtSy` : 'Not found — CourtSy'
-    setShot(0)
   }, [court])
 
   if (!court) return <NotFound what="facility" />
@@ -56,37 +51,7 @@ export default function CourtDetail() {
 
       <section className="pg-section">
         <div className="shell">
-          <div className="court-gallery">
-            <motion.div
-              className="court-shot"
-              key={shot}
-              initial={{ opacity: 0, scale: 0.99 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease }}
-            >
-              <Img
-                src={court.gallery[shot]}
-                alt={`${court.name}, view ${shot + 1}`}
-                sizes="(max-width: 1440px) 100vw, 1440px"
-                loading="eager"
-                fetchPriority="high"
-              />
-            </motion.div>
-            <div className="court-thumbs" role="group" aria-label="Photographs">
-              {court.gallery.map((src, i) => (
-                <button
-                  type="button"
-                  key={src}
-                  className={`court-thumb ${i === shot ? 'on' : ''}`}
-                  onClick={() => setShot(i)}
-                  aria-label={`Show photograph ${i + 1}`}
-                  aria-pressed={i === shot}
-                >
-                  <Img src={src} alt="" sizes="96px" />
-                </button>
-              ))}
-            </div>
-          </div>
+          <Showcase slides={court.gallery} name={court.name} />
 
           <div className="detail-grid">
             <div className="detail-main">

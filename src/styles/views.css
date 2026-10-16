@@ -661,6 +661,19 @@
   opacity: 0.45;
   flex-shrink: 0;
 }
+/* live result count, inside the field so it is where the eye already is */
+.court-search-count {
+  flex-shrink: 0;
+  margin-right: 10px;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
 .court-search input {
   font-family: inherit;
   font-size: 15px;
@@ -779,6 +792,128 @@
   font-size: 15px;
   font-weight: 800;
   opacity: 1;
+}
+
+/* ---------- facility showcase ---------- */
+
+.shw {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.shw-stage {
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  aspect-ratio: 21 / 9;
+  background: var(--bone);
+}
+.shw-slide {
+  position: absolute;
+  inset: 0;
+}
+.shw-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* dark only where the caption sits, so the photograph keeps its light */
+.shw-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    rgba(8, 9, 10, 0.82) 0%,
+    rgba(8, 9, 10, 0.5) 32%,
+    rgba(8, 9, 10, 0) 62%
+  );
+}
+.shw-note {
+  position: absolute;
+  left: clamp(20px, 3vw, 44px);
+  bottom: clamp(20px, 3vw, 40px);
+  max-width: min(42ch, 60%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #fff;
+}
+.shw-note-title {
+  font-family: var(--display);
+  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.shw-note-fact {
+  font-size: clamp(13.5px, 1.2vw, 15.5px);
+  font-weight: 500;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.shw-thumbs {
+  display: flex;
+  gap: 10px;
+}
+.shw-thumb {
+  position: relative;
+  width: clamp(84px, 9vw, 124px);
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  padding: 0;
+  opacity: 0.5;
+  transition: opacity 0.35s var(--ease);
+}
+.shw-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.shw-thumb:hover,
+.shw-thumb.on {
+  opacity: 1;
+}
+/* the timer, drawn across the bottom of the thumbnail it belongs to */
+.shw-thumb-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--lime);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+.shw-thumb.on .shw-thumb-bar {
+  /* tracks the interval in Showcase.jsx; short enough to look continuous */
+  transition: transform 60ms linear;
+}
+
+@media (max-width: 700px) {
+  .shw-stage {
+    aspect-ratio: 4 / 3;
+  }
+  .shw-note {
+    max-width: 100%;
+  }
+  .shw-scrim {
+    background: linear-gradient(
+      0deg,
+      rgba(8, 9, 10, 0.86) 0%,
+      rgba(8, 9, 10, 0.35) 45%,
+      rgba(8, 9, 10, 0) 70%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shw-thumb,
+  .shw-thumb.on .shw-thumb-bar {
+    transition-duration: 0.01ms;
+  }
 }
 
 /* court detail gallery */
@@ -925,13 +1060,13 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding-bottom: 18px;
+  padding-bottom: 22px;
   font-family: var(--display);
   font-size: clamp(22px, 2.6vw, 30px);
   font-weight: 800;
   letter-spacing: -0.035em;
   border-bottom: 1px solid var(--line);
-  margin-bottom: 20px;
+  margin-bottom: 26px;
 }
 .cal-month-n {
   font-family: var(--sans);
@@ -949,14 +1084,14 @@
 .cal-rows {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 .cal-row {
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr) auto;
-  gap: clamp(18px, 2.6vw, 32px);
+  gap: clamp(22px, 3vw, 40px);
   align-items: center;
-  padding: 18px;
+  padding: clamp(20px, 2.2vw, 30px);
   border-radius: var(--r-lg);
   background: var(--paper);
   border: 1px solid var(--line);
@@ -989,8 +1124,9 @@
 .cal-row-main {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
+  padding-block: 4px;
 }
 .cal-row-meta {
   display: flex;
@@ -1571,6 +1707,8 @@ a.cal-fact:hover {
 
 /* ---------- small additions to homepage sections ---------- */
 
+/* This link sits on the dark pricing card, where --green (meant for white
+   backgrounds) scored 3.3:1. --lime is the accent for dark surfaces. */
 .mb-detail-link {
   display: inline-flex;
   align-items: center;
@@ -1578,7 +1716,10 @@ a.cal-fact:hover {
   margin-top: 10px;
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--green);
+  color: var(--lime);
+}
+.mb-detail-link:hover {
+  color: #d4f86a;
 }
 .mb-detail-link svg {
   width: 15px;
@@ -1701,4 +1842,70 @@ a.cal-fact:hover {
     animation: none;
     opacity: 0.6;
   }
+}
+
+/* ---------- arrival sequence ---------- */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+/* two halves that part vertically to reveal the page behind them */
+.intro-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background: var(--ink);
+}
+.intro-panel-top {
+  top: 0;
+}
+.intro-panel-bottom {
+  bottom: 0;
+}
+.intro-middle {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  text-align: center;
+  padding-inline: var(--pad);
+}
+.intro-spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.16);
+  border-top-color: var(--lime);
+  animation: intro-spin 0.85s linear infinite;
+}
+@keyframes intro-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.intro-mark {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+.intro-mark span {
+  color: var(--lime);
+}
+.intro-welcome {
+  font-family: var(--display);
+  font-size: clamp(30px, 6vw, 68px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+  color: #fff;
 }

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './fixtures'
 
 /* Routing, end to end in a real browser: client-side navigation, deep links,
    history, and the state that has to survive all of it. */

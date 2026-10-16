@@ -82,6 +82,13 @@ export default function Events() {
               placeholder="Search events, venues…"
               aria-label="Search events"
             />
+            {/* Only once there is something to count: an empty field has not
+                filtered anything, so a number there would be noise. */}
+            {query.trim() && (
+              <span className="court-search-count" aria-live="polite">
+                {total} {total === 1 ? 'Result' : 'Results'}
+              </span>
+            )}
           </label>
         }
       />
