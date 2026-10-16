@@ -64,14 +64,13 @@ export default function Courts() {
           </p>
 
           <div className="court-grid">
-            {shown.map((court, i) => (
+            {shown.map((court) => (
               <motion.article
                 className="court-card"
                 key={court.slug}
-                layout
-                initial={{ opacity: 0, y: 26 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, ease, delay: Math.min(i * 0.07, 0.3) }}
+                transition={{ duration: 0.26, ease }}
               >
                 <SmartLink href={paths.court(court.slug)} className="court-card-link">
                   <div className="court-card-img">

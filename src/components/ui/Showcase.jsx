@@ -12,19 +12,17 @@ import Img from './Img'
  * when it reaches the end that slide takes over. Clicking a thumbnail jumps
  * there and restarts the clock.
  *
- * It pauses while the pointer is over it (nobody wants a caption to slide
- * away mid-sentence) and while the tab is hidden. With reduced motion it does
- * not advance on its own at all, because unprompted movement is the thing
- * that setting is asking us to stop.
+ * The clock runs continuously. It yields only to a hidden tab, and under
+ * reduced motion it does not advance on its own at all, because unprompted
+ * movement is the thing that setting is asking us to stop.
  */
 
-const SLIDE_MS = 6000
+const SLIDE_MS = 7000
 const TICK_MS = 50
 
 export default function Showcase({ slides, name, sizes = '(max-width: 1440px) 100vw, 1440px' }) {
   const [index, setIndex] = useState(0)
   const [progress, setProgress] = useState(0)
-  const [paused, setPaused] = useState(false)
   const reduced = useReducedMotion()
   const elapsed = useRef(0)
 
@@ -38,10 +36,14 @@ export default function Showcase({ slides, name, sizes = '(max-width: 1440px) 10
     [count],
   )
 
-  /* One interval drives both the progress bar and the advance, so the bar can
-     never finish early or late relative to the slide change. */
+  /* One interval drives both the progress bar and the advance, so the bar
+     can never finish early or late relative to the slide change.
+
+     It deliberately does not pause on hover: the pointer tends to rest over
+     the picture while you read it, so the sequence would simply never move
+     on. A hidden tab is different, since nothing is being read at all. */
   useEffect(() => {
-    if (reduced || paused || count < 2) return undefined
+    if (reduced || count < 2) return undefined
 
     const id = window.setInterval(() => {
       if (document.hidden) return
@@ -56,7 +58,7 @@ export default function Showcase({ slides, name, sizes = '(max-width: 1440px) 10
     }, TICK_MS)
 
     return () => window.clearInterval(id)
-  }, [reduced, paused, count])
+  }, [reduced, count])
 
   // a new facility resets the showcase
   useEffect(() => {
@@ -68,22 +70,20 @@ export default function Showcase({ slides, name, sizes = '(max-width: 1440px) 10
   const slide = slides[index]
 
   return (
-    <div
-      className="shw"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
-    >
+    <div className="shw">
       <div className="shw-stage">
-        <AnimatePresence initial={false} mode="popLayout">
+        {/* A plain cross-fade. Both slides are absolutely positioned and
+            stacked, so the outgoing one can simply fade under the incoming
+            one: no layout mode, and no scale, which is what made the
+            picture appear to twitch as it arrived. */}
+        <AnimatePresence initial={false}>
           <motion.div
             className="shw-slide"
             key={slide.img}
-            initial={{ opacity: 0, scale: 1.03 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: 'linear' }}
           >
             <Img
               src={slide.img}
@@ -109,6 +109,15 @@ export default function Showcase({ slides, name, sizes = '(max-width: 1440px) 10
           >
             <span className="shw-note-title">{slide.title}</span>
             <span className="shw-note-fact">{slide.fact}</span>
+            {slide.by && (
+              <span className="shw-by">
+                <img src={slide.by.img} alt="" width="34" height="34" loading="lazy" />
+                <span className="shw-by-text">
+                  <strong>{slide.by.name}</strong>
+                  <span>{slide.by.role}</span>
+                </span>
+              </span>
+            )}
           </motion.figcaption>
         </AnimatePresence>
       </div>

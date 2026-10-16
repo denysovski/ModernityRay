@@ -18,6 +18,12 @@ export const paths = {
   event: (slug) => `/events/${slug}`,
   checkout: '/checkout',
   account: '/account',
+
+  // the three ways in
+  join: '/join',
+  tour: '/private-tour',
+  students: '/students',
+  gift: '/gift',
 }
 
 /** True for links this app routes itself, false for anchors and outside URLs. */

@@ -206,9 +206,16 @@
   background: var(--paper);
   color: var(--ink);
   outline: none;
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s, box-shadow 0.25s;
+}
+.tier-sort select:hover {
+  border-color: var(--green);
+  color: var(--green);
 }
 .tier-sort select:focus-visible {
   border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .tier-count {
@@ -253,10 +260,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s var(--ease);
-}
-.tier-card:hover .tier-card-img img {
-  transform: scale(1.04);
 }
 .tier-tag {
   position: absolute;
@@ -716,10 +719,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s var(--ease);
-}
-.court-card:hover .court-card-img img {
-  transform: scale(1.05);
 }
 .court-card-scrim {
   position: absolute;
@@ -851,6 +850,38 @@
   font-weight: 500;
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.88);
+}
+
+/* who the note came from: this is club knowledge, so it is signed */
+.shw-by {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+.shw-by img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.shw-by-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.shw-by-text strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+.shw-by-text span {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .shw-thumbs {
@@ -1115,10 +1146,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s var(--ease);
-}
-.cal-row:hover .cal-row-img img {
-  transform: scale(1.05);
 }
 
 .cal-row-main {
@@ -1815,9 +1842,6 @@ a.cal-fact:hover {
   .detail-venue,
   .court-event,
   .court-card-go,
-  .tier-card-img img,
-  .court-card-img img,
-  .cal-row-img img,
   .switch-dot,
   .mb-detail-link svg {
     transition-duration: 0.01ms;
@@ -1831,11 +1855,6 @@ a.cal-fact:hover {
     transform: none;
   }
   .court-card:hover .court-card-go {
-    transform: none;
-  }
-  .tier-card:hover .tier-card-img img,
-  .court-card:hover .court-card-img img,
-  .cal-row:hover .cal-row-img img {
     transform: none;
   }
   .route-loading-bar {

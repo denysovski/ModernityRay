@@ -111,14 +111,13 @@ export default function Memberships() {
           </p>
 
           <div className="tier-grid">
-            {shown.map((tier, i) => (
+            {shown.map((tier) => (
               <motion.article
                 className={`tier-card ${tier.featured ? 'is-featured' : ''}`}
                 key={tier.slug}
-                layout
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease, delay: Math.min(i * 0.06, 0.3) }}
+                transition={{ duration: 0.26, ease }}
               >
                 <div className="tier-card-img">
                   <Img src={tier.img} alt="" sizes="(max-width: 700px) 100vw, 340px" />

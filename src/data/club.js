@@ -53,10 +53,10 @@ export const ELEVATE = [
 ]
 
 export const PRINCIPLES = [
-  { n: '01', title: 'Professionality', desc: 'Tour-grade facilities and certified coaches, held to a standard you feel in every session.' },
-  { n: '02', title: 'Clean aesthetic', desc: 'A calm, considered space — no clutter, no noise, just room to focus and move.' },
-  { n: '03', title: 'Active support', desc: 'A team genuinely in your corner, from your very first tour to your hundredth match.' },
-  { n: '04', title: 'Lasting progress', desc: 'Programs built around you, so every week you leave a little better than you came.' },
+  { n: '1', title: 'Professionality', desc: 'Tour-grade facilities and certified coaches, held to a standard you feel in every session.' },
+  { n: '2', title: 'Clean aesthetic', desc: 'A calm, considered space — no clutter, no noise, just room to focus and move.' },
+  { n: '3', title: 'Active support', desc: 'A team genuinely in your corner, from your very first tour to your hundredth match.' },
+  { n: '4', title: 'Lasting progress', desc: 'Programs built around you, so every week you leave a little better than you came.' },
 ]
 
 export const STATS = [

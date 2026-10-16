@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
+import Newsletter from '../components/sections/Newsletter'
 import { Icon, Img, SmartLink } from '../components/ui'
 import { CALENDAR, EVENT_CATEGORIES, courtBySlug } from '../data'
 import { useStore } from '../context/StoreContext'
@@ -213,6 +214,16 @@ export default function Events() {
           )}
         </div>
       </section>
+
+      {/* The calendar is where someone decides they want to keep up with
+          the club, so the sign-up belongs at the end of it and not only
+          at the bottom of the homepage. */}
+      <Newsletter
+        id="events-newsletter"
+        label="Never miss a date"
+        title="Hear about events first."
+        copy="Subscribe for upcoming tournaments, clinics and socials, with member entry opening before anyone else sees it."
+      />
     </main>
   )
 }

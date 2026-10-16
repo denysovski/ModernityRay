@@ -97,6 +97,16 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
+/* says why these three, and not the other two */
+.mega-hint {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  padding: 2px 10px 6px;
+}
 .mega-court {
   position: relative;
   display: flex;

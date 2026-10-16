@@ -10,3 +10,17 @@ export { ELEVATE, PRINCIPLES, STATS, CLUB_STATS } from './club'
 export { TESTIMONIALS, MEMBERSHIP, MEMBERSHIP_FIELDS, TIERS, tierBySlug } from './membership'
 export { COURTS, courtBySlug } from './courts'
 export { EVENTS, CALENDAR, EVENT_CATEGORIES, eventBySlug } from './events'
+export {
+  VOUCHERS,
+  GIFT_FACTS,
+  TOURS,
+  TOUR_STEPS,
+  STUDENT,
+  JOIN_STEPS,
+  JOIN_ANSWERS,
+  JOIN_FACES,
+  JOIN_IMG,
+  TOUR_IMG,
+  STUDENT_IMG,
+  GIFT_IMG,
+} from './join'

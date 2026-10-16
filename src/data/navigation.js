@@ -9,6 +9,7 @@ import { local } from './images'
 import { COURTS } from './courts'
 import { TIERS } from './membership'
 import { paths } from '../routes'
+import { JOIN_FACES } from './join'
 
 const MENU_COURTS = ['centre-court', 'the-lawns', 'golf-greens']
 
@@ -45,19 +46,21 @@ export const MENU = [
   {
     label: 'Join',
     type: 'join',
+    href: paths.join,
     cards: [
       // each card carries the same photograph its landing page opens on
-      { name: 'Become a member', desc: 'Apply for a residency', img: local('stretch.jpg'), href: paths.membership('resident') },
-      { name: 'Book a private tour', desc: 'See the club in person', img: local('woodcourt.jpg'), href: paths.courts },
-      { name: 'Gift a day pass', desc: 'Give access to the club', img: local('airborne.jpg'), href: paths.membership('day-pass') },
+      { name: 'Become a member', desc: 'What it means, and how', img: local('stretch.jpg'), href: paths.join },
+      { name: 'Book a private tour', desc: 'See the club in person', img: local('woodcourt.jpg'), href: paths.tour },
+      { name: 'Gift a day pass', desc: 'Vouchers from $50', img: local('airborne.jpg'), href: paths.gift },
     ],
     items: [
       { name: 'Pricing & tiers', desc: 'From day pass to signature', href: paths.memberships },
-      { name: 'Corporate membership', desc: 'Teams & partners', href: paths.membership('corporate') },
+      { name: 'Student membership', desc: 'A special rate, in person', href: paths.students },
       { name: 'Junior & family', desc: 'All ages welcome', href: paths.membership('junior-family') },
       { name: 'Your account', desc: 'Profile & order history', href: paths.account },
     ],
-    cta: { label: 'Start your application', href: paths.membership('resident') },
+    // the panel closes with the members, not with another button
+    proof: { count: '5,000+', text: 'people train here every week', faces: JOIN_FACES },
   },
 ]
 
@@ -77,6 +80,15 @@ export const FOOTER = [
       { label: 'Resident', href: paths.membership('resident') },
       { label: 'Junior & family', href: paths.membership('junior-family') },
       { label: 'Corporate', href: paths.membership('corporate') },
+    ],
+  },
+  {
+    h: 'Join',
+    items: [
+      { label: 'Become a member', href: paths.join },
+      { label: 'Book a private tour', href: paths.tour },
+      { label: 'Student membership', href: paths.students },
+      { label: 'Gift a day pass', href: paths.gift },
     ],
   },
   {
