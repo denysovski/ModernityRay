@@ -149,7 +149,18 @@
   gap: 8px;
   margin-top: 26px;
 }
+/* The button is the hit area (24 px minimum); ::after is the dot you see. */
 .plans-dot {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  background: none;
+  transition: width 0.35s var(--ease);
+}
+.plans-dot::after {
+  content: '';
+  display: block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -157,9 +168,18 @@
   transition: width 0.35s var(--ease), background 0.3s;
 }
 .plans-dot.on {
+  width: 42px;
+}
+.plans-dot.on::after {
   width: 26px;
   border-radius: var(--r-pill);
   background: var(--green);
+}
+/* the off-centre carousel cards are buttons now, not links */
+button.pcard {
+  font: inherit;
+  text-align: left;
+  color: inherit;
 }
 @media (max-width: 900px) {
   .plans {

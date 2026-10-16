@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useCart } from './useCart'
-import { Icon } from '../ui'
+import { useStore } from '../../context/StoreContext'
+import { Icon, SmartLink } from '../ui'
+import { paths } from '../../routes'
 
 const ease = [0.22, 1, 0.36, 1]
 const easeOut = [0.4, 0, 1, 1]
@@ -24,8 +25,7 @@ const line = (i) => ({
 
 /** Slide-in basket. Review and adjust here, then hand off to Checkout. */
 export default function CartDrawer({ open, onClose, onCheckout }) {
-  const base = import.meta.env.BASE_URL
-  const { items, totals, setQty, remove, money } = useCart()
+  const { items, totals, setQty, remove, money } = useStore()
 
   // esc closes, like any other dialog
   useEffect(() => {
@@ -74,9 +74,9 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
               >
                 <span className="cart-empty-ic"><Icon.cart /></span>
                 <p>Your cart is empty.</p>
-                <a href={`${base}pages/become-a-member.html#plans`} className="btn btn-green">
+                <SmartLink href={paths.memberships} className="btn btn-green" onClick={onClose}>
                   Browse memberships
-                </a>
+                </SmartLink>
               </motion.div>
             ) : (
               <>

@@ -1,30 +1,32 @@
 import { motion } from 'framer-motion'
-import { Icon, Reveal } from '../ui'
+import { Icon, Img, MotionLink, Reveal, SmartLink } from '../ui'
 import { EVENTS } from '../../data'
+import { formatDateRange } from '../../lib/format'
+import { paths } from '../../routes'
 
 function EventCard({ e, big }) {
   return (
-    <motion.a
-      href={e.href}
+    <MotionLink
+      href={paths.event(e.slug)}
       className={`ev-card ${big ? 'ev-big' : 'ev-small'}`}
       initial={{ opacity: 0, y: 26 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      <img src={e.img} alt={e.title} loading="lazy" />
+      <Img src={e.img} alt={e.title} sizes={big ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 30vw'} />
       <div className="ev-scrim" />
       <span className="ev-tag">{e.tag}</span>
       <div className="ev-body">
         <div className="ev-text">
           <h3>{e.title}</h3>
-          <span className="ev-meta">{e.meta}</span>
+          <span className="ev-meta">{formatDateRange(e.start, e.end)}</span>
         </div>
         <span className="btn btn-member ev-btn">
           {e.cta} <span className="btn-bubble"><Icon.arrow /></span>
         </span>
       </div>
-    </motion.a>
+    </MotionLink>
   )
 }
 
@@ -40,6 +42,10 @@ export default function Events() {
             reason to be here.
           </p>
         </Reveal>
+
+        <SmartLink href={paths.events} className="btn btn-light ev-all">
+          See the whole calendar <Icon.arrow />
+        </SmartLink>
 
         <div className="ev-grid">
           <EventCard e={EVENTS.feature} big />

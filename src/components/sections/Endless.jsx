@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { Icon, Reveal } from '../ui'
+import { Icon, Img, Reveal, SmartLink } from '../ui'
 import { PLANS, ENDLESS_IMG } from '../../data'
 
 export default function Endless() {
@@ -67,22 +67,18 @@ export default function Endless() {
               const pull = abs === 2 ? (pos > 0 ? -40 : 40) : 0
               // lift the centre card, push the back cards down for depth
               const yOff = pos === 0 ? -40 : abs === 2 ? 20 : 0
-              return (
-                <a
-                  key={p.title}
-                  className={`pcard ${center ? 'is-active' : ''}`}
-                  href={center ? p.href : undefined}
-                  onClick={center ? undefined : (e) => { e.preventDefault(); setActive(i) }}
-                  style={{
-                    transform: `translate(calc(-50% + ${pos} * var(--step) + ${pull}px), ${yOff}px) scale(${1 - abs * 0.12})`,
-                    opacity: visible ? 1 : 0,
-                    '--veil': abs === 0 ? 0 : abs === 1 ? 0.45 : 0.7,
-                    zIndex: 10 - abs,
-                    pointerEvents: visible ? 'auto' : 'none',
-                  }}
-                >
+              const style = {
+                transform: `translate(calc(-50% + ${pos} * var(--step) + ${pull}px), ${yOff}px) scale(${1 - abs * 0.12})`,
+                opacity: visible ? 1 : 0,
+                '--veil': abs === 0 ? 0 : abs === 1 ? 0.45 : 0.7,
+                zIndex: 10 - abs,
+                pointerEvents: visible ? 'auto' : 'none',
+              }
+
+              const inner = (
+                <>
                   <div className="pcard-img">
-                    <img src={p.img} alt={p.title} loading="lazy" />
+                    <Img src={p.img} alt={p.title} sizes="(max-width: 700px) 80vw, 340px" />
                     <span className="pcard-tag">{p.tag}</span>
                     <span className="pcard-go"><Icon.arrowUR /></span>
                   </div>
@@ -94,7 +90,30 @@ export default function Endless() {
                       View plan <Icon.arrow className="arrow" />
                     </span>
                   </div>
-                </a>
+                </>
+              )
+
+              /* Only the centre card navigates. The others bring themselves to
+                 the centre, so they are buttons — an anchor with no href is
+                 neither crawlable nor announced correctly.
+                 No aria-label on the button: the card's own text is its
+                 accessible name, and an added label that does not start with
+                 the visible text breaks voice control. */
+              return center ? (
+                <SmartLink key={p.title} className="pcard is-active" href={p.href} style={style}>
+                  {inner}
+                </SmartLink>
+              ) : (
+                <button
+                  key={p.title}
+                  type="button"
+                  className="pcard"
+                  style={style}
+                  onClick={() => setActive(i)}
+                  tabIndex={visible ? 0 : -1}
+                >
+                  {inner}
+                </button>
               )
             })}
           </div>

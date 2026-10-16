@@ -1,60 +1,97 @@
-/* Header navigation and the mega-menu behind it. */
+/* Header navigation and the mega-menu behind it.
+ *
+ * Built from the courts and tiers data rather than repeating their names, so
+ * adding a tier or a facility puts it in the menu automatically. Every href is
+ * an app-relative route from src/routes — the navbar renders internal hrefs as
+ * router links and leaves anchors alone.
+ */
 import { local } from './images'
+import { COURTS } from './courts'
+import { TIERS } from './membership'
+import { paths } from '../routes'
 
-const page = (slug) => `${import.meta.env.BASE_URL}pages/${slug}.html`
+const MENU_COURTS = ['centre-court', 'the-lawns', 'golf-greens']
 
-export const NAV = [
-  { label: 'Club', href: '#tailored' },
-  { label: 'Courts', href: '#endless' },
-  { label: 'Lifestyle', href: '#elevate' },
-  { label: 'Join', href: '#join' },
-]
-
-// Mega-menu structure for the complex navbar
 export const MENU = [
-  { label: 'Club', href: page('club') },
   {
     label: 'Courts',
     type: 'courts',
-    items: [
-      { name: 'Centre Court', desc: 'Championship clay, floodlit', img: local('clay.jpg'), href: page('centre-court') },
-      { name: 'The Lawns', desc: 'Six open-air hard courts', img: local('courts.jpg'), href: page('the-lawns') },
-      { name: 'Golf Greens', desc: '18-hole lakeside course', img: local('golf.jpg'), href: page('golf-greens') },
-    ],
+    items: COURTS.filter((c) => MENU_COURTS.includes(c.slug)).map((c) => ({
+      name: c.name,
+      desc: c.surface,
+      img: c.img,
+      href: paths.court(c.slug),
+    })),
   },
   {
-    label: 'Lifestyle',
+    label: 'Memberships',
     type: 'feature',
-    items: [
-      { name: 'Merchandise', desc: 'Apparel & equipment', href: page('merchandise') },
-      { name: 'Memberships', desc: 'Tiers & residencies', href: page('memberships') },
-      { name: 'Wellness & Spa', desc: 'Recovery and reset', href: page('wellness-spa') },
-      { name: 'Events & Socials', desc: 'The members’ calendar', href: page('events-socials') },
-      { name: 'Dining', desc: 'Lakeside clubhouse', href: page('dining') },
-      { name: 'Gift cards', desc: 'Give the club', href: page('gift-cards') },
-    ],
+    items: TIERS.map((t) => ({
+      name: t.name,
+      desc: `${t.cadence === 'per visit' ? 'Day rate' : 'Monthly'} · ${t.summary.split('—')[0].trim()}`,
+      href: paths.membership(t.slug),
+    })),
     feature: {
       img: local('courtlife.jpg'),
       tag: 'Featured',
       title: 'The members’ lifestyle, beyond the baseline.',
-      cta: { label: 'Explore lifestyle', href: page('memberships') },
+      cta: { label: 'Compare every tier', href: paths.memberships },
     },
   },
+  { label: 'Events', href: paths.events },
   {
     label: 'Join',
     type: 'join',
     cards: [
       // each card carries the same photograph its landing page opens on
-      { name: 'Become a member', desc: 'Apply for a residency', img: local('stretch.jpg'), href: page('become-a-member') },
-      { name: 'Book a private tour', desc: 'See the club in person', img: local('woodcourt.jpg'), href: page('book-a-private-tour') },
-      { name: 'Gift a membership', desc: 'Give access to the club', img: local('airborne.jpg'), href: page('gift-a-membership') },
+      { name: 'Become a member', desc: 'Apply for a residency', img: local('stretch.jpg'), href: paths.membership('resident') },
+      { name: 'Book a private tour', desc: 'See the club in person', img: local('woodcourt.jpg'), href: paths.courts },
+      { name: 'Gift a day pass', desc: 'Give access to the club', img: local('airborne.jpg'), href: paths.membership('day-pass') },
     ],
     items: [
-      { name: 'Pricing & tiers', desc: 'From day pass to signature', href: page('pricing-tiers') },
-      { name: 'Corporate membership', desc: 'Teams & partners', href: page('corporate-membership') },
-      { name: 'Junior & family', desc: 'All ages welcome', href: page('junior-family') },
-      { name: 'FAQ', desc: 'Everything you need', href: page('faq') },
+      { name: 'Pricing & tiers', desc: 'From day pass to signature', href: paths.memberships },
+      { name: 'Corporate membership', desc: 'Teams & partners', href: paths.membership('corporate') },
+      { name: 'Junior & family', desc: 'All ages welcome', href: paths.membership('junior-family') },
+      { name: 'Your account', desc: 'Profile & order history', href: paths.account },
     ],
-    cta: { label: 'Start your application', href: page('become-a-member') },
+    cta: { label: 'Start your application', href: paths.membership('resident') },
+  },
+]
+
+/** Footer columns — same route constants, grouped for the sitemap. */
+export const FOOTER = [
+  {
+    h: 'Courts',
+    items: [
+      ...COURTS.slice(0, 3).map((c) => ({ label: c.name, href: paths.court(c.slug) })),
+      { label: 'All facilities', href: paths.courts },
+    ],
+  },
+  {
+    h: 'Membership',
+    items: [
+      { label: 'Compare tiers', href: paths.memberships },
+      { label: 'Resident', href: paths.membership('resident') },
+      { label: 'Junior & family', href: paths.membership('junior-family') },
+      { label: 'Corporate', href: paths.membership('corporate') },
+    ],
+  },
+  {
+    h: 'Club',
+    items: [
+      { label: "What's on", href: paths.events },
+      { label: 'Your account', href: paths.account },
+      { label: 'Checkout', href: paths.checkout },
+      { label: 'Home', href: paths.home },
+    ],
+  },
+  {
+    h: 'Social',
+    items: [
+      { label: 'Instagram', href: 'https://www.instagram.com/', external: true },
+      { label: 'X', href: 'https://x.com/', external: true },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/', external: true },
+      { label: 'YouTube', href: 'https://www.youtube.com/', external: true },
+    ],
   },
 ]

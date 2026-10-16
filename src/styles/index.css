@@ -3,6 +3,11 @@
    Minimalism / Modernity. Apple-grade restraint.
    ========================================================= */
 
+/* Inter — variable, self-hosted via @fontsource so it is part of the
+   bundle rather than a render-blocking request to Google. Only the weight
+   axis is needed; the optical-size axis would double the download. */
+@import '@fontsource-variable/inter/wght.css';
+
 /* Aspekta — open-source variable sans (self-hosted) */
 @font-face {
   font-family: 'Aspekta';
@@ -36,8 +41,8 @@
   --accent-deep: #337418;
 
   /* Type — Inter for big display, Aspekta for body/small text */
-  --sans: 'Aspekta', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --display: 'Inter', 'Aspekta', sans-serif;
+  --sans: 'Aspekta', 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --display: 'Inter Variable', 'Inter', 'Aspekta', sans-serif;
 
   /* Radii */
   --r-sm: 12px;
@@ -61,6 +66,11 @@
 }
 
 html {
+  /* framer-motion measures every scroll-linked section against the document
+     scroller (this element) and asserts in development that it is not static.
+     Nothing in the app positions against the initial containing block, so
+     making it a containing block changes no layout. */
+  position: relative;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -88,6 +98,14 @@ a {
 img {
   display: block;
   max-width: 100%;
+}
+
+/* The responsive <Img> wraps every photograph in a <picture>. display:contents
+   removes that wrapper from layout entirely, so the <img> stays the direct
+   layout child of the card, banner or grid cell it was before — every rule
+   written as `.card img { ... }` keeps working untouched. */
+picture {
+  display: contents;
 }
 
 button {

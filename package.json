@@ -1,26 +1,49 @@
 {
-  "name": "atelier-club",
+  "name": "courtsy-club",
+  "description": "CourtSy — a routed React single-page application for a private members’ sport club (KTWA2 semester project).",
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:embed && npm run build:pages && vite build",
+    "build": "vite build",
     "build:app": "vite build",
-    "build:embed": "vite build --config vite.embed.config.js",
-    "build:pages": "node scripts/build-pages.mjs",
     "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test && npm run test:e2e",
+    "audit": "node scripts/lighthouse.mjs",
+    "check:routes": "node scripts/check-routes.mjs",
+    "docs:pdf": "node scripts/docs-pdf.mjs",
     "images:ingest": "node scripts/ingest-images.mjs",
-    "images:optimize": "node scripts/optimize-images.mjs"
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "images:responsive": "node scripts/responsive-images.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
     "framer-motion": "^11.3.19",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "sharp": "^0.35.2"
+    "react-router-dom": "^6.30.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.2"
+    "@vitest/coverage-v8": "^2.1.9",
+    "chrome-launcher": "^1.2.2",
+    "jsdom": "^30.1.3",
+    "lighthouse": "^13.5.0",
+    "marked": "^18.1.1",
+    "sharp": "^0.35.2",
+    "vite": "^5.4.2",
+    "vitest": "^2.1.9"
   }
 }
