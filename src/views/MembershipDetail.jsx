@@ -151,7 +151,7 @@ export default function MembershipDetail() {
                 ))}
               </dl>
 
-              <h3 className="detail-side-h">Compare with</h3>
+              <h3 className="detail-side-h">Other plans</h3>
               <div className="detail-others">
                 {others.map((o) => (
                   <SmartLink className="detail-other" href={paths.membership(o.slug)} key={o.slug}>

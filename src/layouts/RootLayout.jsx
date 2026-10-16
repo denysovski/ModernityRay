@@ -7,6 +7,7 @@ import Footer from '../components/layout/Footer'
 import Commerce from '../components/commerce/Commerce'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
+import { anchorTarget, scrollToAnchor } from '../lib/scroll'
 
 /* The shell every route renders inside.
  *
@@ -18,7 +19,7 @@ import { paths } from '../routes'
 
 export default function RootLayout() {
   const { prefs } = useStore()
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   const isHome = pathname === paths.home
   const { scrollYProgress } = useScroll()
   const railX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 })
@@ -28,6 +29,23 @@ export default function RootLayout() {
   useEffect(() => {
     if (!document.title) document.title = 'CourtSy'
   }, [pathname])
+
+  /* In-page anchors (#tailored, #join, the hero cards) need handling of our
+     own. Clicking one changes the location, which makes <ScrollRestoration>
+     restore the scroll position recorded for that history entry, and that
+     undoes the browser's jump to the target: the URL gained a hash and the
+     page did not move at all.
+     Running after it, on the next frame, puts the scroll where the anchor
+     actually points. This covers a cold load of /#section; clicks are
+     handled by SmartLink. Both go through lib/scroll. */
+  useEffect(() => {
+    if (!hash) return undefined
+    const target = anchorTarget(hash)
+    if (!target) return undefined
+
+    const frame = requestAnimationFrame(() => scrollToAnchor(target))
+    return () => cancelAnimationFrame(frame)
+  }, [hash, pathname])
 
   return (
     /* reducedMotion="user" makes framer honour the OS setting across every

@@ -93,27 +93,30 @@ export default function Endless() {
                 </>
               )
 
-              /* Only the centre card navigates. The others bring themselves to
-                 the centre, so they are buttons — an anchor with no href is
-                 neither crawlable nor announced correctly.
-                 No aria-label on the button: the card's own text is its
-                 accessible name, and an added label that does not start with
-                 the visible text breaks voice control. */
-              return center ? (
-                <SmartLink key={p.title} className="pcard is-active" href={p.href} style={style}>
-                  {inner}
-                </SmartLink>
-              ) : (
-                <button
+              /* Every card is the same element type, always an anchor with a
+                 real href. Rendering the centre card as <a> and the rest as
+                 <button> made React tear down and rebuild the DOM node each
+                 time the centre moved, so the card appeared at its new place
+                 instead of sliding to it: the CSS transition had no previous
+                 value to animate from. That was the stutter.
+
+                 The href also keeps the cards crawlable. A card that is not
+                 centred brings itself to the centre rather than navigating. */
+              return (
+                <SmartLink
                   key={p.title}
-                  type="button"
-                  className="pcard"
+                  className={`pcard ${center ? 'is-active' : ''}`}
+                  href={p.href}
                   style={style}
-                  onClick={() => setActive(i)}
                   tabIndex={visible ? 0 : -1}
+                  onClick={(e) => {
+                    if (center) return
+                    e.preventDefault()
+                    setActive(i)
+                  }}
                 >
                   {inner}
-                </button>
+                </SmartLink>
               )
             })}
           </div>

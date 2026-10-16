@@ -29,12 +29,14 @@
   transform: translateY(-6px);
   border-color: var(--lime);
 }
+/* was the 01-04 numeral; now holds the same star used across the page */
 .pr-n {
-  font-family: var(--display);
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  display: inline-flex;
   color: var(--green);
+}
+.pr-n svg {
+  width: 24px;
+  height: 24px;
 }
 .pr-line {
   width: 40px;

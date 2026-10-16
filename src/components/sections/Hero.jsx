@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { Icon, Img, SmartLink } from '../ui'
+import { Icon, Img, MotionLink, SmartLink } from '../ui'
 import { HERO_CARDS } from '../../data'
 import { paths } from '../../routes'
 import { local } from '../../data/images'
@@ -87,15 +87,15 @@ export default function Hero() {
           <strong>Professional court care, just for you.</strong>
         </div>
 
-        <motion.a href="#tailored" className="fc fc-coach" style={{ y: y1 }} variants={pop(0)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
+        <MotionLink href="#tailored" className="fc fc-coach" style={{ y: y1 }} variants={pop(0)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
           <Img src={HERO_CARDS.coach.avatar} alt={HERO_CARDS.coach.name} sizes="64px" />
           <div>
             <strong>{HERO_CARDS.coach.name}</strong>
             <span>{HERO_CARDS.coach.role}</span>
           </div>
-        </motion.a>
+        </MotionLink>
 
-        <motion.a href="#elevate" className="fc fc-members" style={{ y: y2 }} variants={pop(1)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
+        <MotionLink href="#elevate" className="fc fc-members" style={{ y: y2 }} variants={pop(1)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
           <div className="fc-avatars">
             {HERO_CARDS.members.map((m) => (
               <Img key={m} src={m} alt="" sizes="40px" />
@@ -105,23 +105,23 @@ export default function Hero() {
             <strong>+5,000</strong>
             <span>members moving</span>
           </div>
-        </motion.a>
+        </MotionLink>
 
-        <motion.a href="#join" className="fc fc-time" style={{ y: y3 }} variants={pop(2)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
+        <MotionLink href="#join" className="fc fc-time" style={{ y: y3 }} variants={pop(2)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
           <span className="fc-ic"><Icon.clock /></span>
           <div>
             <strong>Open 24 / 7</strong>
             <span>Resident access</span>
           </div>
-        </motion.a>
+        </MotionLink>
 
-        <motion.a href="#endless" className="fc fc-focus" style={{ y: y4 }} variants={pop(3)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
+        <MotionLink href="#endless" className="fc fc-focus" style={{ y: y4 }} variants={pop(3)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
           <span className="fc-ic fc-ic-ok"><Icon.check /></span>
           <div>
             <strong>Full access</strong>
             <span>Every court &amp; green</span>
           </div>
-        </motion.a>
+        </MotionLink>
       </motion.div>
     </section>
   )

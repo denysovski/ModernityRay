@@ -45,8 +45,8 @@
   padding: 22px;
   transform-origin: center top;
   will-change: transform, opacity;
-  transition: transform 0.6s var(--ease), opacity 0.6s var(--ease),
-    border-color 0.3s, box-shadow 0.4s;
+  transition: transform 0.62s var(--ease), opacity 0.62s var(--ease),
+    border-color 0.3s, box-shadow 0.4s, z-index 0s linear 0.31s;
 }
 /* white veil fades the back cards without making them see-through */
 .pcard::after {
@@ -58,7 +58,7 @@
   opacity: var(--veil, 0);
   pointer-events: none;
   z-index: 6;
-  transition: opacity 0.6s var(--ease);
+  transition: opacity 0.62s var(--ease);
 }
 .pcard.is-active {
   box-shadow: 0 -26px 80px -54px rgba(10, 10, 10, 0.22);
@@ -175,12 +175,6 @@
   border-radius: var(--r-pill);
   background: var(--green);
 }
-/* the off-centre carousel cards are buttons now, not links */
-button.pcard {
-  font: inherit;
-  text-align: left;
-  color: inherit;
-}
 @media (max-width: 900px) {
   .plans {
     --card-w: clamp(240px, 50vw, 320px);
@@ -200,5 +194,14 @@ button.pcard {
   }
   .pcard {
     padding: 16px;
+  }
+}
+
+/* The carousel moves with CSS transitions, which MotionConfig does not
+   govern, so it opts out of movement on its own. */
+@media (prefers-reduced-motion: reduce) {
+  .pcard,
+  .pcard::after {
+    transition-duration: 0.01ms;
   }
 }

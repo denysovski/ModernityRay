@@ -86,7 +86,12 @@ body {
   background: var(--page);
   color: var(--ink);
   line-height: 1.5;
-  overflow-x: hidden;
+  /* clip, not hidden. `overflow-x: hidden` forces the other axis to compute
+     to `auto`, which turns <body> into the scroll container and silently
+     breaks the browser jump to an #anchor: the URL gained the hash and the
+     page never moved. `clip` leaves overflow-y visible, so the document
+     keeps scrolling the normal way while horizontal overflow stays blocked. */
+  overflow-x: clip;
   font-feature-settings: 'ss01' 1, 'cv01' 1;
 }
 
@@ -122,6 +127,16 @@ button {
 }
 
 /* ---------- Layout primitives ---------- */
+/* Every in-page anchor target. The navbar is fixed and roughly 90px tall,
+   so landing flush with the top of the viewport hides the start of a
+   section behind it; stopping ~150px short puts the heading in clear air. */
+section[id],
+footer[id],
+main[id],
+[id].scroll-anchor {
+  scroll-margin-top: clamp(120px, 10vw, 158px);
+}
+
 .shell {
   width: 100%;
   max-width: var(--maxw);

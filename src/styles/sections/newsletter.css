@@ -105,8 +105,11 @@
   font-weight: 600;
   color: var(--lime);
 }
-@media (max-width: 480px) {
-  .nl-btn {
+@media (max-width: 620px) {
+  .nl-form {
+    justify-content: center;
+  }
+  .nl-subscribe {
     width: 100%;
     justify-content: center;
   }

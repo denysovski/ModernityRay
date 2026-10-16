@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
-import { Reveal, Icon, Img } from '../ui'
+import { Reveal, Icon, Img, MotionLink } from '../ui'
 import { local } from '../../data/images'
 
 // One shot per space in the club — every photograph in public/img that is not
@@ -39,7 +39,7 @@ export default function Gallery() {
     <section className="gallery" ref={ref}>
       <motion.div className="gallery-track" style={{ x }}>
         {SHOTS.map((s) => (
-          <motion.a
+          <MotionLink
             href={s.href}
             className="gshot"
             key={s.label}
@@ -53,7 +53,7 @@ export default function Gallery() {
               <strong>{s.label}</strong>
               <span>{s.meta}</span>
             </div>
-          </motion.a>
+          </MotionLink>
         ))}
       </motion.div>
     </section>
