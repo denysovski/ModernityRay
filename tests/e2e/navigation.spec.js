@@ -191,3 +191,49 @@ test.describe('plan carousel', () => {
     expect(movements).toBeGreaterThan(4)
   })
 })
+
+test.describe('page transitions', () => {
+  /* The page transition once left the wrapper parked at its exit values, so
+     every subpage rendered at opacity 0: present in the DOM, invisible on
+     screen. Text assertions passed happily, and so does toBeVisible, which
+     does not look at opacity. These check what the eye checks. */
+
+  /** Opacity of the element the route is rendered into. */
+  const viewOpacity = (page) =>
+    page.evaluate(() => {
+      const main = document.querySelector('main')
+      if (!main) return null
+      return Number(getComputedStyle(main.parentElement).opacity)
+    })
+
+  for (const [label, link, heading] of [
+    ['Courts', 'Courts', 'Five places to play.'],
+    ['Memberships', 'Memberships', 'Five ways to belong.'],
+    ['Events', 'Events', 'The season, in order.'],
+  ]) {
+    test(`${label} is actually visible after navigating to it`, async ({ page }) => {
+      await page.goto('/')
+      await page.locator('.nav-links').getByRole('link', { name: link }).click()
+
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading)
+      await expect.poll(() => viewOpacity(page), { timeout: 4000 }).toBe(1)
+    })
+  }
+
+  test('survives a burst of navigation', async ({ page }) => {
+    await page.goto('/')
+    for (const name of ['Courts', 'Memberships', 'Events', 'Courts']) {
+      await page.locator('.nav-links').getByRole('link', { name }).click()
+      await page.waitForTimeout(90)
+    }
+
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Five places to play.')
+    await expect.poll(() => viewOpacity(page), { timeout: 4000 }).toBe(1)
+  })
+
+  test('a view loaded cold is visible too', async ({ page }) => {
+    await page.goto('/courts/centre-court')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Centre Court')
+    await expect.poll(() => viewOpacity(page), { timeout: 4000 }).toBe(1)
+  })
+})
