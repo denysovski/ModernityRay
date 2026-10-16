@@ -11,6 +11,10 @@
  * Pass a different origin as the first argument, and a screenshot directory as
  * the second:
  *   node scripts/check-routes.mjs http://localhost:4173 ./shots
+ *
+ * It also works against the deployed site, where GitHub Pages answers deep
+ * links with 404.html:
+ *   node scripts/check-routes.mjs https://denysovski.github.io/ModernityRay
  */
 import { chromium } from '@playwright/test'
 import fs from 'node:fs'
@@ -35,6 +39,12 @@ const ROUTES = [
    advert, and the remote avatars that need a network the CI box may not have. */
 const IGNORE = /favicon|Download the React DevTools|images\.unsplash\.com/i
 
+/* Chromium logs a console error when the document itself comes back 404. On
+   GitHub Pages that is the SPA fallback working as designed — Pages serves
+   404.html, with a 404 status, and the app routes the URL client-side. It is
+   only noise when the app did in fact render. */
+const DOC_404 = /Failed to load resource: the server responded with a status of 404/i
+
 if (SHOTS) fs.mkdirSync(SHOTS, { recursive: true })
 
 const browser = await chromium.launch()
@@ -50,20 +60,27 @@ for (const [route, name] of ROUTES) {
   page.on('pageerror', (e) => problems.push(`[pageerror] ${e.message}`))
   page.on('requestfailed', (r) => problems.push(`[request] ${r.url()} ${r.failure()?.errorText}`))
 
-  await page.goto(BASE + route, { waitUntil: 'networkidle' })
+  const response = await page.goto(BASE + route, { waitUntil: 'networkidle' })
   await page.waitForTimeout(700)
+  const servedByFallback = response?.status() === 404
 
   const heading = (await page.locator('h1').first().textContent().catch(() => '')) || ''
   const navLinks = await page.locator('.nav-link').count()
   const footerCols = await page.locator('.footer-col').count()
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/${name}.png` })
 
-  const real = problems.filter((p) => !IGNORE.test(p))
+  const rendered = heading.trim().length > 0
+  const real = problems.filter((p) => {
+    if (IGNORE.test(p)) return false
+    if (servedByFallback && rendered && DOC_404.test(p)) return false
+    return true
+  })
   if (real.length > 0) failures++
 
   console.log(
     `${real.length ? 'FAIL' : ' ok '}  ${route.padEnd(34)} ` +
-      `h1=${JSON.stringify(heading.trim().slice(0, 44))} nav=${navLinks} footer=${footerCols}`,
+      `h1=${JSON.stringify(heading.trim().slice(0, 44))} nav=${navLinks} footer=${footerCols}` +
+      (servedByFallback && rendered ? '  [404.html fallback]' : ''),
   )
   for (const p of real.slice(0, 6)) console.log('        ' + p.slice(0, 200))
 
