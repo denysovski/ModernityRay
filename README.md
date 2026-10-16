@@ -14,7 +14,8 @@ mockovaná v `src/data/`, veškerý stav aplikace žije v `localStorage`.
 
 ## Spuštění
 
-Vyžaduje Node.js 20 nebo novější.
+Vyžaduje Node.js 22 nebo novější — testovací prostředí jsdom přes undici
+využívá zstd API, které starší Node nemá.
 
 ```bash
 npm install          # instalace závislostí
