@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Icon, SmartLink, Stagger, upItem } from '../ui'
-import { FOOTER } from '../../data'
+import { FOOTER, LEGAL_LINKS } from '../../data'
 import { paths } from '../../routes'
 
 /* Site footer, and the app's sitemap.
@@ -31,24 +31,33 @@ export default function Footer() {
           {FOOTER.map((col) => (
             <motion.div className="footer-col" key={col.h} variants={upItem}>
               <h2>{col.h}</h2>
-              {col.items.map((it) => (
-                <SmartLink href={it.href} external={it.external} key={it.label}>
-                  {it.label}
-                </SmartLink>
-              ))}
+              {col.items.map((it) =>
+                /* The club has no social accounts to point at — it is an
+                   invented club — so these name the networks without
+                   sending anyone to a real stranger's profile. */
+                it.inert ? (
+                  <span className="footer-inert" key={it.label}>
+                    {it.label}
+                  </span>
+                ) : (
+                  <SmartLink href={it.href} external={it.external} key={it.label}>
+                    {it.label}
+                  </SmartLink>
+                ),
+              )}
             </motion.div>
           ))}
         </Stagger>
 
         <div className="footer-bottom">
           <span className="footer-copy">© 2026 CourtSy Sport Club. All rights reserved.</span>
+          {/* These were inert placeholders. The three pages exist now, so
+              they are real links — see src/data/legal. */}
           <div className="footer-links">
-            {['Terms', 'Privacy', 'Cookies'].map((l) => (
-              /* No legal pages in a coursework build — these stay inert rather
-                 than pretending to lead somewhere. */
-              <span key={l} className="footer-inert">
-                {l}
-              </span>
+            {LEGAL_LINKS.map((l) => (
+              <SmartLink href={l.href} key={l.href}>
+                {l.label}
+              </SmartLink>
             ))}
           </div>
         </div>

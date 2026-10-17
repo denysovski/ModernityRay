@@ -124,7 +124,7 @@ export default function Programmes() {
         <div className="shell">
           <div className="prg-coaches-head">
             <span className="micro"><Icon.star className="deco-star" /> Introducing the coaches</span>
-            <h2 className="h-lg">The people who write your block.</h2>
+            <h2 className="h-lg">The people you need.</h2>
             <p className="lede">
               Eight full-time coaches, all of them on the floor rather than in
               an office. You will be handed to one of them in your first week
@@ -132,18 +132,19 @@ export default function Programmes() {
             </p>
           </div>
 
-          {/* The team as a hiring timeline: one dated spine down the left,
-              the people to the right of it. Each date is a group, so two
-              coaches hired in the same month share one node and stack
-              under it rather than repeating the heading. */}
+          {/* The team as a hiring timeline: a spine down the centre of the
+              page, a dated node per intake, and the people alternating
+              either side of it. Each date is a group, so two coaches hired
+              in the same month share one node and stack under it rather
+              than repeating the heading. */}
           <ol className="ctl">
             <span className="ctl-spine" aria-hidden="true" />
 
-            {intake.map(([joined, people]) => (
+            {intake.map(([joined, people], gi) => (
               <motion.li
-                className="ctl-group"
+                className={`ctl-group ctl-${gi % 2 === 0 ? 'left' : 'right'}`}
                 key={joined}
-                initial={{ opacity: 0, x: 34, filter: 'blur(6px)' }}
+                initial={{ opacity: 0, x: gi % 2 === 0 ? -34 : 34, filter: 'blur(6px)' }}
                 whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.55, ease }}

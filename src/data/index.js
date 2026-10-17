@@ -14,6 +14,7 @@ export {
   coachById,
   programmeBySlug,
 } from './programmes'
+export { LEGAL, LEGAL_LINKS, legalByPath } from './legal'
 export {
   PRODUCTS,
   SHOP_CATEGORIES,
@@ -36,6 +37,7 @@ export {
   JOIN_STEPS,
   JOIN_ANSWERS,
   JOIN_FACES,
+  JOIN_ASK_MEDIA,
   JOIN_IMG,
   TOUR_IMG,
   STUDENT_IMG,

@@ -1,7 +1,14 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Icon, Img, SmartLink } from '../components/ui'
-import { TIERS, JOIN_STEPS, JOIN_ANSWERS, JOIN_FACES, JOIN_IMG } from '../data'
+import {
+  TIERS,
+  JOIN_STEPS,
+  JOIN_ANSWERS,
+  JOIN_FACES,
+  JOIN_ASK_MEDIA,
+  JOIN_IMG,
+} from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
 
@@ -182,7 +189,40 @@ export default function Join() {
       {/* ── what people ask ──────────────────────────────────────────── */}
       <section className="section jn-ask-wrap">
         <div className="shell jn-ask-grid">
-          <h2 className="h-md jn-h">What people ask.</h2>
+          {/* The heading column ran two thirds empty down the page. The
+              photograph fills it, and the panel over it answers the thing
+              people are really asking while they read the questions. */}
+          <div className="jn-ask-side">
+            <h2 className="h-md jn-h">What people ask.</h2>
+
+            <motion.figure
+              className="jn-ask-media"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, ease }}
+            >
+              <Img
+                src={JOIN_ASK_MEDIA.img}
+                alt=""
+                sizes="(max-width: 900px) 100vw, 420px"
+                className="jn-ask-media-img"
+              />
+              <figcaption className="jn-ask-media-panel">
+                <span className="jn-ask-media-label">{JOIN_ASK_MEDIA.label}</span>
+                <strong>{JOIN_ASK_MEDIA.title}</strong>
+                <ul>
+                  {JOIN_ASK_MEDIA.points.map((point) => (
+                    <li key={point}>
+                      <Icon.check />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </figcaption>
+            </motion.figure>
+          </div>
+
           <dl className="jn-ask">
             {JOIN_ANSWERS.map((item, i) => (
               <motion.div

@@ -23,6 +23,11 @@ export const paths = {
   shop: '/shop',
   dining: '/dining',
 
+  // the small print
+  terms: '/terms',
+  privacy: '/privacy',
+  cookies: '/cookies',
+
   checkout: '/checkout',
   account: '/account',
 

@@ -44,6 +44,11 @@ export const routes = [
       { path: 'programmes/:slug', lazy: view(() => import('./views/ProgrammeDetail')) },
       { path: 'shop', lazy: view(() => import('./views/Shop')) },
       { path: 'dining', lazy: view(() => import('./views/Dining')) },
+      /* The three legal pages share one view and one chunk — they are the
+         same layout over different content in src/data/legal. */
+      { path: 'terms', lazy: view(() => import('./views/Legal')) },
+      { path: 'privacy', lazy: view(() => import('./views/Legal')) },
+      { path: 'cookies', lazy: view(() => import('./views/Legal')) },
       { path: 'join', lazy: view(() => import('./views/Join')) },
       { path: 'private-tour', lazy: view(() => import('./views/PrivateTour')) },
       { path: 'students', lazy: view(() => import('./views/Students')) },
