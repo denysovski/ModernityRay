@@ -62,7 +62,17 @@
   width: min(1500px, calc(100% - 2 * var(--pad)));
   margin: clamp(36px, 5vw, 64px) auto 0;
   height: clamp(420px, 68vh, 760px);
-  border-radius: clamp(24px, 2.6vw, 40px);
+  /* A flat 15px, not the fluid radius the rest of the page uses: at this
+     size big corners read as a rounded card, and the hero should read as a
+     photograph with its edges taken off.
+
+     Carried as a custom property because `border-radius: inherit` does not
+     reach the <img>. The responsive <Img> wraps it in a <picture>, so the
+     image inherits from that — and <picture> has no radius of its own, so
+     inherit resolved to 0 and the photograph kept square corners inside a
+     rounded box. Custom properties do inherit through the wrapper. */
+  --hero-r: 15px;
+  border-radius: var(--hero-r);
 }
 /* The responsive <Img> wraps this in a <picture>, so the image is no longer
    a direct child even though display:contents keeps it a direct child for
@@ -71,7 +81,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: inherit;
+  border-radius: var(--hero-r);
   position: relative;
   z-index: 1;
 }
