@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, Img, SmartLink } from '../components/ui'
+import { CoachSocials, Icon, Img, SmartLink } from '../components/ui'
 import { PROGRAMMES, DISCIPLINES, COACHES } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
@@ -83,7 +83,7 @@ export default function Programmes() {
                 transition={{ duration: 0.4, ease, delay: Math.min(i * 0.05, 0.3) }}
               >
                 <SmartLink href={paths.programme(p.slug)} className="prg-row-link">
-                  <span className="prg-row-n">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="prg-row-n">{i + 1}</span>
                   <span className="prg-row-main">
                     <span className="prg-row-title">{p.title}</span>
                     <span className="prg-row-desc">{p.desc}</span>
@@ -137,11 +137,7 @@ export default function Programmes() {
                   <h3>{c.name}</h3>
                   <span className="coach-role">{c.role}</span>
                   <p>{c.bio}</p>
-                  <ul className="coach-badges">
-                    {c.badges.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
+                  <CoachSocials socials={c.socials} name={c.name} />
                 </div>
               </motion.article>
             ))}

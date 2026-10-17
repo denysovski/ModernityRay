@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Icon, Img, SmartLink } from '../components/ui'
+import { CoachSocials, Icon, Img, SmartLink } from '../components/ui'
 import { PROGRAMMES, programmeBySlug, coachById, courtBySlug } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
@@ -180,7 +180,6 @@ export default function ProgrammeDetail() {
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, ease, delay: Math.min(i * 0.08, 0.3) }}
                 >
-                  <span className="prgd-card-ic"><Icon.spark /></span>
                   <h3>{c.title}</h3>
                   <p>{c.desc}</p>
                 </motion.div>
@@ -209,14 +208,12 @@ export default function ProgrammeDetail() {
               >
                 <img src={c.img} alt={c.name} loading="lazy" />
                 <div className="prgd-coach-text">
-                  <span className="prgd-coach-role">{c.role}</span>
+                  {/* Name first, then what they do — a job title above the
+                      person reads as a category heading, not as theirs. */}
                   <h3>{c.name}</h3>
+                  <span className="prgd-coach-role">{c.role}</span>
                   <p>{c.bio}</p>
-                  <ul className="coach-badges">
-                    {c.badges.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
+                  <CoachSocials socials={c.socials} name={c.name} />
                 </div>
               </motion.article>
             ))}

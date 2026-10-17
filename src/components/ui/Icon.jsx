@@ -111,6 +111,13 @@ export const Icon = {
       <path d="M6.5 8.5v10h-3v-10h3Zm.3-3.2a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 0 1 3.6 0ZM20.5 13v5.5h-3V13.4c0-1.2-.4-2-1.5-2-1.7 0-1.9 1.6-1.9 2.5v4.6h-3v-10h2.9v1.3c.5-.7 1.4-1.6 3.1-1.6 2.3 0 3.4 1.5 3.4 4.5Z" />
     </svg>
   ),
+  mail: (p) => (
+    <svg viewBox="0 0 24 24" width="19" height="19" fill="none" {...p}>
+      <rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" strokeWidth="1.7" />
+      <path d="m4 8 7.1 5a1.6 1.6 0 0 0 1.8 0L20 8" stroke="currentColor" strokeWidth="1.7"
+        strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
   chevron: (p) => (
     <svg viewBox="0 0 24 24" width="15" height="15" fill="none" {...p}>
       <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="1.8"

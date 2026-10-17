@@ -71,7 +71,15 @@ html {
      Nothing in the app positions against the initial containing block, so
      making it a containing block changes no layout. */
   position: relative;
-  scroll-behavior: smooth;
+  /* No `scroll-behavior: smooth` here, deliberately.
+     It applies to every programmatic scroll, <ScrollRestoration>'s jump to
+     the top on a route change included — so clicking a card halfway down
+     the homepage animated the page back up to the top before the new view
+     appeared, which read as the site scrolling you away rather than
+     navigating. Route changes should be instant.
+     In-page anchors are unaffected: lib/scroll animates them itself, frame
+     by frame, because the homepage sections move while you travel towards
+     them and CSS smooth scrolling cannot be corrected mid-flight. */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* Reserve the scrollbar's track permanently. The cart and checkout leave the
