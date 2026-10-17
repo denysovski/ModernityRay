@@ -14,10 +14,17 @@ Návštěvník si na webu může:
   a prohlédnout si detail každé z nich,
 * projít areály klubu a rezervovat si konkrétní termín, třeba hodinu na
   centrálním kurtu nebo trénink s koučem,
+* projít devět tréninkových programů od tenisové přípravy po plavání,
+  každý s vlastní stránkou, rozpisem bloku a trenéry, kteří ho vedou,
 * prohlédnout kalendář klubových akcí (turnaje, ligy, kliniky, společenské
   večery) a přihlásit se na ně,
+* nakoupit v klubovém e-shopu vybavení a doplňky značky CourtSy,
+* podívat se do klubové restaurace: tři sály, otevírací doba a menu,
+* zapsat se na prohlídku klubu, zažádat o studentskou slevu nebo koupit
+  dárkový poukaz,
 * projít objednávkou ve čtyřech krocích s kompletní validací vstupů,
-* spravovat svůj profil, nastavení a historii objednávek.
+* spravovat svůj profil, nastavení a historii objednávek, případně svůj
+  účet celý smazat.
 
 Celá aplikace běží pouze na straně prohlížeče. Žádný backend neexistuje:
 obsah je uložený jako datové moduly v `src/data/`, stav aplikace (košík,
@@ -64,10 +71,10 @@ npm run preview      # náhled buildu na http://localhost:4173
 ## Testy
 
 ```bash
-npm test             # 101 unit a komponentových testů (Vitest + Testing Library)
+npm test             # 102 unit a komponentových testů (Vitest + Testing Library)
 npm run test:watch   # totéž v režimu sledování změn
 npm run test:coverage# pokrytí kódu
-npm run test:e2e     # 12 end-to-end testů (Playwright, Chromium)
+npm run test:e2e     # 39 end-to-end testů (Playwright, Chromium)
 npm run test:all     # obojí za sebou
 ```
 
@@ -112,19 +119,21 @@ src/
   routes.js             jediné místo s definicí URL cest
   layouts/
     RootLayout.jsx      společný rám všech rout (navbar, košík, patička)
-  views/                devět obrazovek, každá vlastní komponenta
+  views/                obrazovky aplikace, každá vlastní komponenta
   components/
     layout/             navbar, patička, sociální dock, hlavička podstránky
     sections/           sekce domovské stránky
     commerce/           košík a formulářové pole
-    ui/                 sdílené prvky (Icon, Img, SmartLink, motion)
+    ui/                 sdílené prvky (Icon, Img, SmartLink, motion,
+                        SelectMenu, ConfirmDialog, CoachSocials)
   context/
     StoreContext.jsx    React Context nad externím storem
   lib/
     store.js            stav aplikace a localStorage
     validation.js       validace vstupů a sanitizace
     format.js           formátování dat kalendáře
-  data/                 obsah webu (ceny, areály, kalendář, navigace)
+  data/                 obsah webu (ceny, areály, programy, kalendář,
+                        e-shop, restaurace, navigace, právní stránky)
   styles/               návrhové tokeny a styly po sekcích
 tests/
   setup.js              společné prostředí testů
@@ -146,10 +155,19 @@ playwright.config.js    e2e testy nad produkčním buildem
 | `/memberships/:slug` | `MembershipDetail` | Detail jedné úrovně členství. |
 | `/courts` | `Courts` | Přehled areálů s fulltextovým hledáním. |
 | `/courts/:slug` | `CourtDetail` | Detail areálu, galerie a rezervovatelné termíny. |
+| `/programmes` | `Programmes` | Přehled tréninkových programů a časová osa trenérů. |
+| `/programmes/:slug` | `ProgrammeDetail` | Detail programu: rozpis bloku, fakta, trenéři. |
 | `/events` | `Events` | Kalendář akcí s filtrem, hledáním a seskupením po měsících. |
 | `/events/:slug` | `EventDetail` | Detail jedné akce. |
+| `/shop` | `Shop` | Klubový e-shop, filtrování podle kategorie. |
+| `/dining` | `Dining` | Klubová restaurace: tři sály a menu. |
+| `/join` | `Join` | Co členství obnáší, než dojde na ceník. |
+| `/private-tour` | `PrivateTour` | Zápis na prohlídku klubu. |
+| `/students` | `Students` | Studentská sleva. |
+| `/gift` | `Gift` | Dárkové poukazy. |
 | `/checkout` | `Checkout` | Čtyřkrokový objednávkový formulář s validací. |
-| `/account` | `Account` | Profil, historie objednávek a nastavení. |
+| `/account` | `Account` | Profil, historie objednávek, nastavení a smazání účtu. |
+| `/terms`, `/privacy`, `/cookies` | `Legal` | Podmínky, soukromí a cookies — jedna komponenta nad třemi texty. |
 | cokoli jiného | `NotFound` | Stránka 404. |
 
 Podrobnosti o architektuře, správě stavu a testování jsou v
