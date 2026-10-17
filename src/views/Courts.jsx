@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, Img, SmartLink } from '../components/ui'
-import { COURTS } from '../data'
+import { Icon, Img, SmartLink, useSeo } from '../components/ui'
+import { COURTS, describe } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
 
@@ -20,9 +20,11 @@ export default function Courts() {
   const { money } = useStore()
   const [query, setQuery] = useState('')
 
-  useEffect(() => {
-    document.title = 'Courts & facilities — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Courts & Facilities',
+    description:
+      'Five places to play at CourtSy: championship clay, six floodlit hard courts, eighteen lakeside holes, a strength pavilion and a heated 25-metre pool.',
+  })
 
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -74,7 +76,7 @@ export default function Courts() {
               >
                 <SmartLink href={paths.court(court.slug)} className="court-card-link">
                   <div className="court-card-img">
-                    <Img src={court.img} alt={court.name} sizes="(max-width: 700px) 100vw, 440px" />
+                    <Img src={court.img} alt={describe(court.img)} sizes="(max-width: 700px) 100vw, 440px" />
                     <span className="court-card-scrim" />
                     <span className="court-card-tag">{court.surface}</span>
                   </div>

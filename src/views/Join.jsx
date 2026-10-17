@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Icon, Img, SmartLink } from '../components/ui'
+import { Icon, Img, SmartLink, useSeo } from '../components/ui'
 import {
   TIERS,
   JOIN_STEPS,
@@ -8,6 +7,7 @@ import {
   JOIN_FACES,
   JOIN_ASK_MEDIA,
   JOIN_IMG,
+  describe,
 } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
@@ -53,17 +53,25 @@ const swooshText = {
 
 export default function Join() {
   const { money } = useStore()
-
-  useEffect(() => {
-    document.title = 'Become a member — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Become a Member',
+    description:
+      'What joining CourtSy actually means: no joining fee on any tier, one month’s notice, and coaching and recovery included rather than sold as add-ons.',
+  })
 
   const cheapest = Math.min(...TIERS.map((t) => t.price))
 
   return (
     <main className="jn">
       <header className="jn-hero">
-        <Img src={JOIN_IMG} alt="" sizes="100vw" loading="eager" fetchPriority="high" className="jn-hero-img" />
+        <Img
+          src={JOIN_IMG}
+          alt={describe(JOIN_IMG)}
+          sizes="100vw"
+          loading="eager"
+          fetchPriority="high"
+          className="jn-hero-img"
+        />
         <span className="jn-hero-scrim" />
         <div className="shell jn-hero-inner">
           <motion.div
@@ -204,7 +212,7 @@ export default function Join() {
             >
               <Img
                 src={JOIN_ASK_MEDIA.img}
-                alt=""
+                alt={describe(JOIN_ASK_MEDIA.img)}
                 sizes="(max-width: 900px) 100vw, 420px"
                 className="jn-ask-media-img"
               />

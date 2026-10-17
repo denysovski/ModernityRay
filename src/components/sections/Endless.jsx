@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Icon, Img, Reveal, SmartLink } from '../ui'
-import { PLANS, ENDLESS_IMG } from '../../data'
+import { PLANS, ENDLESS_IMG, describe } from '../../data'
 
 export default function Endless() {
   const n = PLANS.length
@@ -24,7 +24,7 @@ export default function Endless() {
     <section className="section endless" id="endless">
       <div className="shell">
         <div className="endless-card" ref={cardRef}>
-          <motion.img className="endless-bg" src={ENDLESS_IMG} alt="Training at the club" style={{ y: bgY }} />
+          <motion.img className="endless-bg" src={ENDLESS_IMG} alt={describe(ENDLESS_IMG)} style={{ y: bgY }} />
           <div className="endless-scrim" />
           <Reveal className="endless-copy">
             <span className="micro micro-dark">
@@ -78,7 +78,7 @@ export default function Endless() {
               const inner = (
                 <>
                   <div className="pcard-img">
-                    <Img src={p.img} alt={p.title} sizes="(max-width: 700px) 80vw, 340px" />
+                    <Img src={p.img} alt={describe(p.img)} sizes="(max-width: 700px) 80vw, 340px" />
                     <span className="pcard-tag">{p.tag}</span>
                     <span className="pcard-go"><Icon.arrowUR /></span>
                   </div>

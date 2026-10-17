@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
 import Field from '../components/commerce/Field'
-import { Icon, SmartLink } from '../components/ui'
+import { Icon, SmartLink, useSeo } from '../components/ui'
 import { TOURS, TOUR_STEPS } from '../data'
 import { useStore } from '../context/StoreContext'
 import { formatDate } from '../lib/format'
@@ -47,10 +47,11 @@ export default function PrivateTour() {
   const [openSlot, setOpenSlot] = useState(null)
   const [name, setName] = useState(user?.name || '')
   const [submitted, setSubmitted] = useState(false)
-
-  useEffect(() => {
-    document.title = 'Book a private tour — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Book a Private Tour',
+    description:
+      'See CourtSy before you join. An hour on foot with someone who works here, in a small group, for $20 paid at the desk. No card and no commitment.',
+  })
 
   const error = useMemo(() => validateName(name), [name])
 

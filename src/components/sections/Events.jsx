@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Icon, Img, MotionLink, Reveal, SmartLink } from '../ui'
-import { EVENTS } from '../../data'
+import { EVENTS, describe } from '../../data'
 import { formatDateRange } from '../../lib/format'
 import { paths } from '../../routes'
 
@@ -14,7 +14,7 @@ function EventCard({ e, big }) {
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      <Img src={e.img} alt={e.title} sizes={big ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 30vw'} />
+      <Img src={e.img} alt={describe(e.img)} sizes={big ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 30vw'} />
       <div className="ev-scrim" />
       <span className="ev-tag">{e.tag}</span>
       <div className="ev-body">

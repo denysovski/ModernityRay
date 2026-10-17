@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, SmartLink } from '../components/ui'
+import { Icon, SmartLink, useSeo } from '../components/ui'
 import { VOUCHERS, GIFT_FACTS } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
@@ -18,10 +18,11 @@ const ease = [0.22, 1, 0.36, 1]
 export default function Gift() {
   const { add, openCart, money } = useStore()
   const [chosen, setChosen] = useState(VOUCHERS[1].value)
-
-  useEffect(() => {
-    document.title = 'Gift a day pass — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Gift a Day Pass',
+    description:
+      'CourtSy gift vouchers from $50, spendable on court time, coaching, the recovery suite or the clubhouse kitchen. No expiry and nothing to activate.',
+  })
 
   const voucher = VOUCHERS.find((v) => v.value === chosen) ?? VOUCHERS[0]
 

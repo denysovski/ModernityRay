@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { describe } from '../../data/images'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Img from './Img'
 
@@ -87,7 +88,7 @@ export default function Showcase({ slides, name, sizes = '(max-width: 1440px) 10
           >
             <Img
               src={slide.img}
-              alt={`${name}: ${slide.title}`}
+              alt={describe(slide.img) || `${name}: ${slide.title}`}
               sizes={sizes}
               loading={index === 0 ? 'eager' : 'lazy'}
               fetchPriority={index === 0 ? 'high' : undefined}

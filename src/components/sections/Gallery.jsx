@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { Reveal, Icon, Img, MotionLink } from '../ui'
-import { local } from '../../data/images'
+import { local, describe } from '../../data/images'
 import { paths } from '../../routes'
 
 /* One shot per space in the club — every photograph in public/img that is not
@@ -54,7 +54,7 @@ export default function Gallery() {
           >
             <Img
               src={s.img}
-              alt={s.label}
+              alt={describe(s.img)}
               /* matches .gshot: clamp(420px, 42vw, 590px) */
               sizes="(max-width: 700px) 70vw, (max-width: 1400px) 42vw, 590px"
             />

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
 import Field from '../components/commerce/Field'
-import { Icon, SmartLink } from '../components/ui'
+import { Icon, SmartLink, useSeo } from '../components/ui'
 import { useStore } from '../context/StoreContext'
 import { TAX_RATE } from '../lib/store'
 import {
@@ -85,9 +85,11 @@ export default function Checkout() {
   const [submitted, setSubmitted] = useState({})
   const [order, setOrder] = useState(null)
 
-  useEffect(() => {
-    document.title = 'Checkout — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Checkout',
+    description: 'Complete your CourtSy membership, booking or order.',
+    noindex: true,
+  })
 
   /* The payment step is the tallest, so the submit button sits well down
      the page — and the confirmation that replaces it is short. Without

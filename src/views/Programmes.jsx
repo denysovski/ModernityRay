@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { CoachSocials, Icon, Img, SmartLink } from '../components/ui'
+import { CoachSocials, Icon, Img, SmartLink, useSeo } from '../components/ui'
 import { PROGRAMMES, DISCIPLINES, COACHES_BY_JOINED } from '../data'
 import { useStore } from '../context/StoreContext'
 import { monthLabel } from '../lib/format'
@@ -20,10 +20,11 @@ const ease = [0.22, 1, 0.36, 1]
 export default function Programmes() {
   const { money } = useStore()
   const [discipline, setDiscipline] = useState('All')
-
-  useEffect(() => {
-    document.title = 'Training programmes — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Training Programmes',
+    description:
+      'Nine coached programmes at CourtSy: tennis, strength, junior academy, golf, recovery, HIIT, match play, endurance and swimming — and the eight coaches who run them.',
+  })
 
   const shown = useMemo(
     () =>

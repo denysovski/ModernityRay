@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { Icon, Img, SmartLink } from '../ui'
 import { HERO_CARDS } from '../../data'
 import { paths } from '../../routes'
-import { local } from '../../data/images'
+import { describe, local } from '../../data/images'
 
 const rise = {
   hidden: { opacity: 0, y: 30 },
@@ -76,7 +76,7 @@ export default function Hero() {
             and never lazy — the browser should start it immediately */}
         <Img
           src={HERO_BG}
-          alt="Aerial view of the club courts"
+          alt={describe(HERO_BG)}
           sizes="100vw"
           loading="eager"
           fetchPriority="high"
@@ -98,6 +98,8 @@ export default function Hero() {
         <motion.div className="fc fc-members" style={{ y: y2 }} variants={pop(1)} initial="hidden" animate="show" whileHover={{ scale: 1.05 }}>
           <div className="fc-avatars">
             {HERO_CARDS.members.map((m) => (
+              /* A face in a stack of five: the count and the label beside
+                 them carry the meaning, so each portrait is decorative. */
               <Img key={m} src={m} alt="" sizes="40px" />
             ))}
           </div>

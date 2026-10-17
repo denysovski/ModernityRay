@@ -4,12 +4,68 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="CourtSy — a private members' sport club. Where players belong." />
+    <meta name="theme-color" content="#0f0f0f" />
+
+    <!-- These describe the homepage. Every route overwrites them on mount
+         from src/lib/seo.js, because one index.html is served for all
+         twenty-one URLs and a shared description would make them look like
+         twenty-one copies of the same page. -->
+    <title>CourtSy | Private Members’ Sport Club</title>
+    <meta
+      name="description"
+      content="A private members’ sport club: championship clay, six floodlit hard courts, eighteen lakeside holes, a strength pavilion and a heated pool, with coaching and recovery included."
+    />
+    <link rel="canonical" href="https://denysovski.github.io/ModernityRay/" />
+
+    <meta property="og:site_name" content="CourtSy" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CourtSy | Private Members’ Sport Club" />
+    <meta
+      property="og:description"
+      content="Courts, greens, coaching and recovery — one considered space for people who move. Members only."
+    />
+    <meta property="og:url" content="https://denysovski.github.io/ModernityRay/" />
+    <meta
+      property="og:image"
+      content="https://denysovski.github.io/ModernityRay/img/aerial.jpg"
+    />
+    <meta
+      property="og:image:alt"
+      content="The CourtSy grounds from the air: a single tennis court enclosed by clipped hedges, with the clubhouse and the lake beyond."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <!-- Inter and Aspekta are both self-hosted and bundled (see
          styles/index.css). Loading Inter from fonts.googleapis.com cost a DNS
          lookup, a TLS handshake and a render-blocking stylesheet on the
          critical path; the variable font ships with the app instead. -->
-    <title>CourtSy — Private Sport Club</title>
+
+    <!-- Structured data for the club itself. One graph on every page rather
+         than per-route markup: the organisation does not change, and a
+         crawler only needs to be told about it once per document. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SportsActivityLocation",
+        "@id": "https://denysovski.github.io/ModernityRay/#club",
+        "name": "CourtSy",
+        "description": "A private members’ sport club with tennis courts, an eighteen-hole golf course, a strength and conditioning pavilion, a heated pool, coaching and a recovery suite.",
+        "url": "https://denysovski.github.io/ModernityRay/",
+        "image": "https://denysovski.github.io/ModernityRay/img/aerial.jpg",
+        "foundingDate": "2026",
+        "priceRange": "$45–$420",
+        "sport": ["Tennis", "Golf", "Swimming", "Strength training"],
+        "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Championship clay court", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Six floodlit hard courts", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Eighteen-hole golf course", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Strength and conditioning pavilion", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Heated 25-metre pool", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Recovery suite", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Clubhouse restaurant", "value": true }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

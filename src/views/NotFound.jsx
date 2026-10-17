@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, SmartLink } from '../components/ui'
+import { Icon, SmartLink, useSeo } from '../components/ui'
 import { paths } from '../routes'
 
 /* The catch-all route, and the fallback a detail view renders when its slug
@@ -10,9 +10,11 @@ import { paths } from '../routes'
 export default function NotFound({ what = 'page' }) {
   const { pathname } = useLocation()
 
-  useEffect(() => {
-    document.title = 'Not found — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Page Not Found',
+    description: 'That page is not here. Find your way back to the club.',
+    noindex: true,
+  })
 
   return (
     <main className="pg">

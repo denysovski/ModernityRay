@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, Img, SmartLink } from '../components/ui'
-import { PRODUCTS, SHOP_CATEGORIES } from '../data'
+import { Icon, Img, SmartLink, useSeo } from '../components/ui'
+import { PRODUCTS, SHOP_CATEGORIES, describe } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
 
@@ -22,10 +22,11 @@ const ease = [0.22, 1, 0.36, 1]
 export default function Shop() {
   const { add, openCart, money, items } = useStore()
   const [category, setCategory] = useState('All')
-
-  useEffect(() => {
-    document.title = 'The club shop — CourtSy'
-  }, [])
+  useSeo({
+    title: 'The Club Shop',
+    description:
+      'CourtSy kit and gadgets: the swing sensor, the training band, club apparel and clubhouse essentials. Members take 15% off, delivered in three days or collected from the pro shop.',
+  })
 
   const shown = useMemo(
     () =>
@@ -100,7 +101,7 @@ export default function Shop() {
                   transition={{ duration: 0.32, ease }}
                 >
                   <div className="shop-card-img">
-                    <Img src={p.img} alt={p.name} sizes="(max-width: 760px) 100vw, 400px" />
+                    <Img src={p.img} alt={describe(p.img)} sizes="(max-width: 760px) 100vw, 400px" />
                     {p.tag && <span className="shop-card-tag">{p.tag}</span>}
                     <span className="shop-card-cat">{p.category}</span>
                   </div>

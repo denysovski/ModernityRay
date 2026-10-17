@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, Img, SmartLink } from '../components/ui'
-import { CALENDAR, courtBySlug, eventBySlug } from '../data'
+import { Icon, Img, SmartLink, useSeo } from '../components/ui'
+import { CALENDAR, courtBySlug, eventBySlug, describe } from '../data'
 import { useStore } from '../context/StoreContext'
 import { byDate, formatDate, formatDateRange, hasEnded } from '../lib/format'
 import { paths } from '../routes'
@@ -18,9 +17,16 @@ export default function EventDetail() {
   const event = eventBySlug(slug)
   const { add, openCart, money } = useStore()
 
-  useEffect(() => {
-    document.title = event ? `${event.title} — CourtSy` : 'Not found — CourtSy'
-  }, [event])
+  useSeo({
+    title: event ? event.title : 'Event Not Found',
+    description: event
+      ? `${formatDateRange(event.start, event.end)} at CourtSy. ${event.desc}`
+      : 'That date is not in the calendar. See everything on at CourtSy.',
+    image: event?.img,
+    // a dated, one-off happening is the textbook og:type article
+    type: 'article',
+    noindex: !event,
+  })
 
   if (!event) return <NotFound what="event" />
 
@@ -87,7 +93,7 @@ export default function EventDetail() {
           >
             <Img
               src={event.img}
-              alt={event.title}
+              alt={describe(event.img)}
               sizes="(max-width: 1440px) 100vw, 1440px"
               loading="eager"
               fetchPriority="high"

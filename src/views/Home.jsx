@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Hero from '../components/sections/Hero'
 import Tailored from '../components/sections/Tailored'
 import Endless from '../components/sections/Endless'
@@ -10,7 +9,8 @@ import Events from '../components/sections/Events'
 import Principles from '../components/sections/Principles'
 import Newsletter from '../components/sections/Newsletter'
 import Marquee from '../components/sections/Marquee'
-import { Depth } from '../components/ui'
+import { Depth, useSeo } from '../components/ui'
+import { local } from '../data/images'
 
 /* View 1 of 9 — the landing page.
  *
@@ -23,9 +23,14 @@ import { Depth } from '../components/ui'
  * short teaser here that links through, rather than repeating the full detail.
  */
 export default function Home() {
-  useEffect(() => {
-    document.title = 'CourtSy — A private members’ sport club'
-  }, [])
+  /* The homepage is the one title without a page part: pageTitle() turns
+     an absent title into the brand plus its positioning, which is what a
+     result for "CourtSy" should read as. */
+  useSeo({
+    description:
+      'A private members’ sport club: championship clay, six floodlit hard courts, eighteen lakeside holes, a strength pavilion and a heated pool, with coaching and recovery included.',
+    image: local('aerial.jpg'),
+  })
 
   return (
     <main className="stage" id="top">

@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, SmartLink } from '../components/ui'
+import { Icon, SmartLink, useSeo } from '../components/ui'
 import { legalByPath, LEGAL_LINKS } from '../data'
 import { paths } from '../routes'
 import NotFound from './NotFound'
@@ -24,9 +23,11 @@ export default function Legal() {
   const { pathname } = useLocation()
   const page = legalByPath(pathname)
 
-  useEffect(() => {
-    if (page) document.title = `${page.label} — CourtSy`
-  }, [page])
+  useSeo({
+    title: page ? page.title.replace(/\.$/, '') : 'Page Not Found',
+    description: page ? page.lede : 'That page is not here.',
+    noindex: !page,
+  })
 
   if (!page) return <NotFound what="page" />
 

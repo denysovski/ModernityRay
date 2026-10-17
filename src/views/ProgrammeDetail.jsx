@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { CoachSocials, Icon, Img, SmartLink } from '../components/ui'
-import { PROGRAMMES, programmeBySlug, coachById, courtBySlug } from '../data'
+import { CoachSocials, Icon, Img, SmartLink, useSeo } from '../components/ui'
+import { PROGRAMMES, programmeBySlug, coachById, courtBySlug, describe } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
 import NotFound from './NotFound'
@@ -28,11 +27,14 @@ export default function ProgrammeDetail() {
   const programme = programmeBySlug(slug)
   const { add, openCart, money } = useStore()
 
-  useEffect(() => {
-    document.title = programme
-      ? `${programme.title} — CourtSy`
-      : 'Not found — CourtSy'
-  }, [programme])
+  useSeo({
+    title: programme ? `${programme.title} · ${programme.meta}` : 'Programme Not Found',
+    description: programme
+      ? `${programme.desc} ${programme.level}, ${money(programme.price)} a month at CourtSy.`
+      : 'That programme is not here. See all nine coached blocks at CourtSy.',
+    image: programme?.img,
+    noindex: !programme,
+  })
 
   if (!programme) return <NotFound what="programme" />
 
@@ -59,7 +61,7 @@ export default function ProgrammeDetail() {
       <header className="prgd-hero">
         <Img
           src={programme.img}
-          alt=""
+          alt={describe(programme.img)}
           sizes="100vw"
           loading="eager"
           fetchPriority="high"
@@ -231,6 +233,7 @@ export default function ProgrammeDetail() {
           <div className="prgd-next-grid">
             {others.map((p) => (
               <SmartLink className="prgd-next-card" href={paths.programme(p.slug)} key={p.slug}>
+                {/* Inside a link whose own text names the programme. */}
                 <Img src={p.img} alt="" sizes="(max-width: 760px) 100vw, 360px" />
                 <span className="prgd-next-scrim" />
                 <span className="prgd-next-body">

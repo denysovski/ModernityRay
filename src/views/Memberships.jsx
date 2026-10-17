@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, Img, SelectMenu, SmartLink } from '../components/ui'
-import { TIERS } from '../data'
+import { Icon, Img, SelectMenu, SmartLink, useSeo } from '../components/ui'
+import { TIERS, describe } from '../data'
 import { useStore } from '../context/StoreContext'
 import { TAX_RATE } from '../lib/store'
 import { paths } from '../routes'
@@ -36,9 +36,11 @@ export default function Memberships() {
   const [filter, setFilter] = useState('all')
   const [sort, setSort] = useState('price-asc')
 
-  useEffect(() => {
-    document.title = 'Memberships — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Memberships',
+    description:
+      'Compare all five CourtSy memberships, from a $45 day pass to a ten-seat corporate tier. Every tier opens the same courts, greens, coaching and recovery suite.',
+  })
 
   const shown = useMemo(() => {
     const test = FILTERS.find((f) => f.id === filter)?.test ?? (() => true)
@@ -113,7 +115,7 @@ export default function Memberships() {
                 transition={{ duration: 0.26, ease }}
               >
                 <div className="tier-card-img">
-                  <Img src={tier.img} alt="" sizes="(max-width: 700px) 100vw, 340px" />
+                  <Img src={tier.img} alt={describe(tier.img)} sizes="(max-width: 700px) 100vw, 340px" />
                   {tier.tag && <span className="tier-tag">{tier.tag}</span>}
                 </div>
 

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
 import Field from '../components/commerce/Field'
-import { ConfirmDialog, Icon, SmartLink } from '../components/ui'
+import { ConfirmDialog, Icon, SmartLink, useSeo } from '../components/ui'
 import { useStore } from '../context/StoreContext'
 import { validateEmail, validateName } from '../lib/validation'
 import { formatDate } from '../lib/format'
@@ -53,13 +53,15 @@ export default function Account() {
   } = useStore()
 
   const [tab, setTab] = useState('profile')
+
+  useSeo({
+    title: 'Your Account',
+    description: 'Your CourtSy profile, order history and preferences.',
+    noindex: true,
+  })
   const [draft, setDraft] = useState({ name: user?.name || '', email: user?.email || '' })
   const [submitted, setSubmitted] = useState(false)
   const [saved, setSaved] = useState(false)
-
-  useEffect(() => {
-    document.title = 'Your account — CourtSy'
-  }, [])
 
   /* Same pattern as the checkout: errors are derived from the draft, not
      stored, so a field clears the instant it becomes valid. */

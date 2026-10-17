@@ -137,7 +137,7 @@ veškerý vykreslovaný text sám.
 |---|---|---|---|
 | Unit | Vitest | 87 | validace, store a součty, formátování dat |
 | Komponenty | Vitest + React Testing Library | 15 | přístupnost formulářového pole a rozbalovací nabídky, průchod pokladnou |
-| E2E | Playwright (Chromium) | 39 | routování, nákupní cesta, nastavení, mazání účtu, stránka 404 |
+| E2E | Playwright (Chromium) | 43 | routování, nákupní cesta, nastavení, mazání účtu, metadata stránek, stránka 404 |
 
 Jednotkové testy míří na složku `lib/`, kde je logika, která se může tiše
 pokazit: hraniční data v kalendáři, Luhnův algoritmus, PSČ podle zemí nebo
@@ -204,3 +204,58 @@ měřených routách. Co měření odhalilo:
 Dělení kódu jsem zachoval, i když u prvního načtení mnoho dat neušetří:
 sdílené balíčky `react` a `framer-motion` se mezi nasazeními nemění, takže
 vracejícímu se návštěvníkovi zůstanou v mezipaměti prohlížeče.
+
+## 7. SEO
+
+Jednostránková aplikace má u vyhledávačů jeden konkrétní problém: pro
+všech jednadvacet adres se posílá tentýž `index.html`. Titulek i popis
+v něm tedy popisují úvodní stránku a nic jiného, takže bez zásahu vypadá
+celý web jako jednadvacet kopií jedné stránky.
+
+Řeší to modul `src/lib/seo.js`, jediné místo, které zapisuje do hlavičky
+dokumentu, a hook `useSeo()`, který volá každá obrazovka. Nastavuje:
+
+* **titulek** ve tvaru `Memberships | CourtSy`; úvodní stránka má místo
+  názvu stránky své zařazení, protože „CourtSy | CourtSy" nikomu nepomůže,
+* **popis** psaný pro výsledek vyhledávání, ne převzatý z textu stránky;
+  delší než 180 znaků se zkrátí na celé slovo, protože Google zobrazí
+  zhruba 155 znaků a zbytek je jen zátěž navíc,
+* **kanonickou adresu**, aby se stránka dosažená s parametrem v URL
+  nepočítala jako duplicitní obsah,
+* **Open Graph a Twitter Card** včetně obrázku pro danou stránku; bez nich
+  měl odkaz sdílený na sociální síti u všech adres stejný náhled.
+
+Pokladna, účet a stránka 404 dostávají `noindex`. Prázdný košík ve
+výsledcích vyhledávání nikomu neposlouží a u neexistující adresy by šlo
+o takzvanou měkkou 404 — stránku, která hlásí chybu, ale vrací stav 200.
+V `robots.txt` jsou obě transakční cesty navíc zakázané; samotné
+`Disallow` ale indexaci nezabrání, pokud na stránku vede odkaz odjinud,
+proto obojí dohromady.
+
+Mapa webu se generuje při sestavení (plugin v `vite.config.js`) ze slugů
+v `src/data`. Ručně psaný seznam dvaačtyřiceti adres je seznam, který je
+do měsíce neaktuální: přidaný kurt nebo program by v něm tiše chyběl.
+Plugin navíc selže, pokud slugů najde méně, než kolik jich tam má být.
+
+**Alternativní texty** jsou v `src/data/images.js` u jednotlivých
+fotografií, ne u míst, kde se používají. Většina snímků se totiž opakuje —
+`clay.jpg` je hlavní obrázek Centre Courtu, první snímek jeho galerie
+i dlaždice „Clay courts" na úvodní stránce. Fotografie je všude stejná,
+takže popis musí být také, a psát ho zvlášť na každém místě znamená
+udržovat stejnou větu na třech místech. Popisy popisují, nepojmenovávají:
+nadpis vedle obrázku už říká „Centre Court", takže alt říká to, co z něj
+vidět není — červenou antuku a prázdné tribuny.
+
+Obrázky, které samy nenesou informaci (tváře členů ve shluku, náhled
+uvnitř odkazu, jehož text věc už pojmenovává), mají `alt=""`. To je pro
+dekorativní obrázek správný zápis: vyřadí ho ze stromu přístupnosti,
+takže odečítač obrazovky nepřečte totéž dvakrát.
+
+Výsledek měří Lighthouse i vlastní test. Kategorie SEO je na hodnotě
+**100** na všech měřených routách; čtyři testy v `tests/e2e/seo.spec.js`
+kontrolují, že každá indexovatelná routa má vlastní titulek, popis
+i kanonickou adresu, že se žádné dva neopakují, že se hlavička mění i při
+navigaci kliknutím (ne jen při načtení z adresního řádku) a že žádný
+obrázek nepostrádá atribut `alt`. Nic z toho není na stránce vidět, což je
+přesně důvod, proč to test musí hlídat: nová routa bez `useSeo()` zdědí
+hlavičku té předchozí a navenek nevypadá nijak špatně.

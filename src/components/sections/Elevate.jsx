@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Reveal, Icon, Img, SmartLink, CountUp } from '../ui'
-import { ELEVATE, STATS } from '../../data'
+import { ELEVATE, STATS, describe } from '../../data'
 
 export default function Elevate() {
   return (
@@ -27,7 +27,7 @@ export default function Elevate() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 }}
             >
               <SmartLink href={e.href} className="ecell-img">
-                <Img src={e.img} alt={e.title} sizes="(max-width: 900px) 100vw, 33vw" />
+                <Img src={e.img} alt={describe(e.img)} sizes="(max-width: 900px) 100vw, 33vw" />
                 <span className="ecell-tag">{e.label}</span>
                 <span className="ecell-go"><Icon.arrowUR /></span>
               </SmartLink>
@@ -35,8 +35,16 @@ export default function Elevate() {
                 <h3>{e.title}</h3>
                 <p>{e.desc}</p>
               </div>
+              {/* Three links reading only "Learn more" tell a crawler, and
+                  anyone tabbing through a list of links out of context,
+                  nothing about where they go. The hidden half completes
+                  the accessible name without changing what is on screen —
+                  an aria-label would replace the visible text instead of
+                  extending it. */}
               <SmartLink href={e.href} className="ecell-link">
-                Learn more <Icon.arrow className="arrow" />
+                Learn more
+                <span className="sr-only"> about {e.title.toLowerCase()}</span>{' '}
+                <Icon.arrow className="arrow" />
               </SmartLink>
 
               {['left', 'right'].map((side) => (
