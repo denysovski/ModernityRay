@@ -10,6 +10,7 @@ export {
   PROGRAMMES,
   DISCIPLINES,
   COACHES,
+  COACHES_BY_JOINED,
   coachById,
   programmeBySlug,
 } from './programmes'

@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
 import { CoachSocials, Icon, Img, SmartLink } from '../components/ui'
-import { PROGRAMMES, DISCIPLINES, COACHES } from '../data'
+import { PROGRAMMES, DISCIPLINES, COACHES_BY_JOINED } from '../data'
 import { useStore } from '../context/StoreContext'
+import { monthLabel } from '../lib/format'
 import { paths } from '../routes'
 
 /* View 10 — every training programme the club runs.
@@ -119,29 +120,48 @@ export default function Programmes() {
             </p>
           </div>
 
-          <div className="coach-grid">
-            {COACHES.map((c, i) => (
-              <motion.article
-                className="coach-card"
-                key={c.id}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, ease, delay: Math.min(i * 0.06, 0.3) }}
-              >
-                <div className="coach-portrait">
-                  <img src={c.img} alt={c.name} loading="lazy" />
-                  <span className="coach-since">Since {c.since}</span>
-                </div>
-                <div className="coach-body">
-                  <h3>{c.name}</h3>
-                  <span className="coach-role">{c.role}</span>
-                  <p>{c.bio}</p>
-                  <CoachSocials socials={c.socials} name={c.name} />
-                </div>
-              </motion.article>
-            ))}
-          </div>
+          {/* The team as a hiring timeline: one spine down the middle, a
+              dated node per coach, and the cards alternating either side of
+              it. Each one arrives from its own side as it scrolls in, which
+              is why the variants are built per index rather than shared. */}
+          <ol className="ctl">
+            <span className="ctl-spine" aria-hidden="true" />
+
+            {COACHES_BY_JOINED.map((c, i) => {
+              const side = i % 2 === 0 ? 'left' : 'right'
+              return (
+                <motion.li
+                  className={`ctl-item ctl-${side}`}
+                  key={c.id}
+                  initial={{ opacity: 0, x: side === 'left' ? -44 : 44, filter: 'blur(6px)' }}
+                  whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.6, ease }}
+                >
+                  <span className="ctl-date">{monthLabel(c.joined)}</span>
+                  <motion.span
+                    className="ctl-node"
+                    aria-hidden="true"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true, margin: '-80px' }}
+                    transition={{ duration: 0.45, ease, delay: 0.12 }}
+                  />
+
+                  <article className="ctl-card">
+                    <span className="ctl-avatar">
+                      <img src={c.img} alt={c.name} loading="lazy" />
+                    </span>
+                    <div className="ctl-text">
+                      <h3>{c.name}</h3>
+                      <span className="ctl-role">{c.role}</span>
+                      <CoachSocials socials={c.socials} name={c.name} />
+                    </div>
+                  </article>
+                </motion.li>
+              )
+            })}
+          </ol>
         </div>
       </section>
 
