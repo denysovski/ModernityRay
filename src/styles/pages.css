@@ -180,25 +180,28 @@
   max-width: 58ch;
 }
 /* ---------------- the coaching timeline ----------------
-   A hiring history rather than a staff grid: one spine down the middle,
-   a dated node per coach, cards alternating either side.
+   A hiring history rather than a staff grid. One dated spine down the
+   left, the people to the right of it, oldest first.
 
-   Built on a two-column grid where every row spans both columns and each
-   item places itself in one of them. That keeps the spine exactly central
-   whatever the cards contain, and means the left/right alternation is a
-   class on the item rather than anything the markup has to interleave. */
+   Two custom properties carry the geometry: the width of the date column
+   and the gutter beside it. The spine sits in the middle of that gutter,
+   and the node and the connecting arm are positioned from the same two
+   values, so changing either keeps all three aligned. */
 .ctl {
+  --ctl-date-w: 150px;
+  --ctl-gap: 48px;
+  /* where the spine falls, measured from the left edge of the list */
+  --ctl-line: calc(var(--ctl-date-w) + var(--ctl-gap) / 2);
   position: relative;
   list-style: none;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: clamp(56px, 7vw, 110px);
-  row-gap: clamp(22px, 3vw, 40px);
-  padding-block: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(30px, 3.6vw, 52px);
+  padding-block: 6px;
 }
 .ctl-spine {
   position: absolute;
-  left: 50%;
+  left: var(--ctl-line);
   top: 0;
   bottom: 0;
   width: 2px;
@@ -207,32 +210,24 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    var(--lime) 8%,
-    var(--lime) 92%,
+    var(--lime) 6%,
+    var(--lime) 94%,
     transparent
   );
 }
-.ctl-item {
+
+/* one hiring month: the date, the node, and everyone who started then */
+.ctl-group {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.ctl-left {
-  grid-column: 1;
-  align-items: flex-end;
-  text-align: right;
-}
-.ctl-right {
-  grid-column: 2;
-  align-items: flex-start;
-}
-/* Every coach starts a new row, so the two columns never collide even
-   when one card runs taller than its neighbour. */
-.ctl-item {
-  grid-row: auto;
+  display: grid;
+  grid-template-columns: var(--ctl-date-w) minmax(0, 1fr);
+  column-gap: var(--ctl-gap);
+  align-items: start;
 }
 .ctl-date {
+  grid-column: 1;
+  text-align: right;
+  padding-top: 26px;
   font-family: var(--display);
   font-size: 13px;
   font-weight: 800;
@@ -240,10 +235,11 @@
   text-transform: uppercase;
   color: var(--green);
 }
-/* the dot where this coach meets the spine */
 .ctl-node {
   position: absolute;
-  top: 4px;
+  left: var(--ctl-line);
+  top: 28px;
+  transform: translateX(-50%);
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -251,51 +247,39 @@
   border: 3px solid var(--lime);
   z-index: 1;
 }
-.ctl-left .ctl-node {
-  right: calc(clamp(56px, 7vw, 110px) / -2 - 7.5px);
-}
-.ctl-right .ctl-node {
-  left: calc(clamp(56px, 7vw, 110px) / -2 - 7.5px);
-}
-/* the short arm joining the card to the spine */
-.ctl-item::before {
+/* the short arm from the spine across to the first card */
+.ctl-group::before {
   content: '';
   position: absolute;
-  top: 11px;
-  width: calc(clamp(56px, 7vw, 110px) / 2 - 7px);
+  left: var(--ctl-line);
+  top: 35px;
+  width: calc(var(--ctl-gap) / 2 - 7px);
   height: 2px;
   background: var(--lime);
   opacity: 0.45;
 }
-.ctl-left::before {
-  right: calc(clamp(56px, 7vw, 110px) / -2);
-}
-.ctl-right::before {
-  left: calc(clamp(56px, 7vw, 110px) / -2);
+
+/* stacked, for a month that took on more than one coach */
+.ctl-cards {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
+/* No panel: no fill and no border, so the portrait and the name carry the
+   row and the spine stays the only structure on screen. */
 .ctl-card {
   display: flex;
   align-items: center;
-  gap: 18px;
-  width: 100%;
-  max-width: 420px;
-  padding: 18px 22px;
-  border-radius: var(--r-xl);
-  background: var(--page);
-  border: 1.5px solid var(--lime);
-  transition: transform 0.4s var(--ease), box-shadow 0.4s, background 0.3s;
-}
-.ctl-left .ctl-card {
-  flex-direction: row-reverse;
-  text-align: right;
+  gap: 20px;
+  padding: 10px 0;
+  transition: transform 0.35s var(--ease);
 }
 .ctl-card:hover {
-  transform: translateY(-5px);
-  background: rgba(93, 214, 44, 0.05);
-  box-shadow: 0 34px 60px -52px rgba(10, 10, 10, 0.5);
+  transform: translateX(5px);
 }
-/* a bubble, not a tile — and no zoom, the card already moves */
+/* a bubble, not a tile — and no zoom, the row already moves */
 .ctl-avatar {
   flex-shrink: 0;
   width: 86px;
@@ -330,64 +314,45 @@
   text-transform: uppercase;
   color: var(--green);
 }
-/* Socials sit at the bottom-left of the card on both sides — the cards
-   mirror, the handles do not, so the row of bubbles always starts in the
-   same place and reads as one consistent control. */
 .ctl-text .coach-socials {
   margin-top: 10px;
-  justify-content: flex-start;
-}
-.ctl-left .ctl-text {
-  align-items: flex-end;
-}
-.ctl-left .ctl-text .coach-socials {
-  align-self: flex-start;
 }
 
-/* Below this the spine moves to the left edge and every card hangs off it
-   on the same side; two 420px cards plus a gutter stop fitting. */
-@media (max-width: 900px) {
+/* Below this the date moves above its group and the spine hugs the left
+   edge — 150px of date plus a gutter is too much to give up. */
+@media (max-width: 760px) {
   .ctl {
-    grid-template-columns: 1fr;
+    --ctl-date-w: 0px;
+    --ctl-gap: 0px;
+    --ctl-line: 7px;
     padding-left: 34px;
   }
-  .ctl-spine {
-    left: 7px;
-    transform: none;
+  .ctl-group {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 10px;
   }
-  .ctl-left,
-  .ctl-right {
+  .ctl-date,
+  .ctl-cards {
     grid-column: 1;
-    align-items: flex-start;
+  }
+  .ctl-date {
     text-align: left;
+    padding-top: 0;
   }
-  .ctl-left .ctl-card {
-    flex-direction: row;
-    text-align: left;
+  .ctl-node {
+    top: 2px;
+    left: 7px;
+    margin-left: -34px;
   }
-  .ctl-left .ctl-text {
-    align-items: flex-start;
-  }
-  .ctl-card {
-    max-width: none;
-  }
-  .ctl-left .ctl-node,
-  .ctl-right .ctl-node {
-    left: -34px;
-    right: auto;
-  }
-  .ctl-left::before,
-  .ctl-right::before {
-    left: -27px;
-    right: auto;
-    width: 20px;
+  .ctl-group::before {
+    display: none;
   }
 }
-@media (max-width: 420px) {
+@media (max-width: 440px) {
   .ctl-card {
-    flex-direction: column !important;
+    flex-direction: column;
     align-items: flex-start;
-    text-align: left !important;
+    gap: 14px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -412,7 +377,6 @@
   display: grid;
   place-items: center;
   background: var(--ink);
-  border: 1.5px solid var(--lime);
   color: #fff;
   cursor: pointer;
   transition: background 0.25s, color 0.25s, transform 0.3s var(--ease);

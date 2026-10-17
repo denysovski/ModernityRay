@@ -35,6 +35,18 @@ export default function Programmes() {
 
   const groups = ['All', ...DISCIPLINES]
 
+  /* The coaching timeline groups by hiring month, so two people who started
+     in the same month share one date and one node on the spine. COACHES_BY_JOINED
+     is already in order, so a plain reduce preserves it. */
+  const intake = useMemo(() => {
+    const byMonth = new Map()
+    for (const coach of COACHES_BY_JOINED) {
+      if (!byMonth.has(coach.joined)) byMonth.set(coach.joined, [])
+      byMonth.get(coach.joined).push(coach)
+    }
+    return [...byMonth.entries()]
+  }, [])
+
   return (
     <main className="pg pr-page">
       <PageHeader
@@ -120,47 +132,48 @@ export default function Programmes() {
             </p>
           </div>
 
-          {/* The team as a hiring timeline: one spine down the middle, a
-              dated node per coach, and the cards alternating either side of
-              it. Each one arrives from its own side as it scrolls in, which
-              is why the variants are built per index rather than shared. */}
+          {/* The team as a hiring timeline: one dated spine down the left,
+              the people to the right of it. Each date is a group, so two
+              coaches hired in the same month share one node and stack
+              under it rather than repeating the heading. */}
           <ol className="ctl">
             <span className="ctl-spine" aria-hidden="true" />
 
-            {COACHES_BY_JOINED.map((c, i) => {
-              const side = i % 2 === 0 ? 'left' : 'right'
-              return (
-                <motion.li
-                  className={`ctl-item ctl-${side}`}
-                  key={c.id}
-                  initial={{ opacity: 0, x: side === 'left' ? -44 : 44, filter: 'blur(6px)' }}
-                  whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            {intake.map(([joined, people]) => (
+              <motion.li
+                className="ctl-group"
+                key={joined}
+                initial={{ opacity: 0, x: 34, filter: 'blur(6px)' }}
+                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.55, ease }}
+              >
+                <motion.span
+                  className="ctl-node"
+                  aria-hidden="true"
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
                   viewport={{ once: true, margin: '-80px' }}
-                  transition={{ duration: 0.6, ease }}
-                >
-                  <span className="ctl-date">{monthLabel(c.joined)}</span>
-                  <motion.span
-                    className="ctl-node"
-                    aria-hidden="true"
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true, margin: '-80px' }}
-                    transition={{ duration: 0.45, ease, delay: 0.12 }}
-                  />
+                  transition={{ duration: 0.4, ease, delay: 0.1 }}
+                />
+                <span className="ctl-date">{monthLabel(joined)}</span>
 
-                  <article className="ctl-card">
-                    <span className="ctl-avatar">
-                      <img src={c.img} alt={c.name} loading="lazy" />
-                    </span>
-                    <div className="ctl-text">
-                      <h3>{c.name}</h3>
-                      <span className="ctl-role">{c.role}</span>
-                      <CoachSocials socials={c.socials} name={c.name} />
-                    </div>
-                  </article>
-                </motion.li>
-              )
-            })}
+                <div className="ctl-cards">
+                  {people.map((c) => (
+                    <article className="ctl-card" key={c.id}>
+                      <span className="ctl-avatar">
+                        <img src={c.img} alt={c.name} loading="lazy" />
+                      </span>
+                      <div className="ctl-text">
+                        <h3>{c.name}</h3>
+                        <span className="ctl-role">{c.role}</span>
+                        <CoachSocials socials={c.socials} name={c.name} />
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </motion.li>
+            ))}
           </ol>
         </div>
       </section>
