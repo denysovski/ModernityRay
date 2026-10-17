@@ -481,9 +481,19 @@
   grid-column: 1 / -1;
   overflow: hidden;
 }
+/* The button lines up with the input, not with the bottom of the field.
+   A Field is label / input / message stacked, so aligning to flex-end put
+   the button level with the hint underneath the box — about 28px low — and
+   it would have dropped further the moment a validation error appeared.
+   Anchoring from the top instead depends only on the label, which is one
+   short line and cannot wrap; the hint and the error are free to grow. */
 .tour-form-inner {
+  /* .fld-label at 13px on the inherited 1.5 line-height, plus .fld's 7px gap */
+  --fld-label-block: calc(13px * 1.5 + 7px);
+  /* .fld-input: 15px text on 14px padding, inside a 1px border */
+  --fld-input-h: calc(15px * 1.5 + 28px + 2px);
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 16px;
   padding-top: 22px;
@@ -493,6 +503,10 @@
 .tour-form-inner .fld {
   flex: 1;
   min-width: 260px;
+}
+.tour-form-inner .btn {
+  margin-top: var(--fld-label-block);
+  min-height: var(--fld-input-h);
 }
 /* The paragraph is dimmed; the link inside it must not inherit that on top
    of its own colour, or it lands under AA. Colour the text instead. */
