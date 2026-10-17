@@ -110,7 +110,9 @@ describe('Checkout', () => {
     await user.type(await screen.findByLabelText('Street address'), '24 Lakeside Drive')
     await user.type(screen.getByLabelText('City'), 'Austin')
     await user.type(screen.getByLabelText('Postal code'), '78701')
-    await user.selectOptions(screen.getByLabelText('Country'), 'Australia')
+    // the country control is the app's menu, not a native <select>
+    await user.click(screen.getByLabelText('Country'))
+    await user.click(screen.getByRole('option', { name: 'Australia' }))
     await user.click(screen.getByRole('button', { name: /continue/i }))
 
     expect(screen.getByRole('alert')).toHaveTextContent(/4 digits/)

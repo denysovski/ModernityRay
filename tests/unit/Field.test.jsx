@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Field from '../../src/components/commerce/Field'
 
@@ -65,17 +65,47 @@ describe('Field', () => {
     expect(onChange).not.toHaveBeenCalledWith('4a')
   })
 
-  it('renders a select when given options', async () => {
+  /* Given options, the field renders the app's SelectMenu rather than a
+     native <select> — the OS popup cannot be styled or animated. The label
+     must still name it (a <button> is labelable, so htmlFor works), and it
+     must still report the chosen value the same way. */
+  it('renders the select menu when given options, and labels it', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
 
     render(
       <Field label="Country" value="United States" onChange={onChange} options={['United States', 'Canada']} />,
     )
-    const select = screen.getByLabelText('Country')
-    expect(select.tagName).toBe('SELECT')
 
-    await user.selectOptions(select, 'Canada')
+    const trigger = screen.getByLabelText('Country')
+    expect(trigger.tagName).toBe('BUTTON')
+    expect(trigger).toHaveAttribute('aria-haspopup', 'listbox')
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    expect(trigger).toHaveTextContent('United States')
+
+    await user.click(trigger)
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+
+    await user.click(screen.getByRole('option', { name: 'Canada' }))
     expect(onChange).toHaveBeenCalledWith('Canada')
+
+    // and it closes again — waited for, because the menu animates out
+    await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument())
+  })
+
+  it('closes the select menu on Escape without choosing anything', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(
+      <Field label="Country" value="United States" onChange={onChange} options={['United States', 'Canada']} />,
+    )
+
+    await user.click(screen.getByLabelText('Country'))
+    expect(screen.getByRole('listbox')).toBeInTheDocument()
+
+    await user.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument())
+    expect(onChange).not.toHaveBeenCalled()
   })
 })

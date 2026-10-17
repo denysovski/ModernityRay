@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import { SelectMenu } from '../ui'
 
 /* One text field, with its label, its error and the wiring between them.
  *
@@ -65,13 +66,20 @@ export default function Field({
       </label>
 
       {options ? (
-        <select className="fld-input" {...shared}>
-          {options.map((o) => (
-            <option key={o} value={o}>
-              {o}
-            </option>
-          ))}
-        </select>
+        /* Our own menu rather than a <select>: the native popup is drawn by
+           the OS, so it cannot take the app's radius and cannot animate.
+           SelectMenu reimplements what the element gave for free — Escape,
+           outside-click, arrow keys, type-ahead and the listbox roles. */
+        <SelectMenu
+          block
+          id={id}
+          name={name}
+          options={options}
+          value={value}
+          onChange={onChange}
+          invalid={invalid}
+          describedBy={invalid || hint ? msgId : undefined}
+        />
       ) : (
         <input
           className="fld-input"

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
 import Field from '../components/commerce/Field'
-import { Icon, SmartLink } from '../components/ui'
+import { ConfirmDialog, Icon, SmartLink } from '../components/ui'
 import { useStore } from '../context/StoreContext'
 import { validateEmail, validateName } from '../lib/validation'
 import { formatDate } from '../lib/format'
@@ -49,7 +49,7 @@ const PREFS = [
 export default function Account() {
   const {
     user, orders, prefs, lifetimeSpend, storageAvailable,
-    signIn, signOut, forgetMe, setPref, money,
+    signIn, signOut, forgetMe, deleteAccount, setPref, money,
   } = useStore()
 
   const [tab, setTab] = useState('profile')
@@ -85,17 +85,50 @@ export default function Account() {
     window.setTimeout(() => setSaved(false), 2600)
   }
 
-  const wipe = () => {
-    // eslint-disable-next-line no-alert -- a destructive local action deserves a confirm
-    if (!window.confirm('This clears your profile, basket and order history from this browser. Continue?')) return
-    forgetMe()
+  /* Both destructive actions ask first, through the app's own dialog rather
+     than window.confirm — see components/ui/ConfirmDialog for why. `ask`
+     holds which question is open, or null. */
+  const [ask, setAsk] = useState(null)
+
+  /* Leaving this screen with the profile gone should start at the top: the
+     page you land on is a short empty state, and staying scrolled halfway
+     down it looked like nothing had happened. */
+  const toTop = () => window.scrollTo({ top: 0, behavior: 'auto' })
+
+  const leave = () => {
     setDraft({ name: '', email: '' })
     setTab('profile')
+    setAsk(null)
+    toTop()
+  }
+
+  const confirmWipe = () => {
+    forgetMe()
+    leave()
+  }
+
+  const confirmDelete = () => {
+    deleteAccount()
+    leave()
+  }
+
+  const handleSignOut = () => {
+    signOut()
+    toTop()
   }
 
   if (!user) {
+    /* Signing out swaps this in where a full account screen was. Fading it
+       up rather than cutting to it makes the change legible — otherwise
+       the page appears to have simply lost its contents. */
     return (
-      <main className="pg">
+      <motion.main
+        className="pg"
+        key="signed-out"
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease }}
+      >
         <PageHeader
           label="Account"
           title="No profile on this browser yet."
@@ -103,16 +136,21 @@ export default function Account() {
           crumbs={[{ label: 'Home', href: paths.home }, { label: 'Account' }]}
         />
         <section className="pg-section section">
-          <div className="shell ck-empty">
+          <motion.div
+            className="shell ck-empty"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease, delay: 0.14 }}
+          >
             <SmartLink href={paths.memberships} className="btn btn-member">
               Choose a membership <span className="btn-bubble"><Icon.arrow /></span>
             </SmartLink>
             <SmartLink href={paths.events} className="btn btn-light">
               See what&rsquo;s on
             </SmartLink>
-          </div>
+          </motion.div>
         </section>
-      </main>
+      </motion.main>
     )
   }
 
@@ -201,8 +239,15 @@ export default function Account() {
                   <button type="submit" className="btn btn-green">
                     Save changes
                   </button>
-                  <button type="button" className="btn btn-light" onClick={signOut}>
+                  <button type="button" className="btn btn-light" onClick={handleSignOut}>
                     Sign out
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger-ghost"
+                    onClick={() => setAsk('delete')}
+                  >
+                    Delete my account
                   </button>
                 </div>
                 {saved && (
@@ -285,7 +330,11 @@ export default function Account() {
                       browser. There is no copy anywhere else, so this cannot be undone.
                     </p>
                   </div>
-                  <button type="button" className="btn btn-light acc-danger-btn" onClick={wipe}>
+                  <button
+                    type="button"
+                    className="btn btn-light acc-danger-btn"
+                    onClick={() => setAsk('wipe')}
+                  >
                     Clear all my data
                   </button>
                 </div>
@@ -294,6 +343,31 @@ export default function Account() {
           </motion.div>
         </div>
       </section>
+
+      <ConfirmDialog
+        open={ask === 'delete'}
+        title="Delete your account?"
+        body={
+          'This removes your profile, your basket, every stored order and your ' +
+          'preferences from this browser. There is no copy anywhere else, so it ' +
+          'cannot be undone.'
+        }
+        confirmLabel="Yes, delete my account"
+        onConfirm={confirmDelete}
+        onCancel={() => setAsk(null)}
+      />
+
+      <ConfirmDialog
+        open={ask === 'wipe'}
+        title="Clear all your data?"
+        body={
+          'This clears your profile, your basket and your order history from this ' +
+          'browser. Your display preferences are kept. It cannot be undone.'
+        }
+        confirmLabel="Yes, clear it"
+        onConfirm={confirmWipe}
+        onCancel={() => setAsk(null)}
+      />
     </main>
   )
 }

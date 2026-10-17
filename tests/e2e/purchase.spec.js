@@ -172,9 +172,50 @@ test('the basket empties when the account is wiped', async ({ page }) => {
   await page.goto('/account')
   await page.getByRole('tab', { name: /settings/i }).click()
 
-  page.once('dialog', (d) => d.accept())
+  /* The confirmation is the app's own alertdialog now, not window.confirm,
+     so there is no browser dialog to accept — the question is in the page. */
   await page.getByRole('button', { name: /clear all my data/i }).click()
+  const ask = page.getByRole('alertdialog')
+  await expect(ask).toBeVisible()
+  await ask.getByRole('button', { name: /yes, clear it/i }).click()
 
   await expect(page.locator('.cart-badge')).toHaveCount(0)
   await expect(page.getByRole('heading', { level: 1 })).toContainText('No profile on this browser yet')
+})
+
+test('deleting the account asks first, and cancelling leaves everything alone', async ({ page }) => {
+  await page.goto('/memberships')
+  await page
+    .locator('.tier-card', { hasText: 'Day Pass' })
+    .getByRole('button', { name: /add to basket/i })
+    .click()
+  await page.getByRole('button', { name: 'Close cart' }).click()
+
+  await page.evaluate(() => {
+    window.localStorage.setItem(
+      'courtsy.user',
+      JSON.stringify({ name: 'Daniel Svoboda', email: 'dan@example.com', since: null }),
+    )
+  })
+  await page.goto('/account')
+
+  // cancelling is the safe default: it is what holds focus when the dialog opens
+  await page.getByRole('button', { name: /delete my account/i }).click()
+  const ask = page.getByRole('alertdialog')
+  await expect(ask).toBeVisible()
+  await expect(ask.getByRole('button', { name: /^cancel$/i })).toBeFocused()
+
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('alertdialog')).toHaveCount(0)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Daniel Svoboda')
+  await expect(page.locator('.cart-badge')).toHaveText('1')
+
+  // and going through with it takes the preferences too, which "clear my
+  // data" deliberately leaves behind
+  await page.getByRole('button', { name: /delete my account/i }).click()
+  await page.getByRole('button', { name: /yes, delete my account/i }).click()
+
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('No profile on this browser yet')
+  await expect(page.locator('.cart-badge')).toHaveCount(0)
+  expect(await page.evaluate(() => window.localStorage.getItem('courtsy.user'))).toBe('null')
 })

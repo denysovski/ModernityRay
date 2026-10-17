@@ -475,7 +475,13 @@
 .tour {
   display: grid;
   grid-template-columns: 170px minmax(0, 1fr) auto;
-  gap: clamp(20px, 3vw, 40px);
+  column-gap: clamp(20px, 3vw, 40px);
+  /* No row gap. The enrolment form is a second grid row, and a row gap
+     appears at full size the instant that row exists — 40px of it, in one
+     frame, while the form's own height was still easing open from zero.
+     That was the twitch on opening a date. The space the form needs is
+     its own padding now, inside the box being animated. */
+  row-gap: 0;
   align-items: center;
   padding: clamp(22px, 2.4vw, 32px);
   border-radius: var(--r-lg);
@@ -588,8 +594,10 @@
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 16px;
-  padding-top: 22px;
-  margin-top: 6px;
+  /* Margin would sit outside the animated box and pop in whole; padding is
+     clipped along with everything else as the height eases. */
+  padding-top: 28px;
+  margin-top: 28px;
   border-top: 1px solid var(--line);
 }
 .tour-form-inner .fld {
