@@ -19,6 +19,62 @@ test.describe('navigation', () => {
     expect(await page.evaluate(() => window.__noReload)).toBe(true)
   })
 
+  /* The one above proves a single hop stays client-side. This one walks the
+     whole site, because "still an SPA" is the kind of property that decays
+     one careless <a> at a time: an href the router does not own, or a link
+     rendered as a plain anchor, and that route quietly starts reloading the
+     document while everything still looks right. Counting document
+     responses catches it; counting URLs would not. */
+  test('every route is reached without fetching a second document', async ({ page }) => {
+    let documents = 0
+    page.on('response', (r) => {
+      if (r.request().resourceType() === 'document') documents += 1
+    })
+
+    await page.goto('/')
+    await page.evaluate(() => {
+      window.__spaToken = 'alive'
+    })
+    const afterFirstLoad = documents
+
+    /** Clicks the first anchor whose href is exactly this route. */
+    const follow = async (route) =>
+      page.evaluate((href) => {
+        const a = [...document.querySelectorAll('a[href]')].find(
+          (n) => n.getAttribute('href') === href,
+        )
+        if (!a) return false
+        a.click()
+        return true
+      }, route)
+
+    const routes = [
+      '/courts', '/courts/centre-court', '/memberships', '/memberships/resident',
+      '/events', '/programmes', '/programmes/tennis-performance', '/shop',
+      '/dining', '/join', '/private-tour', '/students', '/gift', '/account',
+    ]
+
+    for (const route of routes) {
+      let clicked = await follow(route)
+      if (!clicked) {
+        // not linked from here — every route is in the footer sitemap
+        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+        clicked = await follow(route)
+      }
+      expect(clicked, `no link to ${route} on ${page.url()}`).toBe(true)
+      await expect(page).toHaveURL(new RegExp(`${route}$`))
+    }
+
+    // the document was never replaced, so the page's JS state is still there
+    expect(documents - afterFirstLoad).toBe(0)
+    expect(await page.evaluate(() => window.__spaToken)).toBe('alive')
+
+    // and history is client-side too
+    await page.goBack()
+    await page.goForward()
+    expect(await page.evaluate(() => window.__spaToken)).toBe('alive')
+  })
+
   test('deep links work on a cold load, which is what the 404 fallback is for', async ({ page }) => {
     await page.goto('/memberships/signature')
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Signature')
