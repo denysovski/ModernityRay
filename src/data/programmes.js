@@ -19,7 +19,11 @@ import { paths } from '../routes'
  * @property {string} img
  * @property {string} since    the year they joined the club
  * @property {string} bio      two sentences, no more
- * @property {string[]} badges short credentials
+ * @property {('instagram'|'x'|'linkedin'|'mail')[]} socials
+ *   Which handles this coach actually has. Deliberately uneven — a club
+ *   where all eight staff have the same four accounts reads as filler.
+ *   Written down rather than generated, so a face keeps its icons between
+ *   renders and between the index and the detail pages.
  */
 
 /** @type {Coach[]} */
@@ -29,88 +33,88 @@ export const COACHES = [
     name: 'Davis Korsgaard',
     role: 'Head coach, tennis',
     img: remote('1472099645785-5658abf4ff4e', 400),
-    since: '2026',
+    since: '2019',
     bio:
       'Fourteen years on tour benches before he came here, six of them with a top-fifty singles player. ' +
       'He coaches serve mechanics the way an engineer reads a drawing — one joint at a time.',
-    badges: ['PTR Professional', 'Ex-tour analyst'],
+    socials: ['instagram', 'x', 'linkedin', 'mail'],
   },
   {
     id: 'priya',
     name: 'Priya Raman',
     role: 'Strength & conditioning lead',
     img: remote('1573496359142-b8d87734a5a2', 400),
-    since: '2026',
+    since: '2021',
     bio:
       'A sports scientist first and a lifter second, which is why nobody leaves her floor without a number to beat. ' +
       'She built the club’s return-to-play protocol and still runs every reassessment herself.',
-    badges: ['MSc Sport Science', 'UKSCA accredited'],
+    socials: ['linkedin', 'mail'],
   },
   {
     id: 'tomas',
     name: 'Tomás Ferrer',
     role: 'Clay-court specialist',
     img: remote('1507003211169-0a1dd7228f2d', 400),
-    since: '2026',
+    since: '2016',
     bio:
       'Grew up on the red clay of Córdoba and has never really left it. ' +
       'Sliding, shape and the long rally are his subject, and he will happily spend an hour on footwork alone.',
-    badges: ['RPT Level 3', 'Clay-court programme'],
+    socials: ['instagram'],
   },
   {
     id: 'mara',
     name: 'Mara Lindqvist',
     role: 'Swim & endurance coach',
     img: remote('1534528741775-53994a69daeb', 400),
-    since: '2026',
+    since: '2022',
     bio:
       'Two Nordic open-water titles and a stubborn belief that most swimmers are only one stroke fault away from a new best. ' +
       'She films every lane session and goes through it with you afterwards.',
-    badges: ['ASA Level 3', 'Open-water lead'],
+    socials: ['instagram', 'x', 'mail'],
   },
   {
     id: 'ade',
     name: 'Ade Obiora',
     role: 'Junior academy director',
     img: remote('1500648767791-00dcc994a43e', 400),
-    since: '2026',
+    since: '2014',
     bio:
       'Ran a city-wide schools programme for nine years before taking the academy on. ' +
       'His groups are loud, quick and surprisingly disciplined, which is exactly the point.',
-    badges: ['LTA Level 4', 'Safeguarding lead'],
+    socials: ['instagram', 'linkedin', 'mail'],
   },
   {
     id: 'helena',
     name: 'Helena Brandt',
     role: 'Recovery & mobility lead',
     img: remote('1494790108377-be9c29b29330', 400),
-    since: '2026',
+    since: '2020',
     bio:
       'A physiotherapist who treats recovery as training rather than a reward for it. ' +
       'She owns the contrast suite, the soft-tissue room and the small matter of keeping members on court.',
-    badges: ['BSc Physiotherapy', 'Contrast therapy'],
+    socials: ['linkedin'],
   },
   {
     id: 'rhys',
     name: 'Rhys Calloway',
     role: 'Golf professional',
     img: remote('1504257432389-52343af06ae3', 400),
-    since: '2026',
+    since: '2018',
     bio:
       'Eleven seasons teaching off a launch monitor, and he still takes you out on the course to prove the number meant something. ' +
       'Short game is where he does his best work.',
-    badges: ['PGA Professional', 'TrackMan certified'],
+    socials: ['instagram', 'x'],
   },
   {
     id: 'nadia',
     name: 'Nadia Oyelaran',
     role: 'Conditioning & HIIT coach',
     img: remote('1438761681033-6461ffad8d80', 400),
-    since: '2026',
+    since: '2023',
     bio:
       'Thirty minutes is plenty, she says, and the heart-rate traces from her classes agree. ' +
       'Former 400m runner, which explains the pacing and the complete lack of sympathy at rep eight.',
-    badges: ['NASM CPT', 'Metabolic conditioning'],
+    socials: ['instagram', 'x', 'linkedin', 'mail'],
   },
 ]
 
@@ -164,10 +168,10 @@ export const PROGRAMMES = [
       { label: 'Review', value: 'Filmed, weeks 1 and 8' },
     ],
     weeks: [
-      { n: '01', title: 'Assessment', desc: 'Filmed baseline session, movement screen and the three priorities for the block.' },
-      { n: '02', title: 'Serve & return', desc: 'Toss, trophy position and the second serve you can actually hit at 4–4.' },
-      { n: '03', title: 'Patterns', desc: 'Building the two or three points you want to play, then rehearsing them to boredom.' },
-      { n: '04', title: 'Pressure', desc: 'Scored sets from 0–30 down, so the new habit has to survive a losing scoreline.' },
+      { n: '1', title: 'Assessment', desc: 'Filmed baseline session, movement screen and the three priorities for the block.' },
+      { n: '2', title: 'Serve & return', desc: 'Toss, trophy position and the second serve you can actually hit at 4–4.' },
+      { n: '3', title: 'Patterns', desc: 'Building the two or three points you want to play, then rehearsing them to boredom.' },
+      { n: '4', title: 'Pressure', desc: 'Scored sets from 0–30 down, so the new habit has to survive a losing scoreline.' },
     ],
     cards: [
       { title: 'Video on every session', desc: 'Two fixed cameras on the show courts. Clips land in your account the same evening, cut to the rallies that matter.' },
@@ -201,10 +205,10 @@ export const PROGRAMMES = [
       { label: 'Platforms', value: '8, never queued' },
     ],
     weeks: [
-      { n: '01', title: 'Screen & baseline', desc: 'Movement screen, jump test and the three lifts that set your starting loads.' },
-      { n: '02', title: 'Accumulate', desc: 'Volume block. Unglamorous, and the part that makes the rest possible.' },
-      { n: '03', title: 'Express', desc: 'Loads drop, speed matters. Medicine ball, trap bar and jumps against a timer.' },
-      { n: '04', title: 'Retest', desc: 'The same three lifts and the same jump mat, with the first numbers on the screen beside you.' },
+      { n: '1', title: 'Screen & baseline', desc: 'Movement screen, jump test and the three lifts that set your starting loads.' },
+      { n: '2', title: 'Accumulate', desc: 'Volume block. Unglamorous, and the part that makes the rest possible.' },
+      { n: '3', title: 'Express', desc: 'Loads drop, speed matters. Medicine ball, trap bar and jumps against a timer.' },
+      { n: '4', title: 'Retest', desc: 'The same three lifts and the same jump mat, with the first numbers on the screen beside you.' },
     ],
     cards: [
       { title: 'Eight platforms, no queue', desc: 'The pavilion floor is capped by booking, so a session never becomes forty minutes of waiting for a rack.' },
@@ -238,10 +242,10 @@ export const PROGRAMMES = [
       { label: 'Rackets', value: 'Loaned, all sizes' },
     ],
     weeks: [
-      { n: '01', title: 'Find the group', desc: 'A free taster session, after which we tell you honestly which group fits.' },
-      { n: '02', title: 'Technique', desc: 'Grip, contact point and the two shots that carry a junior for years.' },
-      { n: '03', title: 'Play', desc: 'Half of every session is points. Children learn tennis by playing tennis.' },
-      { n: '04', title: 'Festival', desc: 'End-of-term play day. Families on the terrace, everybody on court.' },
+      { n: '1', title: 'Find the group', desc: 'A free taster session, after which we tell you honestly which group fits.' },
+      { n: '2', title: 'Technique', desc: 'Grip, contact point and the two shots that carry a junior for years.' },
+      { n: '3', title: 'Play', desc: 'Half of every session is points. Children learn tennis by playing tennis.' },
+      { n: '4', title: 'Festival', desc: 'End-of-term play day. Families on the terrace, everybody on court.' },
     ],
     cards: [
       { title: 'Kit is loaned, not sold', desc: 'Rackets in every size live in the academy store. Nobody needs to buy equipment to find out whether their child likes the game.' },
@@ -275,10 +279,10 @@ export const PROGRAMMES = [
       { label: 'Gapping', value: 'Quarterly, full bag' },
     ],
     weeks: [
-      { n: '01', title: 'Measure', desc: 'Full bag on the monitor, plus the numbers nobody enjoys seeing in writing.' },
-      { n: '02', title: 'On course', desc: 'Nine holes, coach walking, every shot recorded and nothing coached mid-round.' },
-      { n: '03', title: 'Short game', desc: 'Inside a hundred yards, where the strokes are. Usually the longest block.' },
-      { n: '04', title: 'Play it back', desc: 'The same nine holes, the same card, and a straight comparison.' },
+      { n: '1', title: 'Measure', desc: 'Full bag on the monitor, plus the numbers nobody enjoys seeing in writing.' },
+      { n: '2', title: 'On course', desc: 'Nine holes, coach walking, every shot recorded and nothing coached mid-round.' },
+      { n: '3', title: 'Short game', desc: 'Inside a hundred yards, where the strokes are. Usually the longest block.' },
+      { n: '4', title: 'Play it back', desc: 'The same nine holes, the same card, and a straight comparison.' },
     ],
     cards: [
       { title: 'Two bays, lit until nine', desc: 'Both covered and both heated, so a winter evening is still a session rather than a cancellation.' },
@@ -312,10 +316,10 @@ export const PROGRAMMES = [
       { label: 'Screen', value: 'Repeated at 6 weeks' },
     ],
     weeks: [
-      { n: '01', title: 'Load audit', desc: 'What you are actually doing in a week, and what is accumulating because of it.' },
-      { n: '02', title: 'Protocol', desc: 'Contrast bathing learned properly, with the breathing coached rather than guessed.' },
-      { n: '03', title: 'Hands on', desc: 'Fortnightly soft-tissue work on whatever the audit and the screen agree about.' },
-      { n: '04', title: 'Make it yours', desc: 'Your twelve-minute flow, filmed with you in it, kept in your account.' },
+      { n: '1', title: 'Load audit', desc: 'What you are actually doing in a week, and what is accumulating because of it.' },
+      { n: '2', title: 'Protocol', desc: 'Contrast bathing learned properly, with the breathing coached rather than guessed.' },
+      { n: '3', title: 'Hands on', desc: 'Fortnightly soft-tissue work on whatever the audit and the screen agree about.' },
+      { n: '4', title: 'Make it yours', desc: 'Your twelve-minute flow, filmed with you in it, kept in your account.' },
     ],
     cards: [
       { title: 'Booked against your training', desc: 'Recovery slots are offered after your heaviest sessions, not at whatever hour happened to be free.' },
@@ -349,10 +353,10 @@ export const PROGRAMMES = [
       { label: 'Retest', value: 'Every 6 weeks' },
     ],
     weeks: [
-      { n: '01', title: 'Ramp test', desc: 'One uncomfortable eight minutes that sets every pace for the next six weeks.' },
-      { n: '02', title: 'Intervals', desc: 'Fixed work and rest, called from the front, no negotiation at rep eight.' },
-      { n: '03', title: 'Mixed modal', desc: 'Bike, rower, sled and track, rotated so nothing takes the same beating twice.' },
-      { n: '04', title: 'Retest', desc: 'The same eight minutes. The number is almost always better, which is the point.' },
+      { n: '1', title: 'Ramp test', desc: 'One uncomfortable eight minutes that sets every pace for the next six weeks.' },
+      { n: '2', title: 'Intervals', desc: 'Fixed work and rest, called from the front, no negotiation at rep eight.' },
+      { n: '3', title: 'Mixed modal', desc: 'Bike, rower, sled and track, rotated so nothing takes the same beating twice.' },
+      { n: '4', title: 'Retest', desc: 'The same eight minutes. The number is almost always better, which is the point.' },
     ],
     cards: [
       { title: 'Six slots a day', desc: 'From 06:15 to 19:45, so the session fits around work rather than replacing an evening.' },
@@ -386,10 +390,10 @@ export const PROGRAMMES = [
       { label: 'Finals', value: 'Centre Court, floodlit' },
     ],
     weeks: [
-      { n: '01', title: 'Seeding', desc: 'Two matches against players either side of where we think you belong.' },
-      { n: '02', title: 'Division play', desc: 'One fixture a week, arranged between you, scores filed the same night.' },
-      { n: '03', title: 'Run-in', desc: 'The last four weeks, when the promotion places start to matter and so does the serve.' },
-      { n: '04', title: 'Finals night', desc: 'Centre Court under lights, terrace open, the club watching.' },
+      { n: '1', title: 'Seeding', desc: 'Two matches against players either side of where we think you belong.' },
+      { n: '2', title: 'Division play', desc: 'One fixture a week, arranged between you, scores filed the same night.' },
+      { n: '3', title: 'Run-in', desc: 'The last four weeks, when the promotion places start to matter and so does the serve.' },
+      { n: '4', title: 'Finals night', desc: 'Centre Court under lights, terrace open, the club watching.' },
     ],
     cards: [
       { title: 'Court time is included', desc: 'Your weekly fixture comes with the court. League matches never come out of your own booking allowance.' },
@@ -423,10 +427,10 @@ export const PROGRAMMES = [
       { label: 'Power test', value: '20 min, every 8 weeks' },
     ],
     weeks: [
-      { n: '01', title: 'Power test', desc: 'Twenty minutes, all out, on a trainer that will remember it.' },
-      { n: '02', title: 'Threshold', desc: 'Midweek intervals at the numbers that test produced, not at how you feel.' },
-      { n: '03', title: 'Long ride', desc: 'Saturday, paced groups, conversational by design and three hours by the end of the block.' },
-      { n: '04', title: 'Retest', desc: 'The same twenty minutes, eight weeks later, usually at a noticeably higher number.' },
+      { n: '1', title: 'Power test', desc: 'Twenty minutes, all out, on a trainer that will remember it.' },
+      { n: '2', title: 'Threshold', desc: 'Midweek intervals at the numbers that test produced, not at how you feel.' },
+      { n: '3', title: 'Long ride', desc: 'Saturday, paced groups, conversational by design and three hours by the end of the block.' },
+      { n: '4', title: 'Retest', desc: 'The same twenty minutes, eight weeks later, usually at a noticeably higher number.' },
     ],
     cards: [
       { title: 'Trainers and bikes on site', desc: 'Smart trainers in the pavilion and loan road bikes in three sizes, so travelling members can still ride on Saturday.' },
@@ -460,10 +464,10 @@ export const PROGRAMMES = [
       { label: 'Open water', value: 'June to September' },
     ],
     weeks: [
-      { n: '01', title: 'Film the stroke', desc: 'Two cameras, both angles, and the one fault that is costing you the most.' },
-      { n: '02', title: 'Drills', desc: 'Slow, repetitive and the only thing that ever changes a catch.' },
-      { n: '03', title: 'Against the clock', desc: 'Threshold sets on a send-off, where the new stroke has to hold up tired.' },
-      { n: '04', title: 'Open water', desc: 'From June: sighting, pack swimming and the first cold morning of the year.' },
+      { n: '1', title: 'Film the stroke', desc: 'Two cameras, both angles, and the one fault that is costing you the most.' },
+      { n: '2', title: 'Drills', desc: 'Slow, repetitive and the only thing that ever changes a catch.' },
+      { n: '3', title: 'Against the clock', desc: 'Threshold sets on a send-off, where the new stroke has to hold up tired.' },
+      { n: '4', title: 'Open water', desc: 'From June: sighting, pack swimming and the first cold morning of the year.' },
     ],
     cards: [
       { title: 'Lanes are capped', desc: 'Three swimmers to a lane during coached sessions, so a set is a set rather than an obstacle course.' },

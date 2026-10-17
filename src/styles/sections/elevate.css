@@ -123,9 +123,11 @@
   width: 15px;
   height: 15px;
 }
-/* which side appears, per card position */
+/* Which side appears, per card position. One panel each: the first opens
+   right because there is nothing to its left, the last opens left for the
+   same reason, and the middle card opens left too — it was showing both at
+   once, which read as two menus rather than one. */
 .ecell:nth-child(1):hover .ecell-fly-right,
-.ecell:nth-child(2):hover .ecell-fly-right,
 .ecell:nth-child(2):hover .ecell-fly-left,
 .ecell:nth-child(3):hover .ecell-fly-left {
   opacity: 1;

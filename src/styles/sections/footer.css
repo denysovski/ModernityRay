@@ -37,13 +37,17 @@
 .footer-cta-btn {
   flex-shrink: 0;
 }
-/* The brand column plus one track per column in data/navigation — auto-fit
-   rather than a hard count, so adding a sitemap column does not need a
-   second edit here. */
+/* The brand column, then one track per column in data/navigation.
+
+   The count is explicit on purpose. repeat(auto-fit, …) cannot share a
+   track list with a flexible size, so `1.6fr repeat(auto-fit, …)` is
+   invalid as a whole and the browser drops it — which collapsed the footer
+   to a single column with every link stacked. If a column is added to
+   data/navigation, bump the 6. */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.6fr repeat(auto-fit, minmax(120px, 1fr));
-  gap: 30px;
+  grid-template-columns: 1.5fr repeat(6, minmax(0, 1fr));
+  gap: 26px;
   padding: clamp(44px, 5vw, 72px) 0;
 }
 .footer-brandcol {
@@ -132,12 +136,15 @@
 .footer-links a:hover {
   color: #fff;
 }
-@media (max-width: 900px) {
+/* Seven tracks need the room. Below it the brand takes its own row and the
+   sitemap wraps underneath, three up and then two. */
+@media (max-width: 1180px) {
   .footer-grid {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .footer-brandcol {
     grid-column: 1 / -1;
+    margin-bottom: 8px;
   }
 }
 @media (max-width: 560px) {

@@ -1,4 +1,14 @@
 /* ---------------- NEWSLETTER ---------------- */
+
+/* The sign-up closes whatever section ran before it rather than standing on
+   its own, so it does not need a full section's worth of air above: the
+   preceding section's bottom padding has already opened the gap, and the
+   two stacked to well over 200px. Applies on the homepage and at the foot
+   of the events calendar alike. */
+.section.newsletter {
+  padding-top: clamp(40px, 5vw, 80px);
+}
+
 .nl-card {
   position: relative;
   overflow: hidden;
