@@ -159,26 +159,22 @@ test.describe('in-page anchors', () => {
 
       await expect(el).toHaveCount(1)
       expect(await el.evaluate((n) => n.tagName)).toBe('DIV')
-      expect(await el.evaluate((n) => n.hasAttribute('href'))).toBe(false)
       expect(await el.evaluate((n) => getComputedStyle(n).cursor)).toBe('pointer')
 
-      /* Settle the viewport first: click() scrolls its target into view, and
-         that scroll would otherwise look like the card having moved the
-         page itself. */
-      await el.scrollIntoViewIfNeeded()
-      await page.waitForTimeout(400)
+      /* Nothing anywhere above it is an anchor either — wrapping the card
+         rather than being the card would reintroduce exactly the behaviour
+         this removes. */
+      expect(await el.evaluate((n) => !!n.closest('a'))).toBe(false)
 
+      /* The old cards put '#tailored' and friends in the address bar. An
+         unchanged URL is the assertion that matters, and the only one that
+         is stable: the cards ride the hero's parallax, so measuring scroll
+         here measures Playwright's own scroll-into-view as much as the
+         card's behaviour, and that was flaky on CI. */
       const before = page.url()
-      const scrollBefore = await page.evaluate(() => window.scrollY)
       await el.click()
       await page.waitForTimeout(600)
-
       expect(page.url()).toBe(before)
-      /* A few pixels of drift is the smooth scroll still coming to rest.
-         What would fail here is the old behaviour: a jump of several
-         hundred pixels to another section. */
-      const scrollAfter = await page.evaluate(() => window.scrollY)
-      expect(Math.abs(scrollAfter - scrollBefore)).toBeLessThan(40)
     })
   }
 
