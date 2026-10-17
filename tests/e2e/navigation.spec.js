@@ -52,6 +52,7 @@ test.describe('navigation', () => {
       '/courts', '/courts/centre-court', '/memberships', '/memberships/resident',
       '/events', '/programmes', '/programmes/tennis-performance', '/shop',
       '/dining', '/join', '/private-tour', '/students', '/gift', '/account',
+      '/terms', '/privacy', '/cookies',
     ]
 
     for (const route of routes) {

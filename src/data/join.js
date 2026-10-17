@@ -225,6 +225,22 @@ export const JOIN_FACES = [
   remote('1438761681033-6461ffad8d80', 96),
 ]
 
+/* The photograph beside the questions, and the panel laid over it. The
+   column holding "What people ask." was two thirds empty below the
+   heading; this fills it with the things people are really asking about
+   underneath the questions themselves. */
+export const JOIN_ASK_MEDIA = {
+  img: local('courtlife.jpg'),
+  label: 'Becoming a member',
+  title: 'What you are actually signing.',
+  points: [
+    'No joining fee, on any of the five tiers',
+    'One month’s notice, in writing or in person',
+    'Coaching and recovery included, never an add-on',
+    'A tour first, if you would rather see it than read it',
+  ],
+}
+
 export const JOIN_IMG = local('stretch.jpg')
 export const TOUR_IMG = local('woodcourt.jpg')
 export const STUDENT_IMG = local('bluesky.jpg')

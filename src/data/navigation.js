@@ -129,11 +129,14 @@ export const FOOTER = [
   },
   {
     h: 'Social',
+    /* `inert` renders the label without a link. The club is invented, so
+       these used to drop people on the networks' own front doors, which is
+       worse than going nowhere. Same decision as the coach handles. */
     items: [
-      { label: 'Instagram', href: 'https://www.instagram.com/', external: true },
-      { label: 'X', href: 'https://x.com/', external: true },
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/', external: true },
-      { label: 'YouTube', href: 'https://www.youtube.com/', external: true },
+      { label: 'Instagram', inert: true },
+      { label: 'X', inert: true },
+      { label: 'LinkedIn', inert: true },
+      { label: 'YouTube', inert: true },
     ],
   },
 ]

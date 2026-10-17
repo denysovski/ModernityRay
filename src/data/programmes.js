@@ -35,7 +35,7 @@ export const COACHES = [
     name: 'Davis Korsgaard',
     role: 'Head coach, tennis',
     img: remote('1472099645785-5658abf4ff4e', 400),
-    joined: '2019-08',
+    joined: '2023-04',
     bio:
       'Fourteen years on tour benches before he came here, six of them with a top-fifty singles player. ' +
       'He coaches serve mechanics the way an engineer reads a drawing — one joint at a time.',
@@ -46,7 +46,7 @@ export const COACHES = [
     name: 'Priya Raman',
     role: 'Strength & conditioning lead',
     img: remote('1573496359142-b8d87734a5a2', 400),
-    joined: '2021-03',
+    joined: '2026-02',
     bio:
       'A sports scientist first and a lifter second, which is why nobody leaves her floor without a number to beat. ' +
       'She built the club’s return-to-play protocol and still runs every reassessment herself.',
@@ -57,7 +57,7 @@ export const COACHES = [
     name: 'Tomás Ferrer',
     role: 'Clay-court specialist',
     img: remote('1507003211169-0a1dd7228f2d', 400),
-    joined: '2016-04',
+    joined: '2023-09',
     bio:
       'Grew up on the red clay of Córdoba and has never really left it. ' +
       'Sliding, shape and the long rally are his subject, and he will happily spend an hour on footwork alone.',
@@ -68,7 +68,7 @@ export const COACHES = [
     name: 'Mara Lindqvist',
     role: 'Swim & endurance coach',
     img: remote('1534528741775-53994a69daeb', 400),
-    joined: '2022-06',
+    joined: '2025-06',
     bio:
       'Two Nordic open-water titles and a stubborn belief that most swimmers are only one stroke fault away from a new best. ' +
       'She films every lane session and goes through it with you afterwards.',
@@ -79,7 +79,7 @@ export const COACHES = [
     name: 'Ade Obiora',
     role: 'Junior academy director',
     img: remote('1500648767791-00dcc994a43e', 400),
-    joined: '2014-09',
+    joined: '2023-04',
     bio:
       'Ran a city-wide schools programme for nine years before taking the academy on. ' +
       'His groups are loud, quick and surprisingly disciplined, which is exactly the point.',
@@ -90,7 +90,7 @@ export const COACHES = [
     name: 'Helena Brandt',
     role: 'Recovery & mobility lead',
     img: remote('1494790108377-be9c29b29330', 400),
-    joined: '2020-11',
+    joined: '2024-11',
     bio:
       'A physiotherapist who treats recovery as training rather than a reward for it. ' +
       'She owns the contrast suite, the soft-tissue room and the small matter of keeping members on court.',
@@ -101,7 +101,7 @@ export const COACHES = [
     name: 'Rhys Calloway',
     role: 'Golf professional',
     img: remote('1504257432389-52343af06ae3', 400),
-    joined: '2018-02',
+    joined: '2024-03',
     bio:
       'Eleven seasons teaching off a launch monitor, and he still takes you out on the course to prove the number meant something. ' +
       'Short game is where he does his best work.',
@@ -112,7 +112,7 @@ export const COACHES = [
     name: 'Nadia Oyelaran',
     role: 'Conditioning & HIIT coach',
     img: remote('1438761681033-6461ffad8d80', 400),
-    joined: '2023-10',
+    joined: '2026-02',
     bio:
       'Thirty minutes is plenty, she says, and the heart-rate traces from her classes agree. ' +
       'Former 400m runner, which explains the pacing and the complete lack of sympathy at rep eight.',

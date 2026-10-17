@@ -103,6 +103,13 @@
   color: #fff;
   transform: translateX(3px);
 }
+/* A label, not a link — matches the column's type so the social names sit
+   in the same rhythm as the rest of the sitemap, without the hover. */
+.footer-col .footer-inert {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+}
 .footer-wordmark {
   font-family: var(--display);
   font-weight: 800;
