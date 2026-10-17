@@ -179,73 +179,221 @@
   margin-bottom: clamp(36px, 5vw, 64px);
   max-width: 58ch;
 }
-.coach-grid {
+/* ---------------- the coaching timeline ----------------
+   A hiring history rather than a staff grid: one spine down the middle,
+   a dated node per coach, cards alternating either side.
+
+   Built on a two-column grid where every row spans both columns and each
+   item places itself in one of them. That keeps the spine exactly central
+   whatever the cards contain, and means the left/right alternation is a
+   class on the item rather than anything the markup has to interleave. */
+.ctl {
+  position: relative;
+  list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: clamp(18px, 2.2vw, 26px);
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(56px, 7vw, 110px);
+  row-gap: clamp(22px, 3vw, 40px);
+  padding-block: 10px;
 }
-.coach-card {
+.ctl-spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--lime) 8%,
+    var(--lime) 92%,
+    transparent
+  );
+}
+.ctl-item {
+  position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: var(--r-lg);
+  gap: 10px;
+}
+.ctl-left {
+  grid-column: 1;
+  align-items: flex-end;
+  text-align: right;
+}
+.ctl-right {
+  grid-column: 2;
+  align-items: flex-start;
+}
+/* Every coach starts a new row, so the two columns never collide even
+   when one card runs taller than its neighbour. */
+.ctl-item {
+  grid-row: auto;
+}
+.ctl-date {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+/* the dot where this coach meets the spine */
+.ctl-node {
+  position: absolute;
+  top: 4px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 3px solid var(--lime);
+  z-index: 1;
+}
+.ctl-left .ctl-node {
+  right: calc(clamp(56px, 7vw, 110px) / -2 - 7.5px);
+}
+.ctl-right .ctl-node {
+  left: calc(clamp(56px, 7vw, 110px) / -2 - 7.5px);
+}
+/* the short arm joining the card to the spine */
+.ctl-item::before {
+  content: '';
+  position: absolute;
+  top: 11px;
+  width: calc(clamp(56px, 7vw, 110px) / 2 - 7px);
+  height: 2px;
+  background: var(--lime);
+  opacity: 0.45;
+}
+.ctl-left::before {
+  right: calc(clamp(56px, 7vw, 110px) / -2);
+}
+.ctl-right::before {
+  left: calc(clamp(56px, 7vw, 110px) / -2);
+}
+
+.ctl-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 420px;
+  padding: 18px 22px;
+  border-radius: var(--r-xl);
   background: var(--page);
-  border: 1px solid var(--line);
+  border: 1.5px solid var(--lime);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s, background 0.3s;
+}
+.ctl-left .ctl-card {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.ctl-card:hover {
+  transform: translateY(-5px);
+  background: rgba(93, 214, 44, 0.05);
+  box-shadow: 0 34px 60px -52px rgba(10, 10, 10, 0.5);
+}
+/* a bubble, not a tile — and no zoom, the card already moves */
+.ctl-avatar {
+  flex-shrink: 0;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
   overflow: hidden;
-  transition: transform 0.4s var(--ease), border-color 0.3s, box-shadow 0.4s;
+  border: 2px solid var(--lime);
 }
-.coach-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--lime);
-  box-shadow: 0 40px 70px -56px rgba(10, 10, 10, 0.5);
-}
-.coach-portrait {
-  position: relative;
-  aspect-ratio: 4 / 3.4;
-  overflow: hidden;
-}
-/* No zoom on hover: the card already lifts, and a portrait that creeps
-   under a fixed caption was the restless part of it. */
-.coach-portrait img {
+.ctl-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
-.coach-since {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  padding: 6px 12px;
-  border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(6px);
-  font-size: 11.5px;
-  font-weight: 700;
-}
-.coach-body {
+.ctl-text {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 22px 22px 24px;
+  gap: 3px;
+  min-width: 0;
 }
-.coach-body h3 {
+.ctl-text h3 {
   font-family: var(--display);
-  font-size: 20px;
+  font-size: clamp(19px, 1.8vw, 23px);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
 }
-.coach-role {
-  font-size: 12.5px;
+.ctl-role {
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--green);
 }
-.coach-body p {
-  margin-top: 6px;
-  font-size: 14.5px;
-  font-weight: 500;
-  line-height: 1.55;
-  opacity: 0.78;
+/* Socials sit at the bottom-left of the card on both sides — the cards
+   mirror, the handles do not, so the row of bubbles always starts in the
+   same place and reads as one consistent control. */
+.ctl-text .coach-socials {
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+.ctl-left .ctl-text {
+  align-items: flex-end;
+}
+.ctl-left .ctl-text .coach-socials {
+  align-self: flex-start;
+}
+
+/* Below this the spine moves to the left edge and every card hangs off it
+   on the same side; two 420px cards plus a gutter stop fitting. */
+@media (max-width: 900px) {
+  .ctl {
+    grid-template-columns: 1fr;
+    padding-left: 34px;
+  }
+  .ctl-spine {
+    left: 7px;
+    transform: none;
+  }
+  .ctl-left,
+  .ctl-right {
+    grid-column: 1;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .ctl-left .ctl-card {
+    flex-direction: row;
+    text-align: left;
+  }
+  .ctl-left .ctl-text {
+    align-items: flex-start;
+  }
+  .ctl-card {
+    max-width: none;
+  }
+  .ctl-left .ctl-node,
+  .ctl-right .ctl-node {
+    left: -34px;
+    right: auto;
+  }
+  .ctl-left::before,
+  .ctl-right::before {
+    left: -27px;
+    right: auto;
+    width: 20px;
+  }
+}
+@media (max-width: 420px) {
+  .ctl-card {
+    flex-direction: column !important;
+    align-items: flex-start;
+    text-align: left !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctl-card:hover {
+    transform: none;
+  }
 }
 /* ---------------- coach social bubbles ----------------
    Coal circles with a white glyph, the same mark the rest of the page uses
@@ -264,6 +412,7 @@
   display: grid;
   place-items: center;
   background: var(--ink);
+  border: 1.5px solid var(--lime);
   color: #fff;
   cursor: pointer;
   transition: background 0.25s, color 0.25s, transform 0.3s var(--ease);
@@ -676,15 +825,12 @@
   background: rgba(93, 214, 44, 0.05);
   box-shadow: 0 0 0 1.5px var(--lime), 0 40px 70px -56px rgba(10, 10, 10, 0.5);
 }
+/* No zoom on the portrait — the card's own lift is the whole hover. */
 .prgd-coach img {
   width: 196px;
   height: 244px;
   object-fit: cover;
   border-radius: var(--r-md);
-  transition: transform 0.5s var(--ease);
-}
-.prgd-coach:hover img {
-  transform: scale(1.02);
 }
 .prgd-coach-text {
   display: flex;
@@ -907,9 +1053,14 @@
   font-size: 14px;
 }
 
-.shop-promise-wrap,
-.dine-facts-wrap {
+.shop-promise-wrap {
   padding-top: 0;
+}
+/* This one does need its air: the menu above it ends on a hairline rule
+   rather than on a panel, so with no padding the "Charged to the member
+   account" cards sat right against the last dish. */
+.dine-facts-wrap {
+  padding-top: clamp(64px, 8vw, 120px);
 }
 .shop-promise,
 .dine-facts {
@@ -1130,15 +1281,30 @@
   gap: clamp(24px, 4vw, 56px);
   align-items: center;
 }
+/* The three photographs are stacked in here, one per room, and only the
+   active one is opaque — see the comment in Dining.jsx. */
 .dine-room-img {
+  position: relative;
   border-radius: var(--r-xl);
   overflow: hidden;
   aspect-ratio: 16 / 11;
 }
-.dine-room-img img {
+.dine-room-shot {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.32s var(--ease);
+}
+.dine-room-shot.is-on {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dine-room-shot {
+    transition-duration: 0.01ms;
+  }
 }
 .dine-room-line {
   font-size: 12px;
@@ -1204,6 +1370,23 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: clamp(28px, 4vw, 56px);
+  /* Stretch, so the three courses end level however many dishes each
+     carries — ragged bottoms made the shortest column look unfinished. */
+  align-items: stretch;
+}
+.dine-course {
+  display: flex;
+  flex-direction: column;
+}
+/* The last dish in each column grows to take up the slack, which keeps
+   every column's closing rule on the same line. */
+.dine-course ul {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.dine-course li:last-child {
+  flex: 1;
 }
 .dine-course-head {
   display: flex;
@@ -1211,13 +1394,14 @@
   justify-content: space-between;
   gap: 14px;
   padding-bottom: 14px;
-  border-bottom: 2px solid var(--ink);
+  border-bottom: 2px solid var(--lime);
 }
 .dine-course-head h3 {
   font-family: var(--display);
   font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.025em;
+  color: var(--green);
 }
 .dine-course-head span {
   font-size: 12px;

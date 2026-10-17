@@ -97,22 +97,42 @@ export default function Dining() {
             </div>
           </div>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              className="dine-room"
-              key={active.slug}
-              id={`dine-panel-${active.slug}`}
-              role="tabpanel"
-              aria-labelledby={`dine-tab-${active.slug}`}
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.4, ease }}
-            >
-              <div className="dine-room-img">
-                <Img src={active.img} alt={active.name} sizes="(max-width: 900px) 100vw, 55vw" />
-              </div>
-              <div className="dine-room-text">
+          <div
+            className="dine-room"
+            id={`dine-panel-${active.slug}`}
+            role="tabpanel"
+            aria-labelledby={`dine-tab-${active.slug}`}
+          >
+            {/* All three photographs are mounted from the start and stacked,
+                with only the active one at full opacity. Swapping the <Img>
+                on click meant the next photograph began downloading at the
+                moment it was needed, so the panel sat empty and then
+                snapped in; this way the browser has fetched all three by
+                the time anyone picks a tab, and the change is a crossfade
+                with nothing to wait for. */}
+            <div className="dine-room-img">
+              {VENUES.map((v) => (
+                <Img
+                  key={v.slug}
+                  src={v.img}
+                  alt={v.slug === active.slug ? v.name : ''}
+                  sizes="(max-width: 900px) 100vw, 55vw"
+                  className={`dine-room-shot ${v.slug === active.slug ? 'is-on' : ''}`}
+                  aria-hidden={v.slug === active.slug ? undefined : 'true'}
+                />
+              ))}
+            </div>
+
+            {/* The copy is cheap to remount, so it keeps the crossfade. */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                className="dine-room-text"
+                key={active.slug}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2, ease }}
+              >
                 <span className="dine-room-line">{active.line}</span>
                 <h3>{active.name}</h3>
                 <p>{active.desc}</p>
@@ -126,9 +146,9 @@ export default function Dining() {
                     <dd>{active.seats}</dd>
                   </div>
                 </dl>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </section>
 
@@ -137,12 +157,7 @@ export default function Dining() {
         <div className="shell">
           <div className="dine-menu-head">
             <span className="micro"><Icon.star className="deco-star" /> What is on today</span>
-            <h2 className="h-lg">A short menu, changed often.</h2>
-            <p className="lede">
-              Written on Tuesday around whatever the growers bring, so this is
-              most of it rather than all of it. Allergies told to the kitchen
-              once are remembered for good.
-            </p>
+            <h2 className="h-lg">A balanced menu.</h2>
           </div>
 
           <div className="dine-menu">
