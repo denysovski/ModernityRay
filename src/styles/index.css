@@ -483,3 +483,32 @@ main[id],
     display: none !important;
   }
 }
+
+/* ---------- reduced motion ----------
+   Two sources, one rule. The OS setting is honoured for everyone; the
+   account preference sets data-reduced-motion on <html> (see RootLayout)
+   so someone can ask for the same thing without changing their system.
+
+   MotionConfig already handles framer-motion. This is the other half: the
+   CSS transitions, the marquee's keyframes and the carousel's slide, none
+   of which framer knows about. Animations are not removed outright —
+   collapsing them to a hair keeps any `animationend` handler firing and
+   leaves the element at its finished state rather than its first frame. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+:root[data-reduced-motion='true'] *,
+:root[data-reduced-motion='true'] *::before,
+:root[data-reduced-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

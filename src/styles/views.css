@@ -189,24 +189,24 @@
   color: #fff;
 }
 
-/* ---------- sort menu (components/ui/SortMenu) ----------
+/* ---------- select menu (components/ui/SelectMenu) ----------
    A built control rather than a <select>, because the native popup is drawn
    by the OS: square corners, no radius, and no transition on open or close.
    See the component for what it reimplements. */
-.sortmenu {
+.selectmenu {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
-.sortmenu-label {
+.selectmenu-label {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.6;
 }
-.sortmenu-trigger {
+.selectmenu-trigger {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -219,25 +219,25 @@
   color: var(--ink);
   transition: border-color 0.25s, color 0.25s, box-shadow 0.25s;
 }
-.sortmenu-trigger:hover,
-.sortmenu-trigger.is-open {
+.selectmenu-trigger:hover,
+.selectmenu-trigger.is-open {
   border-color: var(--green);
   color: var(--green);
 }
-.sortmenu-trigger:focus-visible {
+.selectmenu-trigger:focus-visible {
   border-color: var(--green);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
-.sortmenu-chevron {
+.selectmenu-chevron {
   width: 15px;
   height: 15px;
   opacity: 0.6;
   transition: transform 0.28s var(--ease);
 }
-.sortmenu-trigger.is-open .sortmenu-chevron {
+.selectmenu-trigger.is-open .selectmenu-chevron {
   transform: rotate(180deg);
 }
-.sortmenu-list {
+.selectmenu-list {
   position: absolute;
   right: 0;
   top: calc(100% + 10px);
@@ -251,7 +251,7 @@
   box-shadow: 0 40px 70px -38px rgba(10, 10, 10, 0.45);
   outline: none;
 }
-.sortmenu-option {
+.selectmenu-option {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -266,16 +266,61 @@
   background: none;
   transition: background 0.18s, color 0.18s;
 }
-.sortmenu-option.is-active {
+.selectmenu-option.is-active {
   background: var(--bone);
 }
-.sortmenu-option.is-selected {
+.selectmenu-option.is-selected {
   color: var(--green);
 }
-.sortmenu-tick {
+.selectmenu-tick {
   width: 15px;
   height: 15px;
   flex-shrink: 0;
+}
+
+/* Inside a Field: full width, and shaped like the inputs beside it rather
+   than like the pill the sort control uses. The <label> already names it,
+   so there is no .selectmenu-label in this variant. */
+.selectmenu.is-block {
+  display: block;
+  width: 100%;
+}
+.selectmenu.is-block .selectmenu-trigger {
+  width: 100%;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border-color: var(--line);
+  background: var(--page);
+}
+.selectmenu.is-block .selectmenu-trigger:hover,
+.selectmenu.is-block .selectmenu-trigger.is-open {
+  color: var(--ink);
+  border-color: var(--green);
+  background: var(--paper);
+}
+.selectmenu-trigger.is-bad {
+  border-color: #c7352b;
+  background: #fdf4f3;
+}
+.selectmenu-trigger.is-bad:focus-visible {
+  box-shadow: 0 0 0 3px rgba(199, 53, 43, 0.14);
+}
+.selectmenu.is-block .selectmenu-list {
+  left: 0;
+  right: 0;
+  min-width: 0;
+  /* a country list is long — cap it and scroll rather than running off
+     the bottom of the step */
+  max-height: 280px;
+  overflow-y: auto;
+}
+.selectmenu-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tier-count {
@@ -1964,4 +2009,91 @@ a.cal-fact:hover {
   letter-spacing: -0.04em;
   line-height: 1.04;
   color: #fff;
+}
+
+/* ---------- destructive action + its confirmation ---------- */
+
+/* Outlined, not filled. Deleting an account should be findable without
+   competing with "Save changes" for attention; the colour only arrives
+   on hover, once the pointer is already on it. */
+.btn-danger-ghost {
+  border: 1px solid rgba(199, 53, 43, 0.4);
+  color: #a82a21;
+  background: transparent;
+  font-weight: 600;
+}
+.btn-danger-ghost:hover {
+  background: #c7352b;
+  border-color: #c7352b;
+  color: #fff;
+}
+.btn-danger-ghost:focus-visible {
+  outline: 2px solid #c7352b;
+  outline-offset: 3px;
+}
+
+.cfm {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: var(--pad);
+}
+.cfm-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 9, 0.55);
+  backdrop-filter: blur(3px);
+}
+.cfm-panel {
+  position: relative;
+  width: min(100%, 460px);
+  padding: clamp(28px, 3.4vw, 40px);
+  border-radius: var(--r-xl);
+  background: var(--paper);
+  box-shadow: 0 60px 120px -40px rgba(8, 8, 9, 0.6);
+}
+.cfm-ic {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #fdf0ef;
+  color: #c7352b;
+  margin-bottom: 20px;
+}
+.cfm-panel h2 {
+  font-family: var(--display);
+  font-size: clamp(23px, 2.4vw, 29px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.cfm-panel p {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+.cfm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+.cfm-actions .btn {
+  flex: 1;
+  justify-content: center;
+  min-width: 140px;
+}
+.cfm-danger {
+  background: #c7352b;
+  color: #fff;
+  font-weight: 600;
+}
+.cfm-danger:hover {
+  background: #a82a21;
 }

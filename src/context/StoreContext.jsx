@@ -76,6 +76,7 @@ export function StoreProvider({ children }) {
       signIn: store.signIn,
       signOut: store.signOut,
       forgetMe: store.forgetMe,
+      deleteAccount: store.deleteAccount,
       setPref: store.setPref,
       placeOrder: store.placeOrder,
       money: store.money,

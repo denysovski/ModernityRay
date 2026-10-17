@@ -38,6 +38,12 @@ import { paths } from '../routes'
 
 const ease = [0.22, 1, 0.36, 1]
 const easeOut = [0.4, 0, 1, 1]
+
+/** One line of the confirmation, rising in behind the one before it. */
+const doneItem = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
+}
 const STEPS = ['Account', 'Details', 'Delivery', 'Payment']
 
 /* Each step slides in from the direction you travelled, so moving forward and
@@ -82,6 +88,14 @@ export default function Checkout() {
   useEffect(() => {
     document.title = 'Checkout — CourtSy'
   }, [])
+
+  /* The payment step is the tallest, so the submit button sits well down
+     the page — and the confirmation that replaces it is short. Without
+     this you land on "You're in" already scrolled past it. Instant, not
+     smooth: the old view is gone, so there is nothing to travel through. */
+  useEffect(() => {
+    if (order) window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [order])
 
   /* Errors are derived, never stored — recomputing on each render means a
      field clears the moment it becomes valid, with no stale-state bugs. */
@@ -168,39 +182,56 @@ export default function Checkout() {
       <main className="pg">
         <section className="pg-section section">
           <div className="shell">
-            <div className="ck-done">
+            {/* The confirmation arrives in sequence rather than all at once:
+                the mark, then the name, then the detail. Each child picks
+                up its delay from the container's stagger. */}
+            <motion.div
+              className="ck-done"
+              initial="hidden"
+              animate="show"
+              variants={{
+                show: { transition: { staggerChildren: 0.08, delayChildren: 0.12 } },
+              }}
+            >
               <motion.span
                 className="ck-done-ic"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, ease, delay: 0.1 }}
+                variants={{
+                  hidden: { scale: 0.4, opacity: 0 },
+                  show: {
+                    scale: 1,
+                    opacity: 1,
+                    transition: { duration: 0.55, ease: [0.34, 1.56, 0.64, 1] },
+                  },
+                }}
               >
                 <Icon.check />
               </motion.span>
-              <h1 className="h-md">You&rsquo;re in, {order.details.name}.</h1>
-              <p>
+              <motion.h1 className="h-md" variants={doneItem}>
+                You&rsquo;re in, {order.details.name}.
+              </motion.h1>
+              <motion.p variants={doneItem}>
                 Order <strong>{order.ref}</strong> is confirmed. A receipt is on its way to{' '}
                 {order.details.email}, and your member card ships to {order.details.address}.
-              </p>
-              <div className="ck-done-total">
+              </motion.p>
+              <motion.div className="ck-done-total" variants={doneItem}>
                 <span>Paid today</span>
                 <strong>{money(order.totals.total)}</strong>
-              </div>
-              <p className="ck-sim">
+              </motion.div>
+              <motion.p className="ck-sim" variants={doneItem}>
                 Simulated checkout — no payment was taken and nothing left your browser.
                 {order.details.cardLast4
                   ? ` Only ${order.details.cardBrand} ····${order.details.cardLast4} was recorded.`
                   : null}
-              </p>
-              <div className="ck-done-actions">
+              </motion.p>
+              <motion.div className="ck-done-actions" variants={doneItem}>
                 <button type="button" className="btn btn-member" onClick={() => navigate(paths.account)}>
                   See your orders <span className="btn-bubble"><Icon.arrow /></span>
                 </button>
                 <SmartLink href={paths.home} className="btn btn-light">
                   Back to the club
                 </SmartLink>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
       </main>

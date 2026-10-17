@@ -43,6 +43,18 @@ export default function RootLayout() {
     if (!document.title) document.title = 'CourtSy'
   }, [pathname])
 
+  /* MotionConfig below governs framer-motion and nothing else, so with the
+     preference on, the scroll parallax stopped while every CSS transition,
+     the marquee's keyframes and the carousel's slide carried on — the
+     setting only half worked. Mirroring it onto <html> lets one stylesheet
+     rule damp the CSS half too; see the [data-reduced-motion] block in
+     styles/index.css, which matches what the OS-level media query does. */
+  useEffect(() => {
+    const root = document.documentElement
+    if (prefs.reducedMotion) root.dataset.reducedMotion = 'true'
+    else delete root.dataset.reducedMotion
+  }, [prefs.reducedMotion])
+
   /* In-page anchors (#tailored, #join, the hero cards) need handling of our
      own. Clicking one changes the location, which makes <ScrollRestoration>
      restore the scroll position recorded for that history entry, and that

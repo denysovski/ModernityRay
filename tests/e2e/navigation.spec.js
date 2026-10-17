@@ -151,13 +151,13 @@ test.describe('membership filtering', () => {
 
     /* The sort control is ours, not a native <select>: open it and pick an
        option the way someone with a mouse would. */
-    await page.locator('.sortmenu-trigger').click()
+    await page.locator('.selectmenu-trigger').click()
     await expect(page.getByRole('listbox', { name: 'Sort' })).toBeVisible()
     await page.getByRole('option', { name: 'Price, high to low' }).click()
 
     // it closes on choosing, and the trigger reports the choice
     await expect(page.getByRole('listbox', { name: 'Sort' })).toHaveCount(0)
-    await expect(page.locator('.sortmenu-trigger')).toHaveText(/Price, high to low/)
+    await expect(page.locator('.selectmenu-trigger')).toHaveText(/Price, high to low/)
 
     const names = await page.locator('.tier-name').allTextContents()
     expect(names[0]).toBe('Corporate')
@@ -165,12 +165,12 @@ test.describe('membership filtering', () => {
 
   test('the sort menu closes on Escape without changing the sort', async ({ page }) => {
     await page.goto('/memberships')
-    await page.locator('.sortmenu-trigger').click()
+    await page.locator('.selectmenu-trigger').click()
     await expect(page.getByRole('listbox', { name: 'Sort' })).toBeVisible()
 
     await page.keyboard.press('Escape')
     await expect(page.getByRole('listbox', { name: 'Sort' })).toHaveCount(0)
-    await expect(page.locator('.sortmenu-trigger')).toHaveText(/Price, low to high/)
+    await expect(page.locator('.selectmenu-trigger')).toHaveText(/Price, low to high/)
   })
 })
 

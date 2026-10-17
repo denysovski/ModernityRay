@@ -267,6 +267,22 @@ export const forgetMe = () => {
   notify()
 }
 
+/* Everything, preferences included — the account as if it had never been
+   created on this browser. forgetMe leaves the display preferences alone
+   because clearing your data is not the same as asking for the app to
+   forget how you like it; deleting the account is. */
+export const deleteAccount = () => {
+  items = []
+  user = null
+  orders = []
+  prefs = { ...DEFAULT_PREFS }
+  write(K.cart, items)
+  write(K.user, null)
+  write(K.orders, orders)
+  write(K.prefs, prefs)
+  notify()
+}
+
 /* ── preferences ───────────────────────────────────────────────────────── */
 
 export const setPref = (key, value) => {
