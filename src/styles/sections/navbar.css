@@ -212,8 +212,20 @@
   letter-spacing: -0.02em;
   line-height: 1.08;
 }
+/* The feature card's call to action sits on a dark photograph, so it is
+   white rather than coal — a coal button on that scrim disappeared into
+   it. Hover goes a shade down rather than to black, the same move the
+   footer's join button makes. */
 .mega-card-btn {
   align-self: flex-start;
+}
+.btn.mega-card-btn {
+  background: #fff;
+  color: var(--ink);
+}
+.btn.mega-card-btn:hover {
+  background: #e2e2e0;
+  color: var(--ink);
 }
 /* join: image cards + side links + big button */
 .mega-join {
