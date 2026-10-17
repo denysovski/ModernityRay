@@ -181,22 +181,24 @@ export default function Programmes() {
       </section>
 
       <section className="section prg-cta-wrap">
-        <div className="shell prg-cta">
-          <div>
-            <h2 className="h-md">Not sure which block you want?</h2>
-            <p>
-              Book an hour with a coach before you choose. They will put you
-              through the same assessment every programme opens with, and tell
-              you honestly which one it points at.
-            </p>
-          </div>
-          <div className="prg-cta-actions">
-            <SmartLink href={paths.tour} className="btn btn-green">
-              Book a private tour
-            </SmartLink>
-            <SmartLink href={paths.memberships} className="btn btn-light">
-              See the tiers <Icon.arrow />
-            </SmartLink>
+        <div className="shell">
+          <div className="prg-cta">
+            <div>
+              <h2 className="h-md">Not sure which block you want?</h2>
+              <p>
+                Book an hour with a coach before you choose. They will put you
+                through the same assessment every programme opens with, and tell
+                you honestly which one it points at.
+              </p>
+            </div>
+            <div className="prg-cta-actions">
+              <SmartLink href={paths.tour} className="btn btn-green">
+                Book a private tour
+              </SmartLink>
+              <SmartLink href={paths.memberships} className="btn btn-light">
+                See the tiers <Icon.arrow />
+              </SmartLink>
+            </div>
           </div>
         </div>
       </section>

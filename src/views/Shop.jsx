@@ -129,25 +129,27 @@ export default function Shop() {
       </section>
 
       <section className="section shop-promise-wrap">
-        <div className="shell shop-promise">
-          {[
-            { h: 'Members take 15%', p: 'Applied at the counter and at checkout, on everything except stringing services.' },
-            { h: 'Three-day delivery', p: 'Flat fee, anywhere, or collect from the pro shop the same afternoon at no charge.' },
-            { h: 'Repaired, not replaced', p: 'Bags, jackets and sensors come back to us for repair for as long as we make the part.' },
-          ].map((c, i) => (
-            <motion.div
-              className="shop-promise-card"
-              key={c.h}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, ease, delay: i * 0.08 }}
-            >
-              <span className="shop-promise-ic"><Icon.check /></span>
-              <h3>{c.h}</h3>
-              <p>{c.p}</p>
-            </motion.div>
-          ))}
+        <div className="shell">
+          <div className="shop-promise">
+            {[
+              { h: 'Members take 15%', p: 'Applied at the counter and at checkout, on everything except stringing services.' },
+              { h: 'Three-day delivery', p: 'Flat fee, anywhere, or collect from the pro shop the same afternoon at no charge.' },
+              { h: 'Repaired, not replaced', p: 'Bags, jackets and sensors come back to us for repair for as long as we make the part.' },
+            ].map((c, i) => (
+              <motion.div
+                className="shop-promise-card"
+                key={c.h}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, ease, delay: i * 0.08 }}
+              >
+                <span className="shop-promise-ic"><Icon.check /></span>
+                <h3>{c.h}</h3>
+                <p>{c.p}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
