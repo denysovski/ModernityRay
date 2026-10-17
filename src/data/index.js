@@ -6,6 +6,22 @@ export { local, remote } from './images'
 export { MENU, FOOTER } from './navigation'
 export { HERO_IMG, HERO_CARDS } from './hero'
 export { TABS, PLAN_ITEMS, CATEGORIES, PLANS, ENDLESS_IMG } from './training'
+export {
+  PROGRAMMES,
+  DISCIPLINES,
+  COACHES,
+  coachById,
+  programmeBySlug,
+} from './programmes'
+export {
+  PRODUCTS,
+  SHOP_CATEGORIES,
+  SHOP_HERO,
+  VENUES,
+  MENU_SECTIONS,
+  DINING_FACTS,
+  DINING_HERO,
+} from './shop'
 export { ELEVATE, PRINCIPLES, STATS, CLUB_STATS } from './club'
 export { TESTIMONIALS, MEMBERSHIP, MEMBERSHIP_FIELDS, TIERS, tierBySlug } from './membership'
 export { COURTS, courtBySlug } from './courts'

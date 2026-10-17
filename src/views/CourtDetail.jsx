@@ -41,7 +41,7 @@ export default function CourtDetail() {
       <PageHeader
         label={court.surface}
         title={court.name}
-        lede={court.tagline}
+        lede={court.intro}
         crumbs={[
           { label: 'Home', href: paths.home },
           { label: 'Courts', href: paths.courts },

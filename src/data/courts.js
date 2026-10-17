@@ -18,7 +18,8 @@ import { local, remote } from './images'
  * @property {string} slug
  * @property {string} name
  * @property {string} surface   short label, e.g. 'Championship clay'
- * @property {string} tagline
+ * @property {string} tagline   four or five words, for the index card
+ * @property {string} intro     the standfirst on /courts/:slug — a few sentences
  * @property {string} desc
  * @property {string} img
  * @property {{img: string, title: string, fact: string, by: {name: string, role: string, img: string}}[]} gallery
@@ -34,6 +35,12 @@ export const COURTS = [
     name: 'Centre Court',
     surface: 'Championship clay',
     tagline: 'Floodlit until midnight',
+    intro:
+      'The court the club is arranged around, and the one members book a fortnight ahead. ' +
+      'It is the slowest surface on the grounds, which makes it the most honest: there is ' +
+      'nowhere to hide a weak second serve when the rally runs twenty shots. Sixteen ' +
+      'floodlights hold it at broadcast level until midnight, and more than half the hours ' +
+      'played here are taken after dark.',
     desc:
       'The club’s show court, laid with imported red clay and resurfaced every spring. ' +
       'Seated for four hundred, floodlit to broadcast standard, and the venue for every ' +
@@ -78,6 +85,11 @@ export const COURTS = [
     name: 'The Lawns',
     surface: 'Six open-air hard courts',
     tagline: 'Open 24 hours to residents',
+    intro:
+      'Where most of the tennis at this club actually happens. Six cushioned courts in two ' +
+      'banks of three, set behind the east treeline so the afternoon sun never lands on a ' +
+      'baseline. Residents hold a key, which means a court at five in the morning or eleven ' +
+      'at night, and two of the six are relaid every spring so nothing here plays old.',
     desc:
       'Six cushioned acrylic courts arranged in two banks of three, sheltered by the ' +
       'east treeline. The everyday courts of the club: never more than a short wait, ' +
@@ -122,6 +134,11 @@ export const COURTS = [
     name: 'Golf Greens',
     surface: '18-hole lakeside course',
     tagline: 'Par 71, 6,480 yards',
+    intro:
+      'Eighteen holes wrapped around the water, walkable in three and a half hours and ' +
+      'genuinely quiet from Monday to Thursday. The front nine is generous; the back nine ' +
+      'is where the lake starts asking questions, and where most cards come apart. A short ' +
+      'game area and two covered launch-monitor bays sit beside the pro shop, lit until nine.',
     desc:
       'Eighteen holes wrapped around the lake, with a short game area and a ' +
       'launch-monitor bay beside the pro shop. Walkable in three and a half hours, ' +
@@ -166,6 +183,12 @@ export const COURTS = [
     name: 'The Pavilion',
     surface: 'Strength & conditioning',
     tagline: 'Platforms, turf and a recovery suite',
+    intro:
+      'The room that keeps everybody else on court. Eight calibrated platforms, a sled ' +
+      'track on turf running the length of the floor, and a recovery suite behind it with ' +
+      'contrast baths, a sauna and two treatment rooms. Coached conditioning runs at six in ' +
+      'the morning and six in the evening, capped at twelve, and about a third of the ' +
+      'membership books something here in any given week.',
     desc:
       'Eight lifting platforms, a sled track on turf, and a recovery suite with ' +
       'contrast baths, sauna and two treatment rooms. Coached conditioning runs ' +
@@ -210,6 +233,12 @@ export const COURTS = [
     name: 'Lakeside Pool',
     surface: 'Eight 25-metre lanes',
     tagline: 'Heated year round',
+    intro:
+      'Eight lanes, twenty-five metres, held at twenty-eight degrees through the winter ' +
+      'under a roof that opens the moment the weather allows. Lane discipline is posted ' +
+      'hourly and taken seriously, so a threshold set and a recovery swim never end up in ' +
+      'the same water. The squad takes three mornings a week for technique; the rest of the ' +
+      'time the pool belongs to whoever booked it.',
     desc:
       'A twenty-five metre, eight-lane pool under a retractable roof, held at ' +
       '28°C through the winter. Lane discipline is posted hourly, and the squad ' +

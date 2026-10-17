@@ -2,26 +2,32 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { Reveal, Icon, Img, MotionLink } from '../ui'
 import { local } from '../../data/images'
+import { paths } from '../../routes'
 
-// One shot per space in the club — every photograph in public/img that is not
-// already carrying a section of its own gets its moment here.
+/* One shot per space in the club — every photograph in public/img that is not
+   already carrying a section of its own gets its moment here.
+
+   Each tile names a real place or service, so each one opens that place's
+   page. They scrolled to a homepage section while the facilities and
+   programmes lived here; now that every one of them is a route, a tile that
+   says "The Pro Shop" should open the shop. */
 const SHOTS = [
-  { img: local('courts.jpg'), label: 'The Lawns', meta: 'Six open-air hard courts', href: '#endless' },
-  { img: local('clay.jpg'), label: 'Centre Court', meta: 'Floodlit championship clay', href: '#endless' },
-  { img: local('strength.jpg'), label: 'The Strength Room', meta: 'Conditioning & mobility', href: '#tailored' },
-  { img: local('woodcourt.jpg'), label: 'The Hidden Court', meta: 'Members practice, in the trees', href: '#endless' },
-  { img: local('rackets.jpg'), label: 'The Pro Shop', meta: 'Demo, restring & fit', href: '#elevate' },
-  { img: local('swim.jpg'), label: 'The Pool', meta: '25m saltwater lanes', href: '#elevate' },
-  { img: local('golf.jpg'), label: 'Lakeside Greens', meta: '18-hole members course', href: '#endless' },
-  { img: local('runners.jpg'), label: 'The Track', meta: 'Dawn & dusk run club', href: '#tailored' },
-  { img: local('ball.jpg'), label: 'Practice Wall', meta: 'Drills & ball machines', href: '#tailored' },
-  { img: local('yoga.jpg'), label: 'The Studio', meta: 'Mobility, pilates & flow', href: '#elevate' },
-  { img: local('night.jpg'), label: 'Floodlit Nights', meta: 'Play until midnight', href: '#endless' },
-  { img: local('scrum.jpg'), label: 'The Field', meta: 'Team sport & corporate days', href: '#join' },
-  { img: local('palms.jpg'), label: 'The Grounds', meta: 'Gardens & terraces', href: '#elevate' },
-  { img: local('cycling.jpg'), label: 'The Ride Room', meta: 'Road club & watt bikes', href: '#tailored' },
-  { img: local('player.jpg'), label: 'Match Play', meta: 'Leagues & socials', href: '#join' },
-  { img: local('floodlights.jpg'), label: 'Groundskeeping', meta: 'Surfaces kept to tour spec', href: '#elevate' },
+  { img: local('courts.jpg'), label: 'The Lawns', meta: 'Six open-air hard courts', href: paths.court('the-lawns') },
+  { img: local('clay.jpg'), label: 'Centre Court', meta: 'Floodlit championship clay', href: paths.court('centre-court') },
+  { img: local('strength.jpg'), label: 'The Strength Room', meta: 'Conditioning & mobility', href: paths.programme('strength-conditioning') },
+  { img: local('woodcourt.jpg'), label: 'The Hidden Court', meta: 'Members practice, in the trees', href: paths.courts },
+  { img: local('rackets.jpg'), label: 'The Pro Shop', meta: 'Demo, restring & fit', href: paths.shop },
+  { img: local('swim.jpg'), label: 'The Pool', meta: '25m saltwater lanes', href: paths.court('lakeside-pool') },
+  { img: local('golf.jpg'), label: 'Lakeside Greens', meta: '18-hole members course', href: paths.court('golf-greens') },
+  { img: local('runners.jpg'), label: 'The Track', meta: 'Dawn & dusk run club', href: paths.programme('cardio-hiit') },
+  { img: local('ball.jpg'), label: 'Practice Wall', meta: 'Drills & ball machines', href: paths.programme('tennis-performance') },
+  { img: local('yoga.jpg'), label: 'The Studio', meta: 'Mobility, pilates & flow', href: paths.programme('recovery-mobility') },
+  { img: local('night.jpg'), label: 'Floodlit Nights', meta: 'Play until midnight', href: paths.court('centre-court') },
+  { img: local('scrum.jpg'), label: 'The Field', meta: 'Team sport & corporate days', href: paths.membership('corporate') },
+  { img: local('palms.jpg'), label: 'The Grounds', meta: 'Gardens & terraces', href: paths.dining },
+  { img: local('cycling.jpg'), label: 'The Ride Room', meta: 'Road club & watt bikes', href: paths.programme('endurance-road') },
+  { img: local('player.jpg'), label: 'Match Play', meta: 'Leagues & socials', href: paths.programme('match-play-league') },
+  { img: local('floodlights.jpg'), label: 'Groundskeeping', meta: 'Surfaces kept to tour spec', href: paths.courts },
 ]
 
 export default function Gallery() {

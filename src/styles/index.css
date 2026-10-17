@@ -384,6 +384,27 @@ main[id],
   background: var(--ink);
   color: var(--lime);
 }
+/* see-through pill with a green edge — the secondary action beside a filled
+   button on a dark surface, where a white outline would compete with it */
+.btn-outline-lime {
+  background: transparent;
+  border: 1px solid var(--lime);
+  color: #fff;
+  font-weight: 600;
+  padding: 13px 24px;
+  transition: background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+.btn-outline-lime:hover {
+  background: rgba(93, 214, 44, 0.14);
+  border-color: var(--green-bright);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(93, 214, 44, 0.14);
+}
+.btn-outline-lime:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+
 .btn-ghost {
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Icon, Img, Reveal, SmartLink, Stagger, upItem } from '../ui'
+import { Icon, Img, MotionLink, Reveal, SmartLink, Stagger, upItem } from '../ui'
 import { MEMBERSHIP, MEMBERSHIP_FIELDS } from '../../data'
 import { useStore } from '../../context/StoreContext'
 import { paths } from '../../routes'
@@ -29,25 +29,30 @@ export default function Membership() {
                 </motion.li>
               ))}
             </Stagger>
-            <button
-              type="button"
-              className="btn btn-member mb-cta"
-              onClick={() => {
-                add({
-                  id: `tier-${m.slug}`,
-                  name: m.name,
-                  meta: m.cadence,
-                  price: m.price,
-                })
-                openCart()
-              }}
-            >
-              Become a member <span className="btn-bubble"><Icon.arrow /></span>
-            </button>
+            {/* Two actions, side by side: the commitment, and the way to
+                read more before making it. The second was a text link under
+                the small print, where nobody found it. */}
+            <div className="mb-actions">
+              <button
+                type="button"
+                className="btn btn-member mb-cta"
+                onClick={() => {
+                  add({
+                    id: `tier-${m.slug}`,
+                    name: m.name,
+                    meta: m.cadence,
+                    price: m.price,
+                  })
+                  openCart()
+                }}
+              >
+                Become a member <span className="btn-bubble"><Icon.arrow /></span>
+              </button>
+              <SmartLink href={paths.membership(m.slug)} className="btn btn-outline-lime">
+                Learn more
+              </SmartLink>
+            </div>
             <span className="mb-note">{m.note}</span>
-            <SmartLink href={paths.membership(m.slug)} className="mb-detail-link">
-              See everything in {m.name} <Icon.arrow />
-            </SmartLink>
           </Reveal>
 
           {/* heading + description + field showcase */}
@@ -64,8 +69,9 @@ export default function Membership() {
 
             <div className="mb-fields">
               {MEMBERSHIP_FIELDS.map((f, i) => (
-                <motion.div
+                <MotionLink
                   className="mb-field"
+                  href={paths.court(f.court)}
                   key={f.label}
                   initial={{ opacity: 0, scale: 0.94 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -75,7 +81,7 @@ export default function Membership() {
                   <Img src={f.img} alt={f.label} sizes="(max-width: 700px) 33vw, 220px" />
                   <span className="mb-field-go"><Icon.arrowUR /></span>
                   <span className="mb-field-label">{f.label}</span>
-                </motion.div>
+                </MotionLink>
               ))}
             </div>
           </div>
@@ -99,7 +105,7 @@ export default function Membership() {
           </div>
           <div className="mb-custom-right">
             <SmartLink href={paths.memberships} className="btn btn-green mb-custom-btn">
-              Compare all five tiers
+              View all five tiers
             </SmartLink>
           </div>
         </motion.div>

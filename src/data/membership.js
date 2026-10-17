@@ -232,8 +232,11 @@ export const tierBySlug = (slug) => TIERS.find((t) => t.slug === slug)
 export const MEMBERSHIP = TIERS.find((t) => t.featured)
 
 /* Kept so the homepage field showcase keeps working off one list. */
+/* The three photographs under the membership copy. Each one opens the
+   facility it shows — they were decorative, which made the hover arrow on
+   them a lie. `court` is a slug in ./courts. */
 export const MEMBERSHIP_FIELDS = [
-  { img: local('courts.jpg'), label: 'Hard courts' },
-  { img: local('clay.jpg'), label: 'Clay courts' },
-  { img: local('golf.jpg'), label: 'Golf greens' },
+  { img: local('courts.jpg'), label: 'Hard courts', court: 'the-lawns' },
+  { img: local('clay.jpg'), label: 'Clay courts', court: 'centre-court' },
+  { img: local('golf.jpg'), label: 'Golf greens', court: 'golf-greens' },
 ]

@@ -95,9 +95,11 @@
   background: #fff;
   color: var(--ink);
 }
+/* Hover stays in the light: the card behind it is a dark photograph, and a
+   button that goes black on hover reads as the button disappearing. */
 .btn.ev-btn:hover {
-  background: var(--ink);
-  color: #fff;
+  background: #e2e2e0;
+  color: var(--ink);
 }
 .ev-small .ev-btn {
   padding: 5px 6px 5px 16px;

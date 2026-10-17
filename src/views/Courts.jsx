@@ -28,7 +28,7 @@ export default function Courts() {
     const q = query.trim().toLowerCase()
     if (!q) return COURTS
     return COURTS.filter((c) =>
-      [c.name, c.surface, c.tagline, c.desc].join(' ').toLowerCase().includes(q),
+      [c.name, c.surface, c.tagline, c.intro, c.desc].join(' ').toLowerCase().includes(q),
     )
   }, [query])
 

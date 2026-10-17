@@ -1,20 +1,25 @@
 /* What the club is and what it is built on. */
 import { local } from './images'
+import { paths } from '../routes'
 
+/* Every href here is a real route. These were same-page anchors while the
+   site was one long page; now that the courts, the programmes, the shop and
+   the kitchen each have their own view, a flyout link goes to the page it
+   names rather than scrolling a few sections down. */
 export const ELEVATE = [
   {
     img: local('courts.jpg'),
     label: 'The courts',
     title: 'Train on championship surfaces',
     desc: 'Clay, grass and hard courts kept to tour standard, floodlit until late.',
-    href: '#endless',
+    href: paths.courts,
     menu: {
       heading: 'On the courts',
       links: [
-        { label: 'Book a court', href: '#endless' },
-        { label: 'Court availability', href: '#endless' },
-        { label: 'Surface guide', href: '#tailored' },
-        { label: 'Floodlit play', href: '#join' },
+        { label: 'All five facilities', href: paths.courts },
+        { label: 'Centre Court', href: paths.court('centre-court') },
+        { label: 'The Lawns', href: paths.court('the-lawns') },
+        { label: 'Golf Greens', href: paths.court('golf-greens') },
       ],
     },
   },
@@ -23,14 +28,14 @@ export const ELEVATE = [
     label: 'The game',
     title: 'Coaching that meets your level',
     desc: 'Private sessions, clinics and match play with certified pros.',
-    href: '#tailored',
+    href: paths.programmes,
     menu: {
       heading: 'Improve your game',
       links: [
-        { label: 'Find a coach', href: '#tailored' },
-        { label: 'Group clinics', href: '#endless' },
-        { label: 'Match play', href: '#join' },
-        { label: 'Junior academy', href: '#tailored' },
+        { label: 'All nine programmes', href: paths.programmes },
+        { label: 'Meet the coaches', href: `${paths.programmes}#coaches` },
+        { label: 'Junior academy', href: paths.programme('junior-academy') },
+        { label: 'Match play league', href: paths.programme('match-play-league') },
       ],
     },
   },
@@ -39,14 +44,14 @@ export const ELEVATE = [
     label: 'The lifestyle',
     title: 'Recover, dine and belong',
     desc: 'Spa, lakeside dining and a members’ calendar beyond the baseline.',
-    href: '#join',
+    href: paths.dining,
     menu: {
       heading: 'Off the court',
       links: [
-        { label: 'Spa & recovery', href: '#elevate' },
-        { label: 'Clubhouse dining', href: '#elevate' },
-        { label: 'Members’ events', href: '#join' },
-        { label: 'Merchandise', href: '#elevate' },
+        { label: 'Clubhouse dining', href: paths.dining },
+        { label: 'The club shop', href: paths.shop },
+        { label: 'Spa & recovery', href: paths.programme('recovery-mobility') },
+        { label: 'Members’ events', href: paths.events },
       ],
     },
   },

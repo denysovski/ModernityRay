@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, Img, SmartLink } from '../components/ui'
+import { Icon, Img, SmartLink, SortMenu } from '../components/ui'
 import { TIERS } from '../data'
 import { useStore } from '../context/StoreContext'
 import { TAX_RATE } from '../lib/store'
@@ -96,14 +96,7 @@ export default function Memberships() {
                 </button>
               ))}
             </div>
-            <label className="tier-sort">
-              Sort
-              <select value={sort} onChange={(e) => setSort(e.target.value)}>
-                {SORTS.map((s) => (
-                  <option key={s.id} value={s.id}>{s.label}</option>
-                ))}
-              </select>
-            </label>
+            <SortMenu options={SORTS} value={sort} onChange={setSort} />
           </div>
 
           <p className="tier-count" aria-live="polite">

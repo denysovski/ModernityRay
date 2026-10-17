@@ -25,9 +25,15 @@
   border: 1px solid var(--line);
   transition: transform 0.4s var(--ease), box-shadow 0.4s, border-color 0.3s;
 }
+/* The ring is not decoration. The grid's tracks land on fractional pixels, so
+   the right-hand card's 1px border straddles two device columns and
+   antialiases to about half opacity — on the last card it all but vanished.
+   A box-shadow ring is painted outside the border box, over the same edge,
+   and the two together read as one solid line wherever the card falls. */
 .pr-card:hover {
   transform: translateY(-6px);
   border-color: var(--lime);
+  box-shadow: 0 0 0 1px var(--lime), 0 34px 60px -52px rgba(10, 10, 10, 0.5);
 }
 /* was the 01-04 numeral; now holds the same star used across the page */
 .pr-n {

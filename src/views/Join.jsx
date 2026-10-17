@@ -20,6 +20,30 @@ const rise = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
 }
 
+/* The member faces: in from the left, slightly small and blurred, landing
+   on the overlapping stack. The blur is what makes it read as a swoosh
+   rather than a slide — it clears exactly as the motion settles. */
+const swoosh = {
+  hidden: { opacity: 0, x: -46, scale: 0.78, filter: 'blur(7px)' },
+  show: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { duration: 0.62, ease },
+  },
+}
+
+const swooshText = {
+  hidden: { opacity: 0, x: -22, filter: 'blur(5px)' },
+  show: {
+    opacity: 1,
+    x: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.7, ease, delay: 0.18 },
+  },
+}
+
 export default function Join() {
   const { money } = useStore()
 
@@ -50,14 +74,33 @@ export default function Join() {
               open to the people who use them. Here is what that means before
               you look at a price.
             </p>
-            <div className="jn-faces-row">
+            {/* The faces arrive one after another from the left and settle
+                into the stack, then the count follows them in. The stagger
+                lives on the row rather than on each child, so adding a face
+                to the data extends the sequence instead of breaking it. */}
+            <motion.div
+              className="jn-faces-row"
+              initial="hidden"
+              animate="show"
+              variants={{ show: { transition: { delayChildren: 0.55, staggerChildren: 0.09 } } }}
+            >
               <div className="jn-faces">
                 {JOIN_FACES.map((src) => (
-                  <img key={src} src={src} alt="" width="40" height="40" loading="lazy" />
+                  <motion.img
+                    key={src}
+                    src={src}
+                    alt=""
+                    width="40"
+                    height="40"
+                    loading="lazy"
+                    variants={swoosh}
+                  />
                 ))}
               </div>
-              <span>5,000+ people train here every week</span>
-            </div>
+              <motion.span variants={swooshText}>
+                5,000+ people train here every week
+              </motion.span>
+            </motion.div>
           </motion.div>
         </div>
       </header>
@@ -130,7 +173,7 @@ export default function Join() {
           </div>
           <div className="jn-tiers-cta">
             <SmartLink href={paths.memberships} className="btn btn-member">
-              Compare them properly <span className="btn-bubble"><Icon.arrow /></span>
+              View more information <span className="btn-bubble"><Icon.arrow /></span>
             </SmartLink>
           </div>
         </div>

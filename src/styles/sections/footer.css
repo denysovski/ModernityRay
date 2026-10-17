@@ -37,9 +37,12 @@
 .footer-cta-btn {
   flex-shrink: 0;
 }
+/* The brand column plus one track per column in data/navigation — auto-fit
+   rather than a hard count, so adding a sitemap column does not need a
+   second edit here. */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.6fr repeat(4, 1fr);
+  grid-template-columns: 1.6fr repeat(auto-fit, minmax(120px, 1fr));
   gap: 30px;
   padding: clamp(44px, 5vw, 72px) 0;
 }

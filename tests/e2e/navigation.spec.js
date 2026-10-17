@@ -91,17 +91,38 @@ test.describe('membership filtering', () => {
     await expect(page.getByText('Showing 2 of 5 tiers')).toBeVisible()
 
     await page.getByRole('button', { name: 'All tiers' }).click()
-    await page.getByLabel('Sort').selectOption('price-desc')
+
+    /* The sort control is ours, not a native <select>: open it and pick an
+       option the way someone with a mouse would. */
+    await page.locator('.sortmenu-trigger').click()
+    await expect(page.getByRole('listbox', { name: 'Sort' })).toBeVisible()
+    await page.getByRole('option', { name: 'Price, high to low' }).click()
+
+    // it closes on choosing, and the trigger reports the choice
+    await expect(page.getByRole('listbox', { name: 'Sort' })).toHaveCount(0)
+    await expect(page.locator('.sortmenu-trigger')).toHaveText(/Price, high to low/)
 
     const names = await page.locator('.tier-name').allTextContents()
     expect(names[0]).toBe('Corporate')
   })
+
+  test('the sort menu closes on Escape without changing the sort', async ({ page }) => {
+    await page.goto('/memberships')
+    await page.locator('.sortmenu-trigger').click()
+    await expect(page.getByRole('listbox', { name: 'Sort' })).toBeVisible()
+
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('listbox', { name: 'Sort' })).toHaveCount(0)
+    await expect(page.locator('.sortmenu-trigger')).toHaveText(/Price, low to high/)
+  })
 })
 
 test.describe('in-page anchors', () => {
-  /* These were silently broken: clicking a hero card put the hash in the URL
-     and left the page where it was. When they did move, the section landed
-     flush with the top of the viewport, hidden behind the fixed navbar. */
+  /* Anchor scrolling was silently broken once: the hash went into the URL and
+     the page stayed where it was, and when it did move the section landed
+     flush under the fixed navbar. Only a cold load of /#section still
+     exercises that path — the hero cards and the gallery tiles that used to
+     are covered here too, for what they do now instead. */
 
   /** Waits for smooth scrolling to finish before measuring. */
   const settle = async (page) => {
@@ -127,26 +148,48 @@ test.describe('in-page anchors', () => {
     )
   }
 
-  for (const [card, target, label] of [
-    ['.fc-coach', '#tailored', 'the coach card'],
-    ['.fc-members', '#elevate', 'the members card'],
-    ['.fc-focus', '#endless', 'the focus card'],
-  ]) {
-    test(`${label} scrolls its section clear of the navbar`, async ({ page }) => {
+  /* The four floating cards over the hero are labels, not navigation. They
+     used to be anchors that jumped down the page, which read as a promise
+     the card could not keep — there is no "Open 24/7" section to land on.
+     They keep the pointer cursor and the hover lift, and go nowhere. */
+  for (const card of ['.fc-coach', '.fc-members', '.fc-time', '.fc-focus']) {
+    test(`the hero card ${card} is a label, not a link`, async ({ page }) => {
       await page.goto('/')
-      await page.locator(card).click()
-      await settle(page)
+      const el = page.locator(card)
 
-      const { sectionTop, navBottom } = await page.evaluate((sel) => ({
-        sectionTop: Math.round(document.querySelector(sel).getBoundingClientRect().top),
-        navBottom: Math.round(document.querySelector('.nav').getBoundingClientRect().bottom),
-      }), target)
+      await expect(el).toHaveCount(1)
+      expect(await el.evaluate((n) => n.tagName)).toBe('DIV')
+      expect(await el.evaluate((n) => n.hasAttribute('href'))).toBe(false)
+      expect(await el.evaluate((n) => getComputedStyle(n).cursor)).toBe('pointer')
 
-      // below the navbar, and not so far down that the section is off screen
-      expect(sectionTop).toBeGreaterThan(navBottom)
-      expect(sectionTop).toBeLessThan(220)
+      /* Settle the viewport first: click() scrolls its target into view, and
+         that scroll would otherwise look like the card having moved the
+         page itself. */
+      await el.scrollIntoViewIfNeeded()
+      await page.waitForTimeout(400)
+
+      const before = page.url()
+      const scrollBefore = await page.evaluate(() => window.scrollY)
+      await el.click()
+      await page.waitForTimeout(600)
+
+      expect(page.url()).toBe(before)
+      /* A few pixels of drift is the smooth scroll still coming to rest.
+         What would fail here is the old behaviour: a jump of several
+         hundred pixels to another section. */
+      const scrollAfter = await page.evaluate(() => window.scrollY)
+      expect(Math.abs(scrollAfter - scrollBefore)).toBeLessThan(40)
     })
   }
+
+  /* The gallery tiles name real places, so each one opens that place rather
+     than scrolling to a section that only mentions it. */
+  test('a gallery tile opens the page it names', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('.gshot').first().scrollIntoViewIfNeeded()
+    await page.locator('.gshot').first().click()
+    await expect(page).toHaveURL(/\/courts\/the-lawns$/)
+  })
 
   test('a cold load of /#principles lands on the section', async ({ page }) => {
     await page.goto('/#principles')
