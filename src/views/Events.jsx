@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import PageHeader from '../components/layout/PageHeader'
 import Newsletter from '../components/sections/Newsletter'
-import { Icon, Img, SmartLink } from '../components/ui'
+import { Icon, Img, SmartLink, useSeo } from '../components/ui'
 import { CALENDAR, EVENT_CATEGORIES, courtBySlug } from '../data'
 import { useStore } from '../context/StoreContext'
 import { byDate, formatDateRange, hasEnded, monthKey, monthLabel } from '../lib/format'
@@ -25,9 +25,11 @@ export default function Events() {
   const [query, setQuery] = useState('')
   const [showPast, setShowPast] = useState(false)
 
-  useEffect(() => {
-    document.title = 'What’s on — CourtSy'
-  }, [])
+  useSeo({
+    title: 'What’s On',
+    description:
+      'The CourtSy members’ calendar: tournaments, ladders, coaching clinics, socials and the summer recovery retreat, grouped by month and open to book.',
+  })
 
   const { months, total } = useMemo(() => {
     const now = new Date()
@@ -152,6 +154,9 @@ export default function Events() {
                       transition={{ duration: 0.45, ease, delay: Math.min(i * 0.05, 0.25) }}
                     >
                       <SmartLink href={paths.event(event.slug)} className="cal-row-img">
+                        {/* The row title beside it is a link to the same
+                            event, so describing the photograph here would
+                            make a screen reader announce the row twice. */}
                         <Img src={event.img} alt="" sizes="(max-width: 620px) 100vw, 180px" />
                       </SmartLink>
 

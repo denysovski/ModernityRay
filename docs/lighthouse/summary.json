@@ -1,35 +1,35 @@
 [
   {
     "route": "/",
-    "performance": 0.89,
+    "performance": 0.88,
     "accessibility": 1,
     "bestPractices": 1,
     "seo": 1,
-    "fcp": "2.3 s",
-    "lcp": "3.4 s",
+    "fcp": "2.4 s",
+    "lcp": "3.5 s",
     "tbt": "40 ms",
     "cls": "0"
   },
   {
     "route": "/memberships",
-    "performance": 0.93,
+    "performance": 0.92,
     "accessibility": 1,
     "bestPractices": 1,
     "seo": 1,
-    "fcp": "1.9 s",
-    "lcp": "3.0 s",
-    "tbt": "40 ms",
+    "fcp": "2.1 s",
+    "lcp": "3.1 s",
+    "tbt": "20 ms",
     "cls": "0"
   },
   {
     "route": "/courts/centre-court",
-    "performance": 0.9,
+    "performance": 0.89,
     "accessibility": 1,
     "bestPractices": 1,
     "seo": 1,
     "fcp": "2.4 s",
-    "lcp": "3.2 s",
-    "tbt": "20 ms",
+    "lcp": "3.3 s",
+    "tbt": "50 ms",
     "cls": "0"
   }
 ]

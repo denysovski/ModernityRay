@@ -74,7 +74,7 @@ npm run preview      # náhled buildu na http://localhost:4173
 npm test             # 102 unit a komponentových testů (Vitest + Testing Library)
 npm run test:watch   # totéž v režimu sledování změn
 npm run test:coverage# pokrytí kódu
-npm run test:e2e     # 39 end-to-end testů (Playwright, Chromium)
+npm run test:e2e     # 43 end-to-end testů (Playwright, Chromium)
 npm run test:all     # obojí za sebou
 ```
 
@@ -132,6 +132,7 @@ src/
     store.js            stav aplikace a localStorage
     validation.js       validace vstupů a sanitizace
     format.js           formátování dat kalendáře
+    seo.js              titulek, popis, kanonická adresa a Open Graph
   data/                 obsah webu (ceny, areály, programy, kalendář,
                         e-shop, restaurace, navigace, právní stránky)
   styles/               návrhové tokeny a styly po sekcích
@@ -141,7 +142,7 @@ tests/
   e2e/                  Playwright
 scripts/                zpracování obrázků, audit, kontrola rout, export PDF
 docs/                   technická dokumentace a Lighthouse reporty
-vite.config.js          build, dělení chunků, generování 404.html
+vite.config.js          build, dělení chunků, 404.html a sitemap.xml
 vitest.config.js        unit a komponentové testy
 playwright.config.js    e2e testy nad produkčním buildem
 ```
@@ -170,7 +171,22 @@ playwright.config.js    e2e testy nad produkčním buildem
 | `/terms`, `/privacy`, `/cookies` | `Legal` | Podmínky, soukromí a cookies — jedna komponenta nad třemi texty. |
 | cokoli jiného | `NotFound` | Stránka 404. |
 
-Podrobnosti o architektuře, správě stavu a testování jsou v
+## SEO
+
+Každá routa má vlastní titulek ve tvaru `Memberships | CourtSy`, vlastní
+popis, kanonickou adresu a náhled pro sdílení (Open Graph). Zajišťuje to
+`src/lib/seo.js` a hook `useSeo()`, protože jednostránková aplikace jinak
+pošle všem adresám tentýž `index.html`, a tedy i tentýž titulek.
+
+Pokladna, účet a stránka 404 mají `noindex`. Mapa webu se generuje při
+sestavení ze slugů v `src/data`, takže nemůže zastarat. Alternativní texty
+obrázků jsou popsané u jednotlivých fotografií v `src/data/images.js`.
+
+Kategorie SEO i přístupnost jsou v Lighthouse na hodnotě **100** na všech
+měřených routách. Čtyři testy v `tests/e2e/seo.spec.js` hlídají, že se
+metadata nezačnou opakovat nebo chybět.
+
+Podrobnosti o architektuře, správě stavu, SEO a testování jsou v
 [docs/dokumentace.md](docs/dokumentace.md) a ve stejnojmenném PDF.
 
 ## Nasazení

@@ -1,7 +1,6 @@
-import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Icon, Img, SmartLink } from '../components/ui'
-import { STUDENT, STUDENT_IMG } from '../data'
+import { Icon, Img, SmartLink, useSeo } from '../components/ui'
+import { STUDENT, STUDENT_IMG, describe } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
 
@@ -21,10 +20,11 @@ const rise = {
 
 export default function Students() {
   const { money } = useStore()
-
-  useEffect(() => {
-    document.title = 'Student membership — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Student Membership',
+    description:
+      'A reduced CourtSy membership for anyone with a student card — the same courts, greens and coaching, agreed in person at the desk.',
+  })
 
   const saving = Math.round(((STUDENT.full - STUDENT.price) / STUDENT.full) * 100)
 
@@ -70,7 +70,12 @@ export default function Students() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease }}
           >
-            <Img src={STUDENT_IMG} alt="" sizes="(max-width: 980px) 100vw, 44vw" loading="eager" />
+            <Img
+              src={STUDENT_IMG}
+              alt={describe(STUDENT_IMG)}
+              sizes="(max-width: 980px) 100vw, 44vw"
+              loading="eager"
+            />
           </motion.div>
         </div>
       </header>

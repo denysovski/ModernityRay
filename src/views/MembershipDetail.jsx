@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Icon, Img, SmartLink } from '../components/ui'
-import { TIERS, tierBySlug, TESTIMONIALS } from '../data'
+import { Icon, Img, SmartLink, useSeo } from '../components/ui'
+import { TIERS, tierBySlug, TESTIMONIALS, describe } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
 import NotFound from './NotFound'
@@ -31,9 +30,14 @@ export default function MembershipDetail() {
   const tier = tierBySlug(slug)
   const { add, openCart, money } = useStore()
 
-  useEffect(() => {
-    document.title = tier ? `${tier.name} membership — CourtSy` : 'Not found — CourtSy'
-  }, [tier])
+  useSeo({
+    title: tier ? `${tier.name} Membership` : 'Membership Not Found',
+    description: tier
+      ? `${tier.name} at CourtSy — ${money(tier.price)} ${tier.cadence}. ${tier.summary} ${tier.note}.`
+      : 'That membership tier is not here. Compare all five CourtSy tiers.',
+    image: tier?.img,
+    noindex: !tier,
+  })
 
   if (!tier) return <NotFound what="membership tier" />
 
@@ -59,7 +63,7 @@ export default function MembershipDetail() {
       <header className="member-hero">
         <Img
           src={tier.img}
-          alt=""
+          alt={describe(tier.img)}
           sizes="100vw"
           loading="eager"
           fetchPriority="high"

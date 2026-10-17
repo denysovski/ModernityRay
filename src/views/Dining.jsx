@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Icon, Img, SmartLink } from '../components/ui'
-import { VENUES, MENU_SECTIONS, DINING_FACTS, DINING_HERO } from '../data'
+import { Icon, Img, SmartLink, useSeo } from '../components/ui'
+import { VENUES, MENU_SECTIONS, DINING_FACTS, DINING_HERO, describe } from '../data'
 import { useStore } from '../context/StoreContext'
 import { paths } from '../routes'
 
@@ -17,10 +17,11 @@ const ease = [0.22, 1, 0.36, 1]
 export default function Dining() {
   const { money } = useStore()
   const [room, setRoom] = useState(VENUES[0].slug)
-
-  useEffect(() => {
-    document.title = 'Clubhouse dining — CourtSy'
-  }, [])
+  useSeo({
+    title: 'Clubhouse Dining',
+    description:
+      'Three rooms, one kitchen: the lakeside Terrace, the Long Room for dinner, and the Pass for forty minutes between sessions. Charged to your member account, never at the table.',
+  })
 
   const active = VENUES.find((v) => v.slug === room) ?? VENUES[0]
 
@@ -30,7 +31,7 @@ export default function Dining() {
       <header className="dine-hero">
         <Img
           src={DINING_HERO}
-          alt=""
+          alt={describe(DINING_HERO)}
           sizes="100vw"
           loading="eager"
           fetchPriority="high"
@@ -115,7 +116,7 @@ export default function Dining() {
                 <Img
                   key={v.slug}
                   src={v.img}
-                  alt={v.slug === active.slug ? v.name : ''}
+                  alt={v.slug === active.slug ? describe(v.img) : ''}
                   sizes="(max-width: 900px) 100vw, 55vw"
                   className={`dine-room-shot ${v.slug === active.slug ? 'is-on' : ''}`}
                   aria-hidden={v.slug === active.slug ? undefined : 'true'}

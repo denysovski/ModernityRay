@@ -2,3 +2,14 @@
 # which crawlers (and Lighthouse) read as a malformed robots file.
 User-agent: *
 Allow: /
+
+# Personal and transactional screens. These also carry <meta name="robots"
+# content="noindex"> in the app, because a disallowed URL can still be
+# indexed from an inbound link — Disallow only stops the crawl, not the
+# listing. The two together are what actually keeps them out.
+Disallow: /checkout
+Disallow: /account
+
+# Generated at build time from the slugs in src/data — see the sitemap
+# plugin in vite.config.js.
+Sitemap: https://denysovski.github.io/ModernityRay/sitemap.xml

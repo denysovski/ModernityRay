@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Icon, Img, MotionLink, Reveal, SmartLink, Stagger, upItem } from '../ui'
-import { MEMBERSHIP, MEMBERSHIP_FIELDS } from '../../data'
+import { MEMBERSHIP, MEMBERSHIP_FIELDS, describe } from '../../data'
 import { useStore } from '../../context/StoreContext'
 import { paths } from '../../routes'
 
@@ -50,6 +50,7 @@ export default function Membership() {
               </button>
               <SmartLink href={paths.membership(m.slug)} className="btn btn-outline-lime">
                 Learn more
+                <span className="sr-only"> about the {m.name} membership</span>
               </SmartLink>
             </div>
             <span className="mb-note">{m.note}</span>
@@ -78,7 +79,7 @@ export default function Membership() {
                   viewport={{ once: true, margin: '-30px' }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
                 >
-                  <Img src={f.img} alt={f.label} sizes="(max-width: 700px) 33vw, 220px" />
+                  <Img src={f.img} alt={describe(f.img)} sizes="(max-width: 700px) 33vw, 220px" />
                   <span className="mb-field-go"><Icon.arrowUR /></span>
                   <span className="mb-field-label">{f.label}</span>
                 </MotionLink>

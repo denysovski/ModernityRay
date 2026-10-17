@@ -2,7 +2,7 @@
    from the individual modules, so content can be re-grouped freely.
 
    Add a new content area as its own file here, then re-export it below. */
-export { local, remote } from './images'
+export { local, remote, describe } from './images'
 export { MENU, FOOTER } from './navigation'
 export { HERO_IMG, HERO_CARDS } from './hero'
 export { TABS, PLAN_ITEMS, CATEGORIES, PLANS, ENDLESS_IMG } from './training'

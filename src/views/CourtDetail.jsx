@@ -1,7 +1,6 @@
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import PageHeader from '../components/layout/PageHeader'
-import { Icon, Showcase, SmartLink } from '../components/ui'
+import { Icon, Showcase, SmartLink, useSeo } from '../components/ui'
 import { COURTS, courtBySlug, CALENDAR } from '../data'
 import { useStore } from '../context/StoreContext'
 import { formatDateRange, byDate } from '../lib/format'
@@ -20,9 +19,17 @@ export default function CourtDetail() {
   const court = courtBySlug(slug)
   const { add, openCart, money } = useStore()
 
-  useEffect(() => {
-    document.title = court ? `${court.name} — CourtSy` : 'Not found — CourtSy'
-  }, [court])
+  /* Hooks run before the early return, so an unknown slug still needs a
+     title — and a noindex, because a 404 that returns 200 is exactly the
+     soft-404 a crawler should be told to skip. */
+  useSeo({
+    title: court ? `${court.name} · ${court.surface}` : 'Facility Not Found',
+    description: court
+      ? `${court.name} at CourtSy: ${court.surface.toLowerCase()}. ${court.tagline}. Book by the hour, from ${court.sessions[0]?.meta ?? 'a single session'}.`
+      : 'That facility is not here. See all five places to play at CourtSy.',
+    image: court?.img,
+    noindex: !court,
+  })
 
   if (!court) return <NotFound what="facility" />
 
