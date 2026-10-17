@@ -14,9 +14,16 @@
 
 /* The navbar is fixed, so every routed view opens below it rather than
    under it — the homepage gets away without this because its hero is
-   full-bleed and designed to run behind the bar. */
+   full-bleed and designed to run behind the bar.
+
+   The floor matters more than the ceiling here. The bar ends at 98px at
+   every width, but 11vw only passes the old 104px minimum at about
+   945px wide — so on every phone and tablet the breadcrumb sat 6px under
+   the navbar, close enough to read as part of it. 134px puts 36px of air
+   there instead, and desktop is untouched because 11vw wins long before
+   the floor applies. */
 .pg {
-  padding-top: clamp(104px, 11vw, 150px);
+  padding-top: clamp(134px, 11vw, 150px);
 }
 
 .pg-head {

@@ -194,21 +194,23 @@ export default function Dining() {
 
       {/* ── how it works ─────────────────────────────────────────────── */}
       <section className="section dine-facts-wrap">
-        <div className="shell dine-facts">
-          {DINING_FACTS.map((f, i) => (
-            <motion.div
-              className="dine-fact"
-              key={f.title}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, ease, delay: i * 0.08 }}
-            >
-              <span className="dine-fact-ic"><Icon.check /></span>
-              <h3>{f.title}</h3>
-              <p>{f.desc}</p>
-            </motion.div>
-          ))}
+        <div className="shell">
+          <div className="dine-facts">
+            {DINING_FACTS.map((f, i) => (
+              <motion.div
+                className="dine-fact"
+                key={f.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, ease, delay: i * 0.08 }}
+              >
+                <span className="dine-fact-ic"><Icon.check /></span>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
