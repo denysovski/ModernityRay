@@ -16,80 +16,9 @@ export const CATEGORIES = [
   { title: 'Golf & Leisure', meta: '12 tee times daily', img: local('golf.jpg'), href: '#elevate' },
 ]
 
-// All custom plans — the moving carousel
-export const PLANS = [
-  {
-    title: 'Tennis Performance',
-    meta: '8-week program',
-    tag: 'Most popular',
-    desc: 'Footwork, serve mechanics and match tactics with a dedicated pro.',
-    img: local('baseline.jpg'),
-    href: '#tailored',
-  },
-  {
-    title: 'Strength & Conditioning',
-    meta: '12 sessions / month',
-    tag: 'Build power',
-    desc: 'Progressive lifting and mobility built around your sport.',
-    img: local('strength.jpg'),
-    href: '#tailored',
-  },
-  {
-    title: 'Junior Academy',
-    meta: 'Ages 6–16',
-    tag: 'Coached',
-    desc: 'Group coaching that grows technique, confidence and fitness.',
-    img: local('bluesky.jpg'),
-    href: '#tailored',
-  },
-  {
-    title: 'Golf Improvement',
-    meta: 'Swing & short game',
-    tag: 'On the greens',
-    desc: 'Launch-monitor lessons and on-course play with our golf team.',
-    img: local('golf.jpg'),
-    href: '#tailored',
-  },
-  {
-    title: 'Recovery & Mobility',
-    meta: 'Spa & physio',
-    tag: 'Reset',
-    desc: 'Contrast therapy, soft-tissue work and guided mobility flows.',
-    img: local('yoga.jpg'),
-    href: '#elevate',
-  },
-  {
-    title: 'Cardio & HIIT',
-    meta: '30-min express',
-    tag: 'High energy',
-    desc: 'Short, sharp interval sessions to lift your engine fast.',
-    img: local('runners.jpg'),
-    href: '#tailored',
-  },
-  {
-    title: 'Match Play League',
-    meta: 'Seasonal ladder',
-    tag: 'Compete',
-    desc: 'Ranked singles and doubles with weekly fixtures and finals.',
-    img: local('fixture.jpg'),
-    href: '#join',
-  },
-  {
-    title: 'Endurance & Road',
-    meta: 'Weekend rides',
-    tag: 'Go long',
-    desc: 'Club rides and indoor threshold work to build a bigger engine.',
-    img: local('cycling.jpg'),
-    href: '#tailored',
-  },
-  {
-    title: 'Swim & Aqua',
-    meta: 'Lanes & open water',
-    tag: 'Low impact',
-    desc: 'Stroke technique, threshold sets and easy recovery lengths.',
-    img: local('lanes.jpg'),
-    href: '#elevate',
-  },
-]
+/* The carousel's cards now open real programme pages, so the list lives with
+   the pages themselves in ./programmes and is re-exported here only so the
+   old import path keeps working. */
+export { PLANS } from './programmes'
 
 export const ENDLESS_IMG = local('airborne.jpg')

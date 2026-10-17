@@ -16,6 +16,13 @@ export const paths = {
   court: (slug) => `/courts/${slug}`,
   events: '/events',
   event: (slug) => `/events/${slug}`,
+
+  // training programmes, and the two lifestyle pages the club sells
+  programmes: '/programmes',
+  programme: (slug) => `/programmes/${slug}`,
+  shop: '/shop',
+  dining: '/dining',
+
   checkout: '/checkout',
   account: '/account',
 

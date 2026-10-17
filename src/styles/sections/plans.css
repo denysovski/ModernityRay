@@ -145,11 +145,19 @@
 .pcard:hover .pcard-link .arrow {
   transform: translateX(4px);
 }
+/* The stage is taller than the cards — it has to be, because the centre card
+   lifts and the outer ones scale down inside it. Left alone that slack opens
+   as a gap under the carousel, so the dots are pulled back up into it. */
 .plans-dots {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-top: 26px;
+  margin-top: clamp(-150px, -10vw, -60px);
+}
+@media (max-width: 600px) {
+  .plans-dots {
+    margin-top: -24px;
+  }
 }
 /* The button is the hit area (24 px minimum); ::after is the dot you see. */
 .plans-dot {

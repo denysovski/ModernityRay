@@ -97,16 +97,15 @@
   border-color: var(--paper);
 }
 
-/* the join panel closes with members rather than a button */
+/* The join panel closes with members rather than a button. No panel of its
+   own: boxing it put a second card inside a card, and the faces read as
+   proof, not as another thing to click. */
 .mega-proof {
   display: flex;
   align-items: center;
   gap: 14px;
   margin-top: auto;
-  padding: 16px 18px;
-  border-radius: var(--r-md);
-  background: var(--page);
-  border: 1px solid var(--line);
+  padding: 16px 2px 2px;
 }
 .mega-proof-text {
   display: flex;

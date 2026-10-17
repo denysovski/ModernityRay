@@ -39,7 +39,11 @@ export default function Home() {
       <Depth><Events /></Depth>
       <Depth strength={0.9}><Principles /></Depth>
       <Depth strength={0.7}><Newsletter /></Depth>
-      <Depth strength={0.5}><Marquee /></Depth>
+      {/* The marquee is the one section that is already in motion, and
+          riding the scroll tilt on top of that made the wordmark swim
+          forward and back. It keeps its own right-to-left scroll and sits
+          flat on the page. */}
+      <Marquee />
     </main>
   )
 }

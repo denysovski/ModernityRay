@@ -44,8 +44,8 @@ export default function Endless() {
         <div className="plans">
           <div className="plans-head">
             <div>
-              <span className="micro micro-plain"><Icon.star className="deco-star" /> All plans</span>
-              <h3 className="plans-title">Pick a custom plan.</h3>
+              <span className="micro micro-plain"><Icon.star className="deco-star" /> All programmes</span>
+              <h3 className="plans-title">Training programmes we offer.</h3>
             </div>
             <div className="plans-nav">
               <button className="iconbtn" onClick={() => go(-1)} aria-label="Previous">

@@ -88,8 +88,15 @@
   place-items: center;
   flex-shrink: 0;
 }
-.mb-cta {
+/* the pair of actions at the foot of the dark pricing card */
+.mb-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-top: auto;
+}
+.mb-cta {
   align-self: flex-start;
 }
 .btn.mb-cta {

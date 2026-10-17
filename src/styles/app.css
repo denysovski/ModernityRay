@@ -37,3 +37,7 @@
 
 /* The ways in: becoming a member, tours, the student rate, gift cards. */
 @import './join.css';
+
+/* Training programmes, the club shop and the clubhouse kitchen — each with
+   a layout of its own rather than a variation on the routed-view shell. */
+@import './pages.css';

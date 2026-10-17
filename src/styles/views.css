@@ -30,6 +30,11 @@
      it starts giving the content any air. Matches the homepage rhythm. */
   padding-bottom: clamp(130px, 13vw, 200px);
 }
+/* ...unless another section follows, in which case that clearance is not
+   needed and only stacks with the next section's own padding. */
+.pg-section-tight {
+  padding-bottom: clamp(50px, 5vw, 120px);
+}
 
 .pg-crumbs {
   display: flex;
@@ -184,38 +189,93 @@
   color: #fff;
 }
 
-.tier-sort {
+/* ---------- sort menu (components/ui/SortMenu) ----------
+   A built control rather than a <select>, because the native popup is drawn
+   by the OS: square corners, no radius, and no transition on open or close.
+   See the component for what it reimplements. */
+.sortmenu {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
+}
+.sortmenu-label {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.6;
 }
-.tier-sort select {
-  font-family: inherit;
+.sortmenu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-  padding: 10px 14px;
+  padding: 10px 14px 10px 18px;
   border-radius: var(--r-pill);
   border: 1px solid var(--line-2);
   background: var(--paper);
   color: var(--ink);
-  outline: none;
-  cursor: pointer;
   transition: border-color 0.25s, color 0.25s, box-shadow 0.25s;
 }
-.tier-sort select:hover {
+.sortmenu-trigger:hover,
+.sortmenu-trigger.is-open {
   border-color: var(--green);
   color: var(--green);
 }
-.tier-sort select:focus-visible {
+.sortmenu-trigger:focus-visible {
   border-color: var(--green);
   box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.sortmenu-chevron {
+  width: 15px;
+  height: 15px;
+  opacity: 0.6;
+  transition: transform 0.28s var(--ease);
+}
+.sortmenu-trigger.is-open .sortmenu-chevron {
+  transform: rotate(180deg);
+}
+.sortmenu-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 30;
+  min-width: 230px;
+  list-style: none;
+  padding: 7px;
+  border-radius: var(--r-md);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 40px 70px -38px rgba(10, 10, 10, 0.45);
+  outline: none;
+}
+.sortmenu-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--ink);
+  background: none;
+  transition: background 0.18s, color 0.18s;
+}
+.sortmenu-option.is-active {
+  background: var(--bone);
+}
+.sortmenu-option.is-selected {
+  color: var(--green);
+}
+.sortmenu-tick {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
 }
 
 .tier-count {
@@ -1734,29 +1794,6 @@ a.cal-fact:hover {
 
 /* ---------- small additions to homepage sections ---------- */
 
-/* This link sits on the dark pricing card, where --green (meant for white
-   backgrounds) scored 3.3:1. --lime is the accent for dark surfaces. */
-.mb-detail-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--lime);
-}
-.mb-detail-link:hover {
-  color: #d4f86a;
-}
-.mb-detail-link svg {
-  width: 15px;
-  height: 15px;
-  transition: transform 0.35s var(--ease);
-}
-.mb-detail-link:hover svg {
-  transform: translateX(4px);
-}
-
 .btn.ev-all {
   margin-bottom: 26px;
 }
@@ -1843,7 +1880,7 @@ a.cal-fact:hover {
   .court-event,
   .court-card-go,
   .switch-dot,
-  .mb-detail-link svg {
+  .btn-outline-lime {
     transition-duration: 0.01ms;
   }
   .tier-card:hover,

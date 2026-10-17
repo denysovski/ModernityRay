@@ -94,7 +94,11 @@ export default function Events() {
         }
       />
 
-      <section className="section pg-section">
+      {/* The calendar does not end the page — the sign-up does — so this
+          section drops the bottom padding that normally has to clear the
+          footer's rounded overlap. Left in, it stacked with the newsletter's
+          own top padding and opened a gap of roughly 80px. */}
+      <section className="section pg-section pg-section-tight">
         <div className="shell">
           <div className="tier-controls">
             <div className="tier-filters" role="group" aria-label="Filter by category">

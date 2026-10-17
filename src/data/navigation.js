@@ -42,6 +42,24 @@ export const MENU = [
       cta: { label: 'Compare every tier', href: paths.memberships },
     },
   },
+  {
+    label: 'Club',
+    type: 'feature',
+    href: paths.programmes,
+    items: [
+      { name: 'Training programmes', desc: 'Nine coached blocks, five disciplines', href: paths.programmes },
+      { name: 'Meet the coaches', desc: 'The eight people who write your plan', href: `${paths.programmes}#coaches` },
+      { name: 'Clubhouse dining', desc: 'Three rooms, one kitchen', href: paths.dining },
+      { name: 'The club shop', desc: 'Kit and gadgets, members take 15%', href: paths.shop },
+      { name: "What's on", desc: 'The members’ calendar, by month', href: paths.events },
+    ],
+    feature: {
+      img: local('strength.jpg'),
+      tag: 'Programmes',
+      title: 'Every block starts and ends with the same measurement.',
+      cta: { label: 'See all nine programmes', href: paths.programmes },
+    },
+  },
   { label: 'Events', href: paths.events },
   {
     label: 'Join',
@@ -92,12 +110,21 @@ export const FOOTER = [
     ],
   },
   {
+    h: 'Training',
+    items: [
+      { label: 'All programmes', href: paths.programmes },
+      { label: 'Meet the coaches', href: `${paths.programmes}#coaches` },
+      { label: 'Tennis performance', href: paths.programme('tennis-performance') },
+      { label: 'Junior academy', href: paths.programme('junior-academy') },
+    ],
+  },
+  {
     h: 'Club',
     items: [
       { label: "What's on", href: paths.events },
+      { label: 'Clubhouse dining', href: paths.dining },
+      { label: 'The club shop', href: paths.shop },
       { label: 'Your account', href: paths.account },
-      { label: 'Checkout', href: paths.checkout },
-      { label: 'Home', href: paths.home },
     ],
   },
   {
