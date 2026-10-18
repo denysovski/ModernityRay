@@ -71,11 +71,11 @@ npm run preview      # náhled buildu na http://localhost:4173
 ## Testy
 
 ```bash
-npm test             # 102 unit a komponentových testů (Vitest + Testing Library)
-npm run test:watch   # totéž v režimu sledování změn
-npm run test:coverage# pokrytí kódu
-npm run test:e2e     # 43 end-to-end testů (Playwright, Chromium)
-npm run test:all     # obojí za sebou
+npm test               # 102 unit a komponentových testů (Vitest + Testing Library)
+npm run test:watch     # totéž v režimu sledování změn
+npm run test:coverage  # pokrytí kódu testy
+npm run test:e2e       # 43 end-to-end testů (Playwright, Chromium)
+npm run test:all       # obojí za sebou
 ```
 
 Poznámky k testům:
@@ -90,6 +90,10 @@ Poznámky k testům:
 
 ## Další příkazy
 
+Ke spuštění aplikace ani testů nejsou potřeba. Jde jen o doplňkové
+informace pro případ, že by se hodily (měření výkonu, úprava fotografií,
+přegenerování PDF dokumentace).
+
 ```bash
 npm run audit             # Lighthouse: měření výkonu a přístupnosti
 npm run check:routes      # rychlá kontrola všech rout ve skutečném prohlížeči
@@ -99,16 +103,10 @@ npm run images:optimize   # znovu zkomprimuje fotografie v public/img
 npm run images:ingest     # zpracuje nové fotografie ze složky assets/source
 ```
 
-Poznámky k těmto příkazům:
-
-* `npm run audit` a `npm run check:routes` potřebují běžící server. Audit
-  očekává `npm run preview`, kontrola rout `npm run dev`. Jinou adresu lze
-  předat jako argument.
-* Příkazy začínající `images:` pracují s obrazovou sadou a ke spuštění
-  aplikace nejsou potřeba.
-* Originály fotografií (složka `assets/source`, zhruba 52 MB) nejsou
-  součástí repozitáře. V projektu jsou jen hotové zmenšené soubory
-  v `public/img`, které web používá.
+* `npm run audit` a `npm run check:routes` potřebují běžící server
+  (`npm run preview`, resp. `npm run dev`).
+* Příkazy `images:` pracují s originály fotografií, které v repozitáři
+  nejsou (web používá jen hotové zmenšené soubory v `public/img`).
 
 ## Struktura projektu
 
@@ -173,36 +171,28 @@ playwright.config.js    e2e testy nad produkčním buildem
 
 ## SEO
 
-Každá routa má vlastní titulek ve tvaru `Memberships | CourtSy`, vlastní
-popis, kanonickou adresu a náhled pro sdílení (Open Graph). Zajišťuje to
-`src/lib/seo.js` a hook `useSeo()`, protože jednostránková aplikace jinak
-pošle všem adresám tentýž `index.html`, a tedy i tentýž titulek.
+Každá stránka má vlastní titulek, popis, kanonickou adresu a náhled pro
+sdílení. Nastavuje je hook `useSeo()` (`src/lib/seo.js`). Pokladna, účet
+a stránka 404 mají `noindex` a mapa webu se generuje při buildu.
 
-Pokladna, účet a stránka 404 mají `noindex`. Mapa webu se generuje při
-sestavení ze slugů v `src/data`, takže nemůže zastarat. Alternativní texty
-obrázků jsou popsané u jednotlivých fotografií v `src/data/images.js`.
+Jak se to ověřilo:
 
-Kategorie SEO i přístupnost jsou v Lighthouse na hodnotě **100** na všech
-měřených routách. Čtyři testy v `tests/e2e/seo.spec.js` hlídají, že se
-metadata nezačnou opakovat nebo chybět.
-
-Podrobnosti o architektuře, správě stavu, SEO a testování jsou v
-[docs/dokumentace.md](docs/dokumentace.md) a ve stejnojmenném PDF.
+* **Lighthouse** – příkaz `npm run audit` změří úvodní stránku, přehled
+  členství a detail kurtu. Kategorie SEO i přístupnost vyšly na všech třech
+  na **100** (výsledky v `docs/lighthouse/`).
+* **Testy** – čtyři testy v `tests/e2e/seo.spec.js` projdou všechny
+  stránky a kontrolují, že žádná metadata nechybí ani se neopakují.
 
 ## Nasazení
 
-Aplikace je publikovaná na GitHub Pages. O nasazení se stará GitHub
-Actions: po každém pushi do větve `main` spustí testy, sestaví produkční
-build a publikuje ho. Pokud testy neprojdou, nasazení se neprovede.
+Po každém pushi do větve `main` spustí GitHub Actions testy, sestaví build
+a publikuje ho na GitHub Pages (při neúspěšném testu se nenasadí). Aplikace
+běží v podsložce `/ModernityRay/`, proto build nastavuje `BASE_PATH`
+a vytváří `404.html`, díky kterému fungují i přímé odkazy na podstránky.
 
-Aplikace neběží v kořeni domény, ale v podsložce `/ModernityRay/`. Kvůli
-tomu jsou potřeba dvě nastavení:
+## Dokumentace
 
-* Při sestavení se nastaví proměnná `BASE_PATH`. Vite ji uloží do
-  `import.meta.env.BASE_URL` a router ji použije jako svůj `basename`,
-  takže všechny odkazy míří do správné podsložky.
-* Build vytvoří soubor `404.html` jako kopii `index.html`. GitHub Pages
-  poskytuje pouze statické soubory, takže na adrese `/ModernityRay/events`
-  žádný odpovídající soubor nenajde a vrátí `404.html`. Tím se načte
-  aplikace, která si adresu zpracuje sama a zobrazí správnou obrazovku.
-  Díky tomu mohou být adresy čisté a není nutné routování přes znak `#`.
+* [docs/dokumentace.md](docs/dokumentace.md) a [PDF](docs/dokumentace.pdf) –
+  stručná technická dokumentace,
+* [docs/KTWA2-semestralni-prace-Daniel-Svoboda.docx](docs/KTWA2-semestralni-prace-Daniel-Svoboda.docx) –
+  úplná semestrální práce.
