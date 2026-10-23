@@ -189,10 +189,3 @@ Po každém pushi do větve `main` spustí GitHub Actions testy, sestaví build
 a publikuje ho na GitHub Pages (při neúspěšném testu se nenasadí). Aplikace
 běží v podsložce `/ModernityRay/`, proto build nastavuje `BASE_PATH`
 a vytváří `404.html`, díky kterému fungují i přímé odkazy na podstránky.
-
-## Dokumentace
-
-* [docs/dokumentace.md](docs/dokumentace.md) a [PDF](docs/dokumentace.pdf) –
-  stručná technická dokumentace,
-* [docs/KTWA2-semestralni-prace-Daniel-Svoboda.docx](docs/KTWA2-semestralni-prace-Daniel-Svoboda.docx) –
-  úplná semestrální práce.
