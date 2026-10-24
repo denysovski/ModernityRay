@@ -2,7 +2,7 @@
 
 Semestrální práce pro předmět **KTWA2** · Daniel Svoboda
 
-📄 **Dokumentace:**
+**Dokumentace:**
 [Semestrální práce – plná verze (PDF)](docs/KTWA2%20-%20Semestr%C3%A1ln%C3%AD%20pr%C3%A1ce%20Daniel%20Svoboda.pdf) ·
 [Technická dokumentace, 2 stránky (PDF)](docs/KTWA2,%20Svoboda%20Daniel%20-%20Technick%C3%A1%20dokumentace%20%282%20str%C3%A1nky%29.pdf)
 
@@ -99,6 +99,17 @@ npm run preview    # spustí ji na http://localhost:4173
 Všechny příkazy se píší do terminálu ve VS Code ve složce projektu
 (po kroku 4 ze Spuštění). Testy nepotřebují běžící aplikaci.
 
+Projekt má dva druhy testů:
+
+* **Unit a komponentové testy** – unit (jednotkový) test ověřuje jednu
+  funkci samostatně, například že validace odmítne neplatný e-mail.
+  Komponentový test vykreslí jednu komponentu (třeba formulář pokladny)
+  a ovládá ji jako uživatel, ale bez skutečného prohlížeče.
+* **End-to-end (e2e) testy** – projdou celou aplikaci od začátku do konce
+  tak, jak by ji používal návštěvník: otevřou stránku, klikají, vyplňují
+  formuláře a kontrolují výsledek. Ověřují tak, že spolu správně fungují
+  všechny části najednou.
+
 **Krok 1 – jednotkové a komponentové testy (Vitest).**
 
 ```bash
@@ -108,8 +119,10 @@ npm test
 Spustí 102 testů ze složky `tests/unit/` a vypíše výsledek, např.
 `Tests 102 passed`.
 
-**Krok 2 – end-to-end testy (Playwright).** Poprvé je potřeba stáhnout
-prohlížeč Chromium (jen jednou):
+**Krok 2 – end-to-end testy (Playwright).** Chromium je open source
+prohlížeč, na kterém stojí Google Chrome i Microsoft Edge. Playwright v něm
+e2e testy spouští, aby aplikaci ověřil ve skutečném prohlížeči. Poprvé je
+potřeba ho stáhnout (jen jednou):
 
 ```bash
 npx playwright install chromium
@@ -174,11 +187,11 @@ Jak projekt splňuje jednotlivé body zadání a kde to lze ověřit.
 
 | Možnost ze zadání | Použito | Jak a kde |
 |---|---|---|
-| Mockovaná data (JSON server, MockAPI, lokální data) | ✅ lokální data | Veškerý obsah webu (členství, areály, programy, akce, e-shop, restaurace, právní texty) je v JavaScriptových modulech ve složce [`src/data/`](src/data/), např. [`membership.js`](src/data/membership.js), [`courts.js`](src/data/courts.js), [`events.js`](src/data/events.js), [`shop.js`](src/data/shop.js). JSON server ani MockAPI se nepoužívají. |
-| Client-side úložiště – LocalStorage | ✅ | Košík, profil, objednávky a nastavení ukládá [`src/lib/store.js`](src/lib/store.js) pod klíči `courtsy.*`. Zápisy na prohlídku ukládá [`src/views/PrivateTour.jsx`](src/views/PrivateTour.jsx) (`courtsy.tours`). |
-| Client-side úložiště – SessionStorage | ✅ | Příznak, že návštěvník už viděl úvodní animaci ([`src/components/layout/Intro.jsx`](src/components/layout/Intro.jsx), klíč `courtsy.intro.seen`). |
-| Client-side úložiště – IndexedDB | ❌ | Nepoužívá se, objem dat je malý. |
-| Jiná simulace | ✅ simulovaná platba a účet | Objednávka se „zaplatí“ jen uložením do `localStorage`, přihlášení je jen jméno a e-mail v prohlížeči. Nic se neodesílá. |
+| Mockovaná data (JSON server, MockAPI, lokální data) | Ano (lokální data) | Veškerý obsah webu (členství, areály, programy, akce, e-shop, restaurace, právní texty) je v JavaScriptových modulech ve složce [`src/data/`](src/data/), např. [`membership.js`](src/data/membership.js), [`courts.js`](src/data/courts.js), [`events.js`](src/data/events.js), [`shop.js`](src/data/shop.js). JSON server ani MockAPI se nepoužívají. |
+| Client-side úložiště – LocalStorage | Ano | Košík, profil, objednávky a nastavení ukládá [`src/lib/store.js`](src/lib/store.js) pod klíči `courtsy.*`. Zápisy na prohlídku ukládá [`src/views/PrivateTour.jsx`](src/views/PrivateTour.jsx) (`courtsy.tours`). |
+| Client-side úložiště – SessionStorage | Ano | Příznak, že návštěvník už viděl úvodní animaci ([`src/components/layout/Intro.jsx`](src/components/layout/Intro.jsx), klíč `courtsy.intro.seen`). |
+| Client-side úložiště – IndexedDB | Ne | Nepoužívá se, objem dat je malý. |
+| Jiná simulace | Ano (simulovaná platba a účet) | Objednávka se „zaplatí“ jen uložením do `localStorage`, přihlášení je jen jméno a e-mail v prohlížeči. Nic se neodesílá. |
 
 **Jak ověřit:** v prohlížeči otevřete DevTools (`F12`) → záložka
 *Application* → *Local Storage* / *Session Storage*. Po přidání položky do
@@ -200,7 +213,7 @@ košíku nebo dokončení objednávky se tam objeví klíče `courtsy.*`.
 | Požadavek | Co je použito | Kde to najít |
 |---|---|---|
 | Správa a přenos dat | Obsah se z `src/data/` importuje do obrazovek. Uživatelská data tečou přes hook `useStore()`: např. pokladna zavolá `placeOrder()`, store objednávku uloží do `localStorage` a stránka účtu ji hned zobrazí. | [`src/lib/store.js`](src/lib/store.js), [`src/views/Checkout.jsx`](src/views/Checkout.jsx), [`src/views/Account.jsx`](src/views/Account.jsx) |
-| TypeScript (doporučeno) | ❌ nepoužit; datové struktury a funkce jsou místo toho popsané typovými komentáři JSDoc | např. [`src/data/courts.js`](src/data/courts.js), [`src/lib/validation.js`](src/lib/validation.js) |
+| TypeScript (doporučeno) | Ne. Datové struktury a funkce jsou místo toho popsané typovými komentáři JSDoc. | např. [`src/data/courts.js`](src/data/courts.js), [`src/lib/validation.js`](src/lib/validation.js) |
 | Validace dat na straně klienta | e-mail, jméno, heslo, telefon, adresa, PSČ podle země, platební karta (Luhnův algoritmus, platnost, CVC); data načtená z úložiště se také znovu validují | [`src/lib/validation.js`](src/lib/validation.js), [`src/lib/store.js`](src/lib/store.js) |
 | Práce se stavem aplikace | trvalý stav ve storu, dočasný v komponentách | viz [Správa stavu a dat](#správa-stavu-a-dat) |
 
